@@ -16,7 +16,7 @@ Este repositório contém todos os exercícios e trabalhos realizados ao longo d
 ## Tecnologias e materiais utilizados
 
 - [C](https://devdocs.io/c/): linguagem de programação compilada e procedural;
-- [Materiail de Programação I](https://wiki.inf.ufpr.br/maziero/doku.php?id=prog1:start) do [professor Carlos Maziero](https://wiki.inf.ufpr.br/maziero/doku.php?id=start).
+- [Material de Programação I](https://wiki.inf.ufpr.br/maziero/doku.php?id=prog1:start) do [professor Carlos Maziero](https://wiki.inf.ufpr.br/maziero/doku.php?id=start).
 
 ## Licença
 
