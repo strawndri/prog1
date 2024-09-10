@@ -5,7 +5,6 @@ for, imprima 0.
 */
 
 #include <stdio.h>
-#include <math.h>
 
 int main() 
 {
@@ -14,7 +13,7 @@ int main()
 
     scanf("%d", &n);
 
-    for (int i = 1; i < sqrt(n); ++i) {
+    for (int i = 1; (i * (i + 1) * (i + 2)) <= n; i++) {
         if (n == (i * (i + 1) * (i + 2))) {
             eh_triangular = 1;
             break;
