@@ -19,7 +19,7 @@ int main()
         fat *= i;
     }
 
-    printf("%lld\n", fat);
+    printf("%ll\n", fat);
     
     return 0;
 }
