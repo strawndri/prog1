@@ -10,19 +10,19 @@ que forçaram a parada do programa.
 
 int main()
 {
-    int qtd = 1, soma = 0, anterior = 0, atual;
+    int qtd, soma, atual, anterior;
 
     scanf("%d", &atual);
+    soma = atual;
+    qtd = 1; // início da contagem dos números
 
-    while ((atual != anterior * 2) && (atual * 2 != anterior)) {
-        soma += atual;
-
+    do {
         anterior = atual;
         scanf("%d", &atual);
-        
-        qtd += 1;
-    }   
-
+        qtd++;
+        soma += atual;
+    } while ((atual != anterior * 2) && (atual * 2 != anterior));
+    
     printf("%d %d %d %d\n", qtd, soma, anterior, atual);
 
     return 0;
