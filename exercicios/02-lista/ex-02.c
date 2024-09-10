@@ -12,22 +12,18 @@ caso não seja.
 */
 
 #include <stdio.h>
-#include <math.h>
 
 int main()
 {
     int n_atual, n_anterior, eh_valor_quadrado = 1;
 
     while (scanf("%d", &n_atual) && n_atual) {
-        
         n_anterior = n_atual;
         scanf("%d", &n_atual);
 
-        if ((pow(n_anterior, 2) != n_atual) 
-            && (eh_valor_quadrado)) {
+        if (n_anterior * n_anterior != n_atual) {
             eh_valor_quadrado = 0;
         }
-
     }
 
     printf("%d\n", eh_valor_quadrado);
