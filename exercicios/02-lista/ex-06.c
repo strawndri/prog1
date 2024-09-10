@@ -11,17 +11,17 @@ seu programa para valores não muito grandes.
 
 int main()
 {
-    long int a = 1, b = 1, c;
-    int n;
+    long long anterior = 1, atual = 1;
+    int n, proximo;
     scanf("%d", &n);
-    printf("%ld %ld ", a, b);
+    printf("%lld %lld ", anterior, atual);
     
     for (int i = 2; i < n; ++i) {
-        c = a + b;
-        printf("%ld ", c);
+        proximo = anterior + atual;
+        printf("%lld ", proximo);
 
-        a = b;
-        b = c;
+        anterior = atual;
+        atual = proximo;
     }
 
     printf("\n");

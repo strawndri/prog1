@@ -11,7 +11,7 @@ programa para valores não muito grandes.
 
 int main()
 {
-    long int fat = 1;
+    long long fat = 1;
     int n;
     scanf("%d", &n);
 
@@ -19,7 +19,7 @@ int main()
         fat *= i;
     }
 
-    printf("%ld\n", fat);
+    printf("%lld\n", fat);
     
     return 0;
 }

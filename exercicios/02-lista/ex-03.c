@@ -13,7 +13,8 @@ primeiros números que são perfeitos.
 
 int main() 
 {
-    int k, i = 1, n = 1, soma, divisor;
+    int i = 1, n = 1;
+    int k, soma, divisor;
     scanf("%d", &k);
 
     while (i <= k) {

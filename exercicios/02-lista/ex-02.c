@@ -15,7 +15,8 @@ caso não seja.
 
 int main()
 {
-    int n_atual, n_anterior, eh_valor_quadrado = 1;
+    int n_atual, n_anterior;
+    int eh_valor_quadrado = 1;
 
     while (scanf("%d", &n_atual) && n_atual) {
         n_anterior = n_atual;

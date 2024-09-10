@@ -13,7 +13,8 @@ ou ”NAO”se não há coincidência.
 
 int main()
 {
-    int n, mult_37, soma = 0;
+    int n, mult_37;
+    int soma = 0;
     scanf("%d", &n);
 
     mult_37 = n * 37;
