@@ -11,8 +11,9 @@ seu programa para valores não muito grandes.
 
 int main()
 {
-    long long anterior = 1, atual = 1;
-    int n, proximo;
+    long long int anterior = 1, atual = 1;
+    long long int proximo;
+    int n;
     scanf("%d", &n);
     printf("%lld %lld ", anterior, atual);
     
