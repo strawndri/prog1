@@ -6,13 +6,29 @@
 
 /* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
+#include <stdlib.h>
+#include "racional.h"
 
 /* programa principal */
 int main ()
 {
   srand (0); /* use assim, com zero */
 
-  /* a completar! */
+  int n, max;
+  long r1, r2;
 
-  return (0) ;
+  scanf("%d", &n);
+  scanf("%d", &max);
+
+  for (int i = 1; i <= n; i++) {
+    printf("%d: ", i);
+
+    r1 = aleat(0, max);
+    r2 = aleat(0, max);
+
+    printf("%ld %ld", r1, r2);
+    printf("\n");
+  }
+
+  return (0);
 }
