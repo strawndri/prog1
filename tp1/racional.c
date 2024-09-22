@@ -22,7 +22,7 @@
 /* retorna um número aleatório entre min e max, inclusive. */
 long aleat (long min, long max)
 {
-  return rand() % (max + 1) + min;
+  return rand() % (max - min + 1) + min;
 }
 
 /* Máximo Divisor Comum entre a e b      */
@@ -50,8 +50,81 @@ long mmc (long a, long b)
  * Se r for inválido, devolve-o sem simplificar. */
 struct racional simplifica_r (struct racional r)
 {
-  /* implemente aqui */
+  long resultado_mdc;
+  long numerador, denominador;
+
+  if (!valido_r(r)) {
+    return r;
+  } 
+  
+  resultado_mdc = mdc(r.num, r.den);
+  numerador = r.num / resultado_mdc; 
+  denominador = r.den / resultado_mdc; 
+  
+  if ((numerador < 0 && denominador < 0) ||
+      (numerador > 0 && denominador < 0)) {
+      numerador = (-1) * numerador;
+      denominador = (-1) * denominador;
+  }
+
+  struct racional simplificado = {numerador, denominador};
+  return simplificado;
 }
 
 /* implemente as demais funções de racional.h aqui */
 
+/* Cria um número racional com o numerador e denominador indicados. */
+struct racional cria_r (long numerador, long denominador)
+{
+  struct racional novo = {numerador, denominador};
+  return (novo);
+}
+
+/* Retorna 1 se o racional r for válido ou 0 se for inválido.
+ * Um racional é inválido se seu denominador for zero */
+int valido_r (struct racional r)
+{
+  if (r.den == 0) {
+    return 0;
+  }
+
+  return 1;
+}
+
+/* Retorna um número racional aleatório na forma simplificada.
+ * Deve ser sorteado o numerador e depois o denominador.
+ * o racional gerado pode ser válido ou inválido.
+ * O numerador e o denominador devem ser inteiros entre min e max. */
+struct racional sorteia_r (long min, long max)
+{ 
+  long numerador = aleat(min, max), denominador = aleat(min, max);
+  struct racional numero = {numerador, denominador}; 
+  
+  return numero;
+}
+
+/* Imprime um racional r, respeitando estas regras:
+   - o racional deve ser impresso na forma simplificada;
+   - não imprima espaços em branco e não mude de linha;
+   - a saída deve ter o formato "num/den", a menos dos casos abaixo:
+     - se o racional for inválido, deve imprimir a mensagem "INVALIDO";
+     - se o numerador for 0, deve imprimir somente "0";
+     - se o denominador for 1, deve imprimir somente o numerador;
+     - se o numerador e denominador forem iguais, deve imprimir somente "1";
+     - se o racional for negativo, o sinal "-" deve vir antes do numerador;
+     - se numerador e denominador forem negativos, o racional é positivo. */
+void imprime_r (struct racional r)
+{
+  struct racional numero = simplifica_r(r);
+  if (!valido_r(numero)) {
+    printf("INVALIDO");
+  } else if (numero.num == 0) {
+    printf("0");
+  } else if (numero.num == numero.den) {
+    printf("1");
+  } else if (numero.den == 1) {
+    printf("%ld", numero.num);
+  } else {
+    printf("%ld/%ld", numero.num, numero.den);
+  }
+}

@@ -14,19 +14,23 @@ int main ()
 {
   srand (0); /* use assim, com zero */
 
-  int n, max;
-  long r1, r2;
+  int n, max, min;
+  struct racional r1, r2;
 
   scanf("%d", &n);
   scanf("%d", &max);
 
+  min = (-1) * max;
+
   for (int i = 1; i <= n; i++) {
     printf("%d: ", i);
 
-    r1 = aleat(0, max);
-    r2 = aleat(0, max);
+    r1 = sorteia_r(min, max);
+    r2 = sorteia_r(min, max);
 
-    printf("%ld %ld", r1, r2);
+    imprime_r(r1);
+    imprime_r(r2);
+
     printf("\n");
   }
 
