@@ -22,7 +22,7 @@
 /* retorna um número aleatório entre min e max, inclusive. */
 long aleat (long min, long max)
 {
-  return rand() % (max - min + 1) + min;
+  return (rand() % (max - min + 1) + min);
 }
 
 /* Máximo Divisor Comum entre a e b      */
@@ -33,14 +33,14 @@ long mdc (long a, long b)
     return a;
   }
 
-  return mdc (b, a % b);
+  return (mdc (b, a % b));
 }
 
 /* Mínimo Múltiplo Comum entre a e b */
 /* mmc = (a * b) / mdc (a, b)        */
 long mmc (long a, long b)
 {
-  return (a * b) / mdc (a, b);
+  return ((a * b) / mdc (a, b));
 }
 
 /* Recebe um número racional e o simplifica.
@@ -68,7 +68,7 @@ struct racional simplifica_r (struct racional r)
   }
 
   struct racional simplificado = {numerador, denominador};
-  return simplificado;
+  return (simplificado);
 }
 
 /* implemente as demais funções de racional.h aqui */
@@ -127,4 +127,55 @@ void imprime_r (struct racional r)
   } else {
     printf("%ld/%ld", numero.num, numero.den);
   }
+
+  printf(" ");
+}
+
+/* Retorna a soma dos racionais r1 e r2.
+ * se r1 ou r2 for inválido, o resultado deve ser inválido */
+struct racional soma_r (struct racional r1, struct racional r2)
+{
+  long resultado_mmc = mmc(r1.den, r2.den);
+  struct racional numero = {
+    ((resultado_mmc * r1.num / r1.den) + resultado_mmc * r2.num / r2.den),
+    resultado_mmc
+  };
+
+  return (numero);
+}
+
+/* Retorna a subtração dos racionais r1 e r2.
+ * se r1 ou r2 for inválido, o resultado deve ser inválido */
+struct racional subtrai_r (struct racional r1, struct racional r2){
+  long resultado_mmc = mmc(r1.den, r2.den);
+  struct racional numero = {
+    ((resultado_mmc * r1.num / r1.den) - resultado_mmc * r2.num / r2.den),
+    resultado_mmc
+  };
+
+  return (numero);
+}
+
+/* Retorna a multiplicação dos racionais r1 e r2.
+ * se r1 ou r2 for inválido, o resultado deve ser inválido */
+struct racional multiplica_r (struct racional r1, struct racional r2){
+  struct racional numero = {
+    r1.num * r2.num,
+    r1.den * r2.den
+  };
+
+  return (numero);
+}
+
+/* Retorna a divisão dos racionais r1 e r2.
+ * se r1 ou r2 for inválido, o resultado deve ser inválido.
+ * observe que a divisão com r1 e r2 válidos pode gerar um racional inválido */
+struct racional divide_r (struct racional r1, struct racional r2)
+{
+  struct racional numero = {
+    r1.num * r2.den,
+    r1.den * r2.num
+  };
+
+  return (numero);
 }

@@ -31,6 +31,26 @@ int main ()
     imprime_r(r1);
     imprime_r(r2);
 
+    if (!valido_r(r1) || !valido_r(r2)) {
+      printf("NUMERO INVALIDO\n");
+      return 1;
+    }
+
+    struct racional soma, subtracao, multiplicacao, divisao;
+    soma = soma_r(r1, r2);
+    subtracao = subtrai_r(r1, r2);
+    multiplicacao = multiplica_r(r1, r2);
+    divisao = divide_r(r1, r2);
+
+    if (!valido_r(divisao)) {
+      printf("DIVISAO INVALIDA\n");
+      return 1;
+    }
+
+    imprime_r(soma);
+    imprime_r(subtracao);
+    imprime_r(multiplicacao);
+    imprime_r(divisao);
     printf("\n");
   }
 
