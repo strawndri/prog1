@@ -4,7 +4,6 @@
  * Feito em 16/09/2024 para a disciplina CI1001 - Programação 1.
 */
 
-/* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
 #include <stdlib.h>
 #include "racional.h"
@@ -15,10 +14,16 @@ int main ()
   int n, max, min;
   struct racional r1, r2;
 
-  srand (0); /* use assim, com zero */
+  srand (0);
 
-  scanf("%d", &n);
-  scanf("%d", &max);
+  /* Certifica que o usuário informou os números no intervalo esperado:
+   * 0 < n < 100 
+   * 0 < max < 30
+  */
+  do {
+    scanf("%d", &n);
+    scanf("%d", &max);
+  } while ((n <= 0 || n >= 100) || (max <= 0 || max >= 30));
 
   /* min será o extremo negativo de max */
   min = (-1) * max;
