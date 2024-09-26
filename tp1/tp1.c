@@ -35,10 +35,13 @@ int main ()
     r2 = sorteia_r(min, max);
 
     imprime_r(r1);
+    
+    printf(" ");
     imprime_r(r2);
 
     /* Evita a realização das operações no caso de números inválidos*/
     if (!valido_r(r1) || !valido_r(r2)) {
+      printf(" ");
       printf("NUMERO INVALIDO\n");
       return 1;
     }
@@ -51,13 +54,21 @@ int main ()
 
     /* Evita a impressão dos resultados no caso de divisão inválida*/
     if (!valido_r(divisao)) {
+      printf(" ");
       printf("DIVISAO INVALIDA\n");
       return 1;
     }
 
+    printf(" ");
     imprime_r(soma);
+    
+    printf(" ");
     imprime_r(subtracao);
+    
+    printf(" ");
     imprime_r(multiplicacao);
+    
+    printf(" ");
     imprime_r(divisao);
     printf("\n");
   }
