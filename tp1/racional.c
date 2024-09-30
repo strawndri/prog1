@@ -16,29 +16,29 @@
  * (max - min + 1) gera um número entre 0 e (max - min)
  * Somando min, temos o deslocamento do resultado para o intervalo [min, max] 
 */
-long aleat (long min, long max)
+long aleat(long min, long max)
 {
-  return (rand() % (max - min + 1) + min);
+  return rand() % (max - min + 1) + min;
 }
 
 /* Máximo Divisor Comum entre a e b pelo método de Euclides */
-long mdc (long a, long b)
+long mdc(long a, long b)
 {
   if (b == 0) {
     return a;
   }
 
-  return (mdc (b, a % b));
+  return mdc(b, a % b);
 }
 
 /* Mínimo Múltiplo Comum entre a e b */
-long mmc (long a, long b)
+long mmc(long a, long b)
 {
-  return ((a * b) / mdc (a, b));
+  return (a * b) / mdc(a, b);
 }
 
 /* Recebe um número racional e o simplifica */
-struct racional simplifica_r (struct racional r)
+struct racional simplifica_r(struct racional r)
 {
   long resultado_mdc;
   long numerador, denominador;
@@ -60,25 +60,25 @@ struct racional simplifica_r (struct racional r)
       denominador = -denominador;
   }
 
-  return (cria_r(numerador, denominador));
+  return cria_r(numerador, denominador);
 }
 
 /* Cria um número racional com o numerador e denominador indicados */
-struct racional cria_r (long numerador, long denominador)
+struct racional cria_r(long numerador, long denominador)
 {
   struct racional novo = {numerador, denominador};
-  return (novo);
+  return novo;
 }
 
 /* Retorna 1 se o racional r for válido ou 0 se for inválido.
  * Um racional é inválido se seu denominador for zero */
-int valido_r (struct racional r)
+int valido_r(struct racional r)
 {
-  return (r.den != 0); // Condição retorna diretamente os valores esperados (0 ou 1)
+  return r.den != 0; // Condição retorna diretamente os valores esperados (0 ou 1)
 }
 
 /* Retorna um número racional aleatório na forma simplificada */
-struct racional sorteia_r (long min, long max)
+struct racional sorteia_r(long min, long max)
 { 
   long numerador = aleat(min, max);
   long denominador = aleat(min, max);
@@ -87,11 +87,11 @@ struct racional sorteia_r (long min, long max)
 }
 
 /* Imprime um racional r */
-void imprime_r (struct racional r)
+void imprime_r(struct racional r)
 {
   struct racional numero_simplificado = simplifica_r(r);
 
-  if (!valido_r(numero_simplificado)) {
+  if (!valido_r (numero_simplificado)) {
     printf("INVALIDO");
   /* O else-if a seguir resolve tais problemas: 
    * 1. Numerador igual a 0
@@ -108,7 +108,7 @@ void imprime_r (struct racional r)
 }
 
 /* Retorna a soma dos racionais r1 e r2 */
-struct racional soma_r (struct racional r1, struct racional r2)
+struct racional soma_r(struct racional r1, struct racional r2)
 { 
   /* Se r1 ou r2 for inválido, o resultado deve ser inválido */
   if (!valido_r(r1) || !valido_r(r2)) {
@@ -122,7 +122,7 @@ struct racional soma_r (struct racional r1, struct racional r2)
 }
 
 /* Retorna a subtração dos racionais r1 e r2 */
-struct racional subtrai_r (struct racional r1, struct racional r2)
+struct racional subtrai_r(struct racional r1, struct racional r2)
 {
   /* Se r1 ou r2 for inválido, o resultado deve ser inválido */
   if (!valido_r(r1) || !valido_r(r2)) {
@@ -136,7 +136,7 @@ struct racional subtrai_r (struct racional r1, struct racional r2)
 }
 
 /* Retorna a multiplicação dos racionais r1 e r2 */
-struct racional multiplica_r (struct racional r1, struct racional r2)
+struct racional multiplica_r(struct racional r1, struct racional r2)
 { 
   /* Se r1 ou r2 for inválido, o resultado deve ser inválido */
   if (!valido_r(r1) || !valido_r(r2)) {
@@ -150,13 +150,13 @@ struct racional multiplica_r (struct racional r1, struct racional r2)
 }
 
 /* Retorna a divisão dos racionais r1 e r2 */
-struct racional divide_r (struct racional r1, struct racional r2)
+struct racional divide_r(struct racional r1, struct racional r2)
 { 
   /* Se r1 ou r2 for inválido, o resultado deve ser inválido 
    * O mesmo vale para o numerador de r2 ser igual a zero
   */
   if (!valido_r(r1) || !valido_r(r2) || !r2.num) {
-    return cria_r(0, 0);
+    return cria_r (0, 0);
   }
 
   return cria_r(

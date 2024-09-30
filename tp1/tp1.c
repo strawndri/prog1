@@ -9,12 +9,12 @@
 #include "racional.h"
 
 /* programa principal */
-int main ()
+int main()
 {
   int n, max, min;
   struct racional r1, r2;
 
-  srand (0);
+  srand(0);
 
   /* Certifica que o usuário informou os números no intervalo esperado:
    * 0 < n < 100 
@@ -73,5 +73,5 @@ int main ()
     printf("\n");
   }
 
-  return (0);
+  return 0;
 }
