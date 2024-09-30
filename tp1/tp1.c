@@ -26,7 +26,7 @@ int main ()
   } while ((n <= 0 || n >= 100) || (max <= 0 || max >= 30));
 
   /* min será o extremo negativo de max */
-  min = (-1) * max;
+  min = -max;
 
   for (int i = 1; i <= n; i++) {
     printf("%d: ", i);
@@ -39,7 +39,7 @@ int main ()
     printf(" ");
     imprime_r(r2);
 
-    /* Evita a realização das operações no caso de números inválidos*/
+    /* Evita a realização das operações no caso de números inválidos */
     if (!valido_r(r1) || !valido_r(r2)) {
       printf(" ");
       printf("NUMERO INVALIDO\n");
@@ -52,7 +52,7 @@ int main ()
     multiplicacao = multiplica_r(r1, r2);
     divisao = divide_r(r1, r2);
 
-    /* Evita a impressão dos resultados no caso de divisão inválida*/
+    /* Evita a impressão dos resultados no caso de divisão inválida */
     if (!valido_r(divisao)) {
       printf(" ");
       printf("DIVISAO INVALIDA\n");
