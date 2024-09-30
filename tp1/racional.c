@@ -156,7 +156,7 @@ struct racional divide_r(struct racional r1, struct racional r2)
    * O mesmo vale para o numerador de r2 ser igual a zero
   */
   if (!valido_r(r1) || !valido_r(r2) || !r2.num) {
-    return cria_r (0, 0);
+    return cria_r(0, 0);
   }
 
   return cria_r(
