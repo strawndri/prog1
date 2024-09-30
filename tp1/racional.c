@@ -56,8 +56,8 @@ struct racional simplifica_r(struct racional r)
   
   /* Ajusta o sinal para garantir que o denominador seja positivo */
   if (denominador < 0) {
-      numerador = -numerador;
-      denominador = -denominador;
+    numerador = -numerador;
+    denominador = -denominador;
   }
 
   return cria_r(numerador, denominador);
@@ -93,13 +93,13 @@ void imprime_r(struct racional r)
 
   if (!valido_r (numero_simplificado)) {
     printf("INVALIDO");
-  /* O else-if a seguir resolve tais problemas: 
-   * 1. Numerador igual a 0
-   * 2. Denominador igual a 1
-   * 3. Numerador e denominador iguais 
-   * No caso do item 3, possivelmente ele cairá no item 2, já que anteriormente
-   * aconteceu a simplificação do número racional, levando à situação 1/1
-  */
+    /* O else-if a seguir resolve tais problemas: 
+    * 1. Numerador igual a 0
+    * 2. Denominador igual a 1
+    * 3. Numerador e denominador iguais 
+    * No caso do item 3, possivelmente ele cairá no item 2, já que anteriormente
+    * aconteceu a simplificação do número racional, levando à situação 1/1
+    */
   } else if (!numero_simplificado.num || numero_simplificado.den == 1) {
       printf("%ld", numero_simplificado.num);
   } else {
