@@ -14,8 +14,16 @@
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
 
 void elimina_invalidos(struct racional vetor[], int n)
-{
-  
+{ 
+  int i = 0;
+  while (i < n) {
+    if (!valido_r(vetor[i])) {
+      vetor[i] = vetor[n - 1];
+      n--;
+    } else {
+      i++;
+    }
+  }
 }
 
 /* programa principal */
@@ -32,7 +40,7 @@ int main ()
   } while (n <= 0 || n >= 100);
 
   for (int i = 0; i < n; i++) {
-    scanf("%d %d", &numerador, &denominador);
+    scanf("%ld %ld", &numerador, &denominador);
     racional = cria_r(numerador, denominador);
     vetor[i] = racional;
   }
