@@ -115,3 +115,23 @@ void imprime_r(struct racional r)
       printf("%ld/%ld", numero_simplificado.num, numero_simplificado.den);
   }
 }
+
+/* Compara dois racionais r1 e r2. Retorno: -2 se r1 ou r2 for inválido,
+ * -1 se r1 < r2, 0 se r1 = r2 ou 1 se r1 > r2 */
+int compara_r (struct racional r1, struct racional r2)
+{
+  if (!valido_r(r1) || !valido_r(r2)) {
+    return -2;
+  } 
+
+  int produto_cruzado_r1 = r1.num * r2.den;
+  int produto_cruzado_r2 = r2.num * r1.den;
+  
+  if (produto_cruzado_r1 > produto_cruzado_r2) {
+    return 1;
+  } else if (produto_cruzado_r1 < produto_cruzado_r2) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
