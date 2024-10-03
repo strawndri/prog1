@@ -83,7 +83,7 @@ struct racional sorteia_r(long min, long max)
   long numerador = aleat(min, max);
   long denominador = aleat(min, max);
 
-  return cria_r(numerador, denominador);
+  return simplifica_r(cria_r(numerador, denominador));
 }
 
 /* Imprime um racional r */
@@ -91,7 +91,7 @@ void imprime_r(struct racional r)
 {
   struct racional numero_simplificado = simplifica_r(r);
 
-  if (!valido_r (numero_simplificado)) {
+  if (!valido_r(numero_simplificado)) {
     printf("INVALIDO");
     /* O else-if a seguir resolve tais problemas: 
     * 1. Numerador igual a 0
