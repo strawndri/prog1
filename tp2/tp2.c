@@ -13,15 +13,29 @@
 
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
 
-void elimina_invalidos(struct racional vetor[], int n)
+void elimina_invalidos(struct racional vetor[], int *n)
 { 
   int i = 0;
   while (i < n) {
     if (!valido_r(vetor[i])) {
-      vetor[i] = vetor[n - 1];
-      n--;
+      vetor[i] = vetor[*n - 1];
+      *n--;
     } else {
       i++;
+    }
+  }
+}
+
+void ordena_vetor(struct racional vetor[], int n)
+{ 
+  struct racional aux;
+  for (int i = n - 1; i > 0; i--) {
+    for (int j = 0; j < i; j++) {
+        if (compara_r(vetor[j], vetor[j + 1]) == 1) {
+            aux = vetor[j];
+            vetor[j] = vetor[j + 1];
+            vetor[j + 1] = aux;
+        }
     }
   }
 }
@@ -48,6 +62,20 @@ int main ()
   // imprimir vetor
 
   elimina_invalidos(vetor, n);
+
+  // imprimir vetor
+
+  ordena_vetor(vetor, n);
+
+  struct racional *soma;
+  soma = 0;
+
+  for (int i = 0; i < n; i++) {
+    soma_r(*soma, vetor[i], soma);
+  }
+
+  printf("SOMA = ");
+  imprime_r(*soma);
 
   return (0) ;
 }

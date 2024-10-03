@@ -135,3 +135,21 @@ int compara_r (struct racional r1, struct racional r2)
     return 0;
   }
 }
+
+/* Retorna a soma dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+int soma_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+  /* Se r1 ou r2 forem inválidos ou *r3 nulo, o resultado deve ser 0 */
+  if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
+    return 0;
+  }
+
+  long resultado_mmc = mmc(r1.den, r2.den);
+  long numerador = ((resultado_mmc * r1.num / r1.den) + resultado_mmc * r2.num / r2.den);
+
+  *r3 = cria_r(numerador, resultado_mmc);
+
+  return 1;
+}
