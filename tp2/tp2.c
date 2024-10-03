@@ -6,13 +6,40 @@
 
 /* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
+#include <stdlib.h>
+#include "racional.h"
+
+#define N 100
 
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
 
+void elimina_invalidos(struct racional vetor[], int n)
+{
+  
+}
+
 /* programa principal */
 int main ()
-{
-  /* a completar! */
+{ 
+  int n;
+  long numerador, denominador;
+  struct racional racional;
+
+  struct racional vetor[N];
+
+  do {
+    scanf("%d", &n);
+  } while (n <= 0 || n >= 100);
+
+  for (int i = 0; i < n; i++) {
+    scanf("%d %d", &numerador, &denominador);
+    racional = cria_r(numerador, denominador);
+    vetor[i] = racional;
+  }
+
+  // imprimir vetor
+
+  elimina_invalidos(vetor, n);
 
   return (0) ;
 }
