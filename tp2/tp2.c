@@ -11,15 +11,14 @@
 
 #define N 100
 
-/* coloque aqui as funções auxiliares que precisar neste arquivo */
-
 void imprime_vetor(struct racional vetor[], int n)
 { 
   printf("VETOR = ");
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n - 1; i++) {
     imprime_r(vetor[i]);
     printf(" ");
   }
+  imprime_r(vetor[n-1]);
   printf("\n");
 }
 
