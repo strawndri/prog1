@@ -116,7 +116,6 @@ void imprime_r(struct racional r)
   }
 }
 
-
 /* Compara dois racionais r1 e r2. Retorno: -2 se r1 ou r2 for inválido,
  * -1 se r1 < r2, 0 se r1 = r2 ou 1 se r1 > r2 */
 int compara_r (struct racional r1, struct racional r2)
@@ -128,38 +127,18 @@ int compara_r (struct racional r1, struct racional r2)
   r1 = simplifica_r(r1);
   r2 = simplifica_r(r2);
 
-  int produto_cruzado_r1 = r1.num * r2.den;
-  int produto_cruzado_r2 = r2.num * r1.den;
-  
-  if (produto_cruzado_r1 > produto_cruzado_r2) {
+  int resultado_mdc = mmc(r1.den, r2.den);
+  int numerador_r1 = r1.num * (resultado_mdc / r1.den);
+  int numerador_r2 = r2.num * (resultado_mdc / r2.den);
+
+  if (numerador_r1 > numerador_r2) {
     return 1;
-  } else if (produto_cruzado_r1 < produto_cruzado_r2) {
+  } else if (numerador_r1 < numerador_r2) {
     return -1;
   } else {
     return 0;
   }
 }
-
-// /* Compara dois racionais r1 e r2. Retorno: -2 se r1 ou r2 for inválido,
-//  * -1 se r1 < r2, 0 se r1 = r2 ou 1 se r1 > r2 */
-// int compara_r (struct racional r1, struct racional r2)
-// {
-//   if (!valido_r(r1) || !valido_r(r2)) {
-//     return -2;
-//   } 
-
-//   int resultado_mdc = mmc(r1.den, r2.den);
-//   int numerador_r1 = r1.num * (resultado_mdc / r1.den);
-//   int numerador_r2 = r2.num * (resultado_mdc / r2.den);
-
-//   if (numerador_r1 > numerador_r2) {
-//     return 1;
-//   } else if (numerador_r1 < numerador_r2) {
-//     return -1;
-//   } else {
-//     return 0;
-//   }
-// }
 
 /* Retorna a soma dos racionais r1 e r2 no parametro *r3.
  * Retorna 1 se a operacao foi bem sucedida ou
