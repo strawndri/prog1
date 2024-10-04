@@ -145,16 +145,66 @@ int compara_r (struct racional r1, struct racional r2)
  *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
 int soma_r (struct racional r1, struct racional r2, struct racional *r3)
 {
+  if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
+    return 0;
+  }
+
+  long resultado_mmc = mmc(r1.den, r2.den);
+  long numerador = ((resultado_mmc * r1.num / r1.den) + 
+                    (resultado_mmc * r2.num / r2.den));
+
+  r3->num = numerador;
+  r3->den = resultado_mmc;
+
+  return 1;
+}
+
+/* Retorna a subtracao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
+{
   /* Se r1 ou r2 forem inválidos ou *r3 nulo, o resultado deve ser 0 */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
 
   long resultado_mmc = mmc(r1.den, r2.den);
-  long numerador = ((resultado_mmc * r1.num / r1.den) + resultado_mmc * r2.num / r2.den);
+  long numerador = ((resultado_mmc * r1.num / r1.den) - 
+                    (resultado_mmc * r2.num / r2.den));
 
   r3->num = numerador;
   r3->den = resultado_mmc;
+
+  return 1;
+}
+
+/* Retorna a multiplicacao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+  if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
+    return 0;
+  }
+
+  r3->num = r1.num * r2.num;
+  r3->den = r1.den * r2.den;
+
+  return 1;
+}
+
+/* Retorna a divisao dos racionais r1 e r2 no parametro *r3.
+ * Retorna 1 se a operacao foi bem sucedida ou
+ *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
+int divide_r (struct racional r1, struct racional r2, struct racional *r3)
+{
+  if (!valido_r(r1) || !valido_r(r2) || !r2.num || r3 == NULL) {
+    return 0;
+  }
+
+  r3->num = r1.num * r2.den;
+  r3->den = r1.den * r2.num;
 
   return 1;
 }
