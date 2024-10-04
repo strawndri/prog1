@@ -37,17 +37,27 @@ void elimina_invalidos(struct racional vetor[], int *n)
 }
 
 void ordena_vetor(struct racional vetor[], int n)
-{ 
+{  
+
+  if (n == 1)
+    return;
+
+  int j = 0;
   struct racional aux;
-  for (int i = n - 1; i > 0; i--) {
-    for (int j = 0; j < i; j++) {
-        if (compara_r(vetor[j], vetor[j + 1]) == 1) {
-            aux = vetor[j];
-            vetor[j] = vetor[j + 1];
-            vetor[j + 1] = aux;
-        }
+
+  for (int i = 0; i < n - 1; i++) {
+    if (compara_r(vetor[i], vetor[i + 1]) > 0) {
+      aux = vetor[i];
+      vetor[i] = vetor[i + 1];
+      vetor[i + 1] = aux;
+      j++;
     }
   }
+  
+  if (j == 0)
+    return;
+
+  ordena_vetor(vetor, n - 1);
 }
 
 /* programa principal */
