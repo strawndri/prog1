@@ -153,7 +153,8 @@ int soma_r (struct racional r1, struct racional r2, struct racional *r3)
   long resultado_mmc = mmc(r1.den, r2.den);
   long numerador = ((resultado_mmc * r1.num / r1.den) + resultado_mmc * r2.num / r2.den);
 
-  *r3 = cria_r(numerador, resultado_mmc);
+  r3->num = numerador;
+  r3->den = resultado_mmc;
 
   return 1;
 }
