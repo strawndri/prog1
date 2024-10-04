@@ -13,13 +13,23 @@
 
 /* coloque aqui as funções auxiliares que precisar neste arquivo */
 
+void imprime_vetor(struct racional vetor[], int n)
+{ 
+  printf("VETOR = ");
+  for (int i = 0; i < n; i++) {
+    imprime_r(vetor[i]);
+    printf(" ");
+  }
+  printf("\n");
+}
+
 void elimina_invalidos(struct racional vetor[], int *n)
 { 
   int i = 0;
-  while (i < n) {
+  while (i < *n) {
     if (!valido_r(vetor[i])) {
       vetor[i] = vetor[*n - 1];
-      *n--;
+      (*n)--;
     } else {
       i++;
     }
@@ -59,23 +69,24 @@ int main ()
     vetor[i] = racional;
   }
 
-  // imprimir vetor
+  imprime_vetor(vetor, n);
 
-  elimina_invalidos(vetor, n);
-
-  // imprimir vetor
+  elimina_invalidos(vetor, &n);
+  imprime_vetor(vetor, n);
 
   ordena_vetor(vetor, n);
+  imprime_vetor(vetor, n);
 
-  struct racional *soma;
-  soma = 0;
+  struct racional soma;
+  soma = cria_r(0, 1);
 
   for (int i = 0; i < n; i++) {
-    soma_r(*soma, vetor[i], soma);
+    soma_r(soma, vetor[i], &soma);
   }
 
   printf("SOMA = ");
-  imprime_r(*soma);
+  imprime_r(soma);
+  printf("\n");
 
   return (0) ;
 }
