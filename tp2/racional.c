@@ -89,9 +89,9 @@ struct racional sorteia_r(long min, long max)
 /* Imprime um racional r */
 void imprime_r(struct racional r)
 {
-  struct racional numero_simplificado = simplifica_r(r);
+  struct racional simplificado = simplifica_r(r);
 
-  if (!valido_r(numero_simplificado)) {
+  if (!valido_r(simplificado)) {
     printf("NaN");
     /* O else-if a seguir resolve tais problemas: 
     * 1. Numerador igual a 0
@@ -100,10 +100,10 @@ void imprime_r(struct racional r)
     * No caso do item 3, possivelmente ele cairá no item 2, já que anteriormente
     * aconteceu a simplificação do número racional, levando à situação 1/1
     */
-  } else if (!numero_simplificado.num || numero_simplificado.den == 1) {
-      printf("%ld", numero_simplificado.num);
+  } else if (!simplificado.num || simplificado.den == 1) {
+      printf("%ld", simplificado.num);
   } else {
-      printf("%ld/%ld", numero_simplificado.num, numero_simplificado.den);
+      printf("%ld/%ld", simplificado.num, simplificado.den);
   }
 }
 

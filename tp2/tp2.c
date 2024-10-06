@@ -17,12 +17,16 @@
 void imprime_vetor(struct racional vetor[], int n)
 { 
   printf("VETOR = ");
+
+  if (!n)
+    return;
+
   for (int i = 0; i < n - 1; i++) {
     imprime_r(vetor[i]);
     printf(" ");
   }
+
   imprime_r(vetor[n-1]);
-  printf("\n");
 }
 
 /* Remoção de elementos x/0 presentes no vetor de racionais */
@@ -92,12 +96,15 @@ int main ()
   }
 
   imprime_vetor(vetor, n);
+  printf("\n");
 
   elimina_invalidos(vetor, &n);
   imprime_vetor(vetor, n);
+  printf("\n");
 
   ordena_vetor(vetor, n);
   imprime_vetor(vetor, n);
+  printf("\n");
 
   struct racional soma;
   soma = cria_r(0, 1);
