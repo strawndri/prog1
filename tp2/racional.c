@@ -8,16 +8,9 @@
  * funções auxiliares para facilitar a implementação daquelas funções.
 */
 
-/* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
 #include <stdlib.h>
 #include "racional.h"
-
-/*
- * Implemente aqui as funcoes definidas no racionais.h; caso precise,
- * pode definir aqui funcoes auxiliares adicionais, que devem ser usadas
- * somente neste arquivo.
-*/
 
 /* Retorna um número aleatório entre min e max, inclusive
  * (max - min + 1) gera um número entre 0 e (max - min)
@@ -70,8 +63,6 @@ struct racional simplifica_r(struct racional r)
   return cria_r(numerador, denominador);
 }
 
-/* implemente as demais funções de racional.h aqui */
-
 /* Cria um número racional com o numerador e denominador indicados. */
 struct racional cria_r (long numerador, long denominador)
 {
@@ -116,9 +107,13 @@ void imprime_r(struct racional r)
   }
 }
 
-/* Compara dois racionais r1 e r2. Retorno: -2 se r1 ou r2 for inválido,
- * -1 se r1 < r2, 0 se r1 = r2 ou 1 se r1 > r2 */
-int compara_r (struct racional r1, struct racional r2)
+/* Compara dois racionais r1 e r2:
+ *  2: r1 ou r2 forem inválidos
+ * -1: r1 < r2
+ *  0: r1 = r2
+ *  1: r1 > r2 
+ *  Após o MMC dos racionais, são comparados seus numeradores */
+int compara_r(struct racional r1, struct racional r2)
 {
   if (!valido_r(r1) || !valido_r(r2)) {
     return -2;
@@ -140,11 +135,10 @@ int compara_r (struct racional r1, struct racional r2)
   }
 }
 
-/* Retorna a soma dos racionais r1 e r2 no parametro *r3.
- * Retorna 1 se a operacao foi bem sucedida ou
- *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
-int soma_r (struct racional r1, struct racional r2, struct racional *r3)
-{
+/* Retorna a soma dos racionais r1 e r2 no parâmetro *r3 */
+int soma_r(struct racional r1, struct racional r2, struct racional *r3)
+{ 
+  /* Verifica se r1 ou r2 são inválidos ou r3 é um ponteiro nulo */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
@@ -159,12 +153,10 @@ int soma_r (struct racional r1, struct racional r2, struct racional *r3)
   return 1;
 }
 
-/* Retorna a subtracao dos racionais r1 e r2 no parametro *r3.
- * Retorna 1 se a operacao foi bem sucedida ou
- *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
-int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
+/* Retorna a subtracao dos racionais r1 e r2 no parametro *r3 */
+int subtrai_r(struct racional r1, struct racional r2, struct racional *r3)
 {
-  /* Se r1 ou r2 forem inválidos ou *r3 nulo, o resultado deve ser 0 */
+  /* Verifica se r1 ou r2 são inválidos ou r3 é um ponteiro nulo */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
@@ -179,11 +171,10 @@ int subtrai_r (struct racional r1, struct racional r2, struct racional *r3)
   return 1;
 }
 
-/* Retorna a multiplicacao dos racionais r1 e r2 no parametro *r3.
- * Retorna 1 se a operacao foi bem sucedida ou
- *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
-int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
-{
+/* Retorna a multiplicacao dos racionais r1 e r2 no parametro *r3 */
+int multiplica_r(struct racional r1, struct racional r2, struct racional *r3)
+{ 
+  /* Verifica se r1 ou r2 são inválidos ou r3 é um ponteiro nulo */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
@@ -194,11 +185,13 @@ int multiplica_r (struct racional r1, struct racional r2, struct racional *r3)
   return 1;
 }
 
-/* Retorna a divisao dos racionais r1 e r2 no parametro *r3.
- * Retorna 1 se a operacao foi bem sucedida ou
- *         0 se r1 ou r2 for inválido ou se *r3 for nulo */
-int divide_r (struct racional r1, struct racional r2, struct racional *r3)
-{
+/* Retorna a divisao dos racionais r1 e r2 no parametro *r3 */
+int divide_r(struct racional r1, struct racional r2, struct racional *r3)
+{ 
+  /* Verifica se r1 ou r2 são inválidos 
+   * ou o numerador de r2 é zero 
+   * ou r3 é um ponteiro nulo 
+  */
   if (!valido_r(r1) || !valido_r(r2) || !r2.num || r3 == NULL) {
     return 0;
   }
