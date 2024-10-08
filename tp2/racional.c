@@ -140,14 +140,16 @@ int compara_r(struct racional r1, struct racional r2)
 /* Retorna a soma dos racionais r1 e r2 no parâmetro *r3 */
 int soma_r(struct racional r1, struct racional r2, struct racional *r3)
 { 
+  long resultado_mmc, numerador;
+
   /* Verifica se r1 ou r2 são inválidos ou r3 é um ponteiro nulo */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
 
-  long resultado_mmc = mmc(r1.den, r2.den);
-  long numerador = ((resultado_mmc * r1.num / r1.den) + 
-                    (resultado_mmc * r2.num / r2.den));
+  resultado_mmc = mmc(r1.den, r2.den);
+  numerador = ((resultado_mmc * r1.num / r1.den) + 
+               (resultado_mmc * r2.num / r2.den));
 
   r3->num = numerador;
   r3->den = resultado_mmc;
@@ -158,14 +160,16 @@ int soma_r(struct racional r1, struct racional r2, struct racional *r3)
 /* Retorna a subtracao dos racionais r1 e r2 no parametro *r3 */
 int subtrai_r(struct racional r1, struct racional r2, struct racional *r3)
 {
+  long resultado_mmc, numerador;
+
   /* Verifica se r1 ou r2 são inválidos ou r3 é um ponteiro nulo */
   if (!valido_r(r1) || !valido_r(r2) || r3 == NULL) {
     return 0;
   }
 
-  long resultado_mmc = mmc(r1.den, r2.den);
-  long numerador = ((resultado_mmc * r1.num / r1.den) - 
-                    (resultado_mmc * r2.num / r2.den));
+  resultado_mmc = mmc(r1.den, r2.den);
+  numerador = ((resultado_mmc * r1.num / r1.den) - 
+               (resultado_mmc * r2.num / r2.den));
 
   r3->num = numerador;
   r3->den = resultado_mmc;
