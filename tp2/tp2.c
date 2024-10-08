@@ -29,7 +29,7 @@ void imprime_vetor(struct racional vetor[], int n)
   imprime_r(vetor[n-1]);
 }
 
-/* Remoção de elementos x/0 presentes no vetor de racionais */
+/* Remoção de elementos x/0 (inválidos) presentes no vetor de racionais */
 void elimina_invalidos(struct racional vetor[], int *n)
 { 
   int i = 0;
@@ -50,11 +50,13 @@ void elimina_invalidos(struct racional vetor[], int *n)
 /* Algoritmo Bubble Sort recursivo */
 void ordena_vetor(struct racional vetor[], int n)
 {  
+  int trocas;
+  struct racional aux;
+
   if (n == 1)
     return;
 
-  int trocas = 0;
-  struct racional aux;
+  trocas = 0;
 
   /* Compara elementos do vetor e troca-os se o atual é maior que o próximo */
   for (int i = 0; i < n - 1; i++) {
@@ -79,7 +81,6 @@ int main ()
   int n;
   long numerador, denominador;
   struct racional racional, soma;
-
   struct racional vetor[N];
 
   /* Certifica que o usuário informou o número no intervalo esperado:
