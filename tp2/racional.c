@@ -112,9 +112,11 @@ void imprime_r(struct racional r)
  * -1: r1 < r2
  *  0: r1 = r2
  *  1: r1 > r2 
- *  Após o MMC dos racionais, são comparados seus numeradores */
+*/
 int compara_r(struct racional r1, struct racional r2)
-{
+{ 
+  int prod_cruzado_1, prod_cruzado_2;
+
   if (!valido_r(r1) || !valido_r(r2)) {
     return -2;
   } 
@@ -122,13 +124,13 @@ int compara_r(struct racional r1, struct racional r2)
   r1 = simplifica_r(r1);
   r2 = simplifica_r(r2);
 
-  int resultado_mdc = mmc(r1.den, r2.den);
-  int numerador_r1 = r1.num * (resultado_mdc / r1.den);
-  int numerador_r2 = r2.num * (resultado_mdc / r2.den);
+  /* Produto cruzado entre dois racionais (multiplicação em X) */
+  prod_cruzado_1 = r1.num * r2.den;
+  prod_cruzado_2 = r2.num * r1.den;
 
-  if (numerador_r1 > numerador_r2) {
+  if (prod_cruzado_1 > prod_cruzado_2) {
     return 1;
-  } else if (numerador_r1 < numerador_r2) {
+  } else if (prod_cruzado_1 < prod_cruzado_2) {
     return -1;
   } else {
     return 0;
