@@ -78,7 +78,7 @@ int main ()
 { 
   int n;
   long numerador, denominador;
-  struct racional racional;
+  struct racional racional, soma;
 
   struct racional vetor[N];
 
@@ -106,7 +106,6 @@ int main ()
   imprime_vetor(vetor, n);
   printf("\n");
 
-  struct racional soma;
   soma = cria_r(0, 1);
 
   for (int i = 0; i < n; i++) {
