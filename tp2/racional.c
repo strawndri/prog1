@@ -64,7 +64,7 @@ struct racional simplifica_r(struct racional r)
 }
 
 /* Cria um número racional com o numerador e denominador indicados. */
-struct racional cria_r (long numerador, long denominador)
+struct racional cria_r(long numerador, long denominador)
 {
   struct racional novo = {numerador, denominador};
   return novo;

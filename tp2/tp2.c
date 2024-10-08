@@ -12,12 +12,10 @@
 
 /* Imprime os elementos de um vetor separando-os por um espaço em branco
  * O último elemento é impresso separadamente para evitar que um
- * espaço em branco extra seja printado. 
+ * espaço em branco extra seja printado 
 */
 void imprime_vetor(struct racional vetor[], int n)
 { 
-  printf("VETOR = ");
-
   if (!n)
     return;
 
@@ -96,14 +94,19 @@ int main ()
     vetor[i] = racional;
   }
 
+  printf("VETOR = ");
   imprime_vetor(vetor, n);
   printf("\n");
 
   elimina_invalidos(vetor, &n);
+ 
+  printf("VETOR = ");
   imprime_vetor(vetor, n);
   printf("\n");
 
   ordena_vetor(vetor, n);
+  
+  printf("VETOR = ");
   imprime_vetor(vetor, n);
   printf("\n");
 
