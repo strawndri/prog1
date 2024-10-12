@@ -17,18 +17,19 @@
  * somente neste arquivo.
 */
 
-/* Maximo Divisor Comum entre a e b      */
-/* calcula o mdc pelo metodo de Euclides */
-long mdc (long a, long b)
+/* Máximo Divisor Comum entre a e b pelo método de Euclides */
+long mdc(long a, long b)
 {
-  /* implemente aqui */
+  if (b == 0)
+    return a;
+
+  return mdc(b, a % b);
 }
 
-/* Minimo Multiplo Comum entre a e b */
-/* mmc = (a * b) / mdc (a, b)        */
-long mmc (long a, long b)
+/* Mínimo Múltiplo Comum entre a e b */
+long mmc(long a, long b)
 {
-  /* implemente aqui */
+  return (a * b) / mdc(a, b);
 }
 
 /* Simplifica o número racional indicado no parâmetro.
