@@ -38,7 +38,8 @@ void elimina_invalidos(struct racional **vetor, int *n)
   while (i < *n)
   {
     if (!valido_r(vetor[i]))
-    {
+    { 
+      destroi_r(vetor[i]);
       vetor[i] = vetor[*n - 1];
       (*n)--;
     }
@@ -95,7 +96,7 @@ int main()
     scanf("%d", &n);
   } while (n <= 0 || n >= 100);
 
-  vetor = (struct racional **) malloc(n * sizeof(struct racional *));
+  vetor = (struct racional **)malloc(n * sizeof(struct racional *));
   if (vetor == NULL)
     return 0;
 
@@ -103,7 +104,7 @@ int main()
   {
     scanf("%ld %ld", &numerador, &denominador);
     vetor[i] = cria_r(numerador, denominador);
-    
+
     if (vetor[i] == NULL)
       return 0;
   }
@@ -135,7 +136,10 @@ int main()
   for (int i = 0; i < n; i++)
   {
     if (vetor[i] != NULL)
+    {
       destroi_r(vetor[i]);
+      vetor[i] = NULL;
+    }
   }
 
   printf("VETOR = ");
@@ -143,7 +147,10 @@ int main()
   printf("\n");
 
   free(vetor);
+  vetor = NULL;
+
   destroi_r(soma);
+  soma = NULL;
 
   return 0;
 }

@@ -95,7 +95,10 @@ void destroi_r(struct racional *r)
  * é inválido se o denominador for zero ou se ele não tiver sido alocado. */
 int valido_r(struct racional *r)
 {
-  return (r->den != 0 && r != NULL);
+  if (r == NULL || !r->den)
+    return 0;
+
+  return 1;
 }
 
 /* Imprime um racional r, respeitando estas regras:
