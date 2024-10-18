@@ -101,17 +101,7 @@ int valido_r(struct racional *r)
   return 1;
 }
 
-/* Imprime um racional r, respeitando estas regras:
-   - o racional deve estar na forma simplificada;
-   - não use espacos em branco e não mude de linha;
-   - o formato de saída deve ser "num/den", a menos dos casos abaixo;
-     - se o ponteiro for nulo, imprime a mensagem "NULL";
-     - se o racional for inválido, imprime a mensagem "NaN" (Not a Number);
-     - se o numerador for 0, imprime somente "0";
-     - se o denominador for 1, imprime somente o numerador;
-     - se o numerador e denominador forem iguais, imprime somente "1";
-     - se o racional for negativo, o sinal é impresso antes do número;
-     - se numerador e denominador forem negativos, o racional é positivo. */
+/* Imprime um racional r */
 void imprime_r(struct racional *r)
 {
   if (r == NULL)
@@ -137,12 +127,12 @@ void imprime_r(struct racional *r)
     printf("%ld/%ld", r->num, r->den);
 }
 
-/* Compara dois números racionais r1 e r2.
- * Retorna -2 se r1 ou r2 for inválido ou se o respectivo ponteiro for nulo.
- * Retorna -1 se r1 < r2; 0 se r1 = r2; 1 se r1 > r2.
- * Atenção: faça a comparação normalizando os denominadores pelo MMC.
- * Fazer a comparação baseado na divisão do numerador pelo denominador
- * pode gerar erro de arredondamento e falsear o resultado. */
+/* Compara dois racionais r1 e r2:
+ *  2: r1 ou r2 forem inválidos
+ * -1: r1 < r2
+ *  0: r1 = r2
+ *  1: r1 > r2
+ */
 int compara_r(struct racional *r1, struct racional *r2)
 {
   long resultado_mmc, n1, n2;
