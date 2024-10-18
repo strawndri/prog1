@@ -11,6 +11,7 @@
 /* Imprime os elementos de um vetor separando-os por um espaço em branco
  * O último elemento é impresso separadamente para evitar que um
  * espaço em branco extra seja printado
+ * o asterisco duplo em vetor indica que este armazena ponteiros
  */
 void imprime_vetor(struct racional **vetor, int n)
 {
