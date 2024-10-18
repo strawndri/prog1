@@ -4,7 +4,6 @@
  * Feito em 24/09/2024 para a disciplina CI1001 - Programação 1.
  */
 
-/* coloque aqui seus includes (primeiro os <...>, depois os "...") */
 #include <stdio.h>
 #include <stdlib.h>
 #include "racional.h"
@@ -39,7 +38,7 @@ void elimina_invalidos(struct racional **vetor, int *n)
   {
     if (!valido_r(vetor[i]))
     { 
-      destroi_r(vetor[i]);
+      destroi_r(vetor[i]); /* Libera a memória do racional inválido */
       vetor[i] = vetor[*n - 1];
       (*n)--;
     }
@@ -96,6 +95,7 @@ int main()
     scanf("%d", &n);
   } while (n <= 0 || n >= 100);
 
+  /* Aloca memória para o vetor de ponteiros para racionais */
   vetor = (struct racional **)malloc(n * sizeof(struct racional *));
   if (vetor == NULL)
     return 0;
@@ -133,6 +133,7 @@ int main()
   imprime_r(soma);
   printf("\n");
 
+  /* Liberação da memória dos racionais apontados pelo vetor */
   for (int i = 0; i < n; i++)
   {
     if (vetor[i] != NULL)
@@ -146,9 +147,11 @@ int main()
   imprime_vetor(vetor, n);
   printf("\n");
 
+  /* Liberação do vetor de ponteiros */
   free(vetor);
   vetor = NULL;
 
+  /* Libera o espaço utilizado para a soma */
   destroi_r(soma);
   soma = NULL;
 
