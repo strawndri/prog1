@@ -13,12 +13,6 @@
 #include <stdlib.h>
 #include "racional.h"
 
-/*
- * Implemente aqui as funcoes definidas no racionais.h; caso precise,
- * pode definir aqui funcoes auxiliares adicionais, que devem ser usadas
- * somente neste arquivo.
- */
-
 /* Máximo Divisor Comum entre a e b pelo método de Euclides */
 long mdc(long a, long b)
 {
@@ -34,11 +28,7 @@ long mmc(long a, long b)
   return (a * b) / mdc(a, b);
 }
 
-/* Simplifica o número racional indicado no parâmetro.
- * Por exemplo, se o número for 10/8 muda para 5/4.
- * Retorna 1 em sucesso e 0 se r for inválido ou o ponteiro for nulo.
- * Se ambos numerador e denominador forem negativos, o resultado é positivo.
- * Se o denominador for negativo, o sinal deve migrar para o numerador. */
+/* Recebe um número racional e o simplifica */
 int simplifica_r(struct racional *r)
 {
   long resultado_mdc;
@@ -69,8 +59,7 @@ int simplifica_r(struct racional *r)
 
 /* Cria um número racional com o numerador e denominador indicados
  * e retorna um ponteiro que aponta para ele.
- * A memória para o número racional deve ser alocada dinamicamente
- * por esta função. Retorna NULL se não conseguiu alocar a memória. */
+ * Retorna-se NULL se não conseguiu alocar a memória. */
 struct racional *cria_r(long numerador, long denominador)
 {
   struct racional *novo = (struct racional *)malloc(sizeof(struct racional));

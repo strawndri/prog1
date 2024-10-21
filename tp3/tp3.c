@@ -64,7 +64,7 @@ void ordena_vetor(struct racional **vetor, int n)
   /* Compara elementos do vetor e troca-os se o atual é maior que o próximo */
   for (int i = 0; i < n - 1; i++)
   {
-    if (compara_r(vetor[i], vetor[i + 1]) == 1)
+    if (compara_r(vetor[i], vetor[i + 1]) > 0)
     {
       aux = vetor[i];
       vetor[i] = vetor[i + 1];
