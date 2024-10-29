@@ -59,11 +59,11 @@ int lista_insere (struct lista_t *lst, int item, int pos)
   aux = malloc(sizeof(struct item_t));
   if (!aux)
     return -1;
-  aux->valor = item;
-  aux->prox = lst->prim;
-  aux->ant = NULL; // O anterior deve ser nulo porque é o primeiro nó
-  
 
+  aux->valor = item;
+  aux->prox = NULL;
+  aux->ant = NULL; 
+  
   if (!lst->prim)
   {
     lst->prim = aux;
@@ -71,7 +71,12 @@ int lista_insere (struct lista_t *lst, int item, int pos)
   }
   else
   {
-    lst->prim->ant = aux;
-    lst->prim = aux;
+    lst->ult->prox = aux;
+    aux->ant = lst->ult;
+    lst->ult = aux;
   }
+
+  lst->tamanho++;
+
+  return (lst->tamanho);
 }
