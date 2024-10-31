@@ -78,7 +78,7 @@ int lista_insere(struct lista_t *lst, int item, int pos)
   }
 
   // Caso 3: inserção no fim
-  else if (pos >= lst->tamanho || pos == -1)
+  else if (pos >= lista_tamanho(lst) || pos == -1)
   {
     aux->ant = lst->ult;
     lst->ult->prox = aux;
@@ -101,7 +101,7 @@ int lista_insere(struct lista_t *lst, int item, int pos)
 
   lst->tamanho++;
 
-  return lst->tamanho;
+  return lista_tamanho(lst);
 }
 
 // Retira o item da lista da posição indicada
@@ -109,10 +109,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
 {
   struct item_t *aux;
 
-  if (!lst)
-    return -1;
-
-  if (lst->tamanho <= 0)
+  if (!lst || lista_tamanho(lst) <= 0)
     return -1;
 
   // Caso 1: remoção do primeiro item
@@ -128,7 +125,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
   }
 
   // Caso 2: remoção do último item
-  else if (pos >= lst->tamanho || pos == -1)
+  else if (pos >= lista_tamanho(lst) || pos == -1)
   {
     aux = lst->ult;
     *item = aux->valor;
@@ -155,7 +152,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
 
   lst->tamanho--;
 
-  return lst->tamanho;
+  return lista_tamanho(lst);
 }
 
 // Informa o valor do item na posição indicada, sem retirá-lo
@@ -186,7 +183,7 @@ int lista_consulta(struct lista_t *lst, int *item, int pos)
   if (aux)
   {
     *item = aux->valor;
-    return lst->tamanho;
+    return lista_tamanho(lst);
   }
 
   return -1;
@@ -202,7 +199,7 @@ int lista_procura(struct lista_t *lst, int valor)
 
   aux = lst->prim;
 
-  for (int i = 0; i < lst->tamanho; i++)
+  for (int i = 0; i < lista_tamanho(lst); i++)
   {
     if (aux->valor == valor)
       return i;
@@ -230,7 +227,7 @@ void lista_imprime(struct lista_t *lst)
   if (!lst)
     return;
 
-  if (lst->tamanho <= 0)
+  if (lista_tamanho(lst) <= 0)
     return;
 
   aux = lst->prim;
