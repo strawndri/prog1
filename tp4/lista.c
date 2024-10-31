@@ -31,14 +31,15 @@ struct lista_t *lista_cria()
 // Retorno: NULL.
 struct lista_t *lista_destroi(struct lista_t *lst)
 {
-  int elemento;
+  int elemento, i;
 
   if (!lst)
     return NULL;
 
+  i = 0;
   // criar lista_tamanho e lista_retira
   while (lista_tamanho(lst) > 0)
-    lista_retira(lst, &elemento);
+    lista_retira(lst, &elemento, i);
 
   free(lst);
 
@@ -73,40 +74,183 @@ int lista_insere(struct lista_t *lst, int item, int pos)
   }
 
   // Caso 2: inserção no início
-  else if (pos <= 0)
+  else if (pos == 0)
   {
     aux->prox = lst->prim;
     lst->prim->ant = aux;
     lst->prim = aux;
   }
+
+  // Caso 3: inserção no fim
+  else if (pos >= lst->tamanho || pos == -1)
+  {
+    aux->ant = lst->ult;
+    lst->ult->prox = aux;
+    lst->ult = aux;
+  }
+
+  // Caso 4: inserção no meio
   else
-  { 
-    // Caso 3: inserção em posição específica
+  {
     atual = lst->prim;
+
     for (int i = 0; i < pos - 1 && atual->prox; i++)
-    {
       atual = atual->prox;
-    }
 
-    // Caso 4: inserção no final
-    if (atual == lst->ult)
-    {
-      aux->ant = lst->ult;
-      lst->ult->prox = aux;
-      lst->ult = aux;
-    }
-
-    // Último caso: inserção no meio
-    else
-    {
-      aux->prox = atual->prox;
-      aux->ant = atual;
-      atual->prox->ant = aux;
-      atual->prox = aux;
-    }
+    aux->prox = atual->prox;
+    aux->ant = atual;
+    atual->prox->ant = aux;
+    atual->prox = aux;
   }
 
   lst->tamanho++;
 
-  return (lst->tamanho);
+  return lst->tamanho;
+}
+
+// Retira o item da lista da posição indicada.
+// se a posição for -1, retira do fim.
+// Retorno: número de itens na lista após a operação ou -1 em erro.
+int lista_retira(struct lista_t *lst, int *item, int pos)
+{
+  struct item_t *aux;
+
+  if (!lst)
+    return -1;
+
+  if (lst->tamanho <= 0)
+    return -1;
+
+  // Caso 1: remoção do primeiro item
+  if (pos == 0)
+  {
+    aux = lst->prim;
+    *item = aux->valor;
+
+    lst->prim = lst->prim->prox;
+
+    if (lst->prim)
+      lst->prim->ant = NULL;
+  }
+
+  // Caso 2: remoção do último item
+  else if (pos >= lst->tamanho || pos == -1)
+  {
+    aux = lst->ult;
+    *item = aux->valor;
+    lst->ult = aux->ant;
+    lst->ult->prox = NULL;
+  }
+
+  // Caso 3: remoção de item do meio
+  else
+  {
+    aux = lst->prim;
+
+    for (int i = 0; i < pos; i++)
+      aux = aux->prox;
+
+    *item = aux->valor;
+    aux->ant->prox = aux->prox;
+
+    if (aux->prox)
+      aux->prox->ant = aux->ant;
+  }
+
+  free(aux);
+
+  lst->tamanho--;
+
+  return lst->tamanho;
+}
+
+// Informa o valor do item na posição indicada, sem retirá-lo.
+// se a posição for -1, consulta do fim.
+// Retorno: número de itens na lista ou -1 em erro.
+int lista_consulta(struct lista_t *lst, int *item, int pos)
+{
+  struct item_t *aux;
+
+  if (!lst)
+    return -1;
+
+  // Caso 1: item está no final da lista
+  if (pos == -1)
+    aux = lst->ult;
+
+  // Caso 2: consulta de uma posição específica
+  else
+  {
+    aux = lst->prim;
+    for (int i = 0; i < pos; i++)
+    {
+      if (!aux)
+        return -1;
+
+      aux = aux->prox;
+    }
+  }
+
+  if (aux)
+  {
+    *item = aux->valor;
+    return lst->tamanho;
+  }
+
+  return -1;
+}
+
+// Informa a posição da 1ª ocorrência do valor indicado na lista.
+// Retorno: posição do valor ou -1 se não encontrar ou erro.
+int lista_procura(struct lista_t *lst, int valor)
+{
+  struct item_t *aux;
+
+  if (!lst)
+    return -1;
+
+  aux = lst->prim;
+
+  for (int i = 0; i < lst->tamanho; i++)
+  {
+    if (aux->valor == valor)
+      return i;
+
+    aux = aux->prox;
+  }
+
+  return -1;
+}
+
+// Informa o tamanho da lista (o número de itens presentes nela).
+// Retorno: número de itens na lista ou -1 em erro.
+int lista_tamanho(struct lista_t *lst)
+{
+  if (!lst)
+    return -1;
+
+  return lst->tamanho;
+}
+
+// Imprime o conteúdo da lista do inicio ao fim no formato "item item ...",
+// com um espaço entre itens, sem espaços antes/depois, sem newline.
+void lista_imprime(struct lista_t *lst)
+{
+  struct item_t *aux;
+
+  if (!lst)
+    return;
+
+  if (lst->tamanho <= 0)
+    return;
+
+  aux = lst->prim;
+  printf("%d", aux->valor);
+  aux = aux->prox;
+
+  while (aux)
+  {
+    printf(" %d", aux->valor);
+    aux = aux->prox;
+  }
 }
