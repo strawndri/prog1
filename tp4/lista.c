@@ -9,8 +9,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
-// Cria uma lista vazia.
-// Retorno: ponteiro p/ a lista ou NULL em erro.
+// Cria uma lista vazia
 struct lista_t *lista_cria()
 {
   struct lista_t *lst;
@@ -27,8 +26,7 @@ struct lista_t *lista_cria()
   return lst;
 }
 
-// Remove todos os itens da lista e libera a memória.
-// Retorno: NULL.
+// Remove todos os itens da lista e libera a memória
 struct lista_t *lista_destroi(struct lista_t *lst)
 {
   int elemento, i;
@@ -36,8 +34,8 @@ struct lista_t *lista_destroi(struct lista_t *lst)
   if (!lst)
     return NULL;
 
-  i = 0;
   // criar lista_tamanho e lista_retira
+  i = 0;
   while (lista_tamanho(lst) > 0)
     lista_retira(lst, &elemento, i);
 
@@ -46,9 +44,7 @@ struct lista_t *lista_destroi(struct lista_t *lst)
   return NULL;
 }
 
-// Insere o item na lista na posição indicada;
-// se a posição for além do fim da lista ou for -1, insere no fim.
-// Retorno: número de itens na lista após a operação ou -1 em erro.
+// Insere o item na lista na posição indicada
 int lista_insere(struct lista_t *lst, int item, int pos)
 {
   struct item_t *aux, *atual;
@@ -108,9 +104,7 @@ int lista_insere(struct lista_t *lst, int item, int pos)
   return lst->tamanho;
 }
 
-// Retira o item da lista da posição indicada.
-// se a posição for -1, retira do fim.
-// Retorno: número de itens na lista após a operação ou -1 em erro.
+// Retira o item da lista da posição indicada
 int lista_retira(struct lista_t *lst, int *item, int pos)
 {
   struct item_t *aux;
@@ -164,9 +158,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
   return lst->tamanho;
 }
 
-// Informa o valor do item na posição indicada, sem retirá-lo.
-// se a posição for -1, consulta do fim.
-// Retorno: número de itens na lista ou -1 em erro.
+// Informa o valor do item na posição indicada, sem retirá-lo
 int lista_consulta(struct lista_t *lst, int *item, int pos)
 {
   struct item_t *aux;
@@ -200,8 +192,7 @@ int lista_consulta(struct lista_t *lst, int *item, int pos)
   return -1;
 }
 
-// Informa a posição da 1ª ocorrência do valor indicado na lista.
-// Retorno: posição do valor ou -1 se não encontrar ou erro.
+// Informa a posição da 1ª ocorrência do valor indicado na lista
 int lista_procura(struct lista_t *lst, int valor)
 {
   struct item_t *aux;
@@ -222,8 +213,7 @@ int lista_procura(struct lista_t *lst, int valor)
   return -1;
 }
 
-// Informa o tamanho da lista (o número de itens presentes nela).
-// Retorno: número de itens na lista ou -1 em erro.
+// Informa o tamanho da lista (o número de itens presentes nela)
 int lista_tamanho(struct lista_t *lst)
 {
   if (!lst)
@@ -232,8 +222,7 @@ int lista_tamanho(struct lista_t *lst)
   return lst->tamanho;
 }
 
-// Imprime o conteúdo da lista do inicio ao fim no formato "item item ...",
-// com um espaço entre itens, sem espaços antes/depois, sem newline.
+// Imprime o conteúdo da lista do inicio ao fim
 void lista_imprime(struct lista_t *lst)
 {
   struct item_t *aux;
