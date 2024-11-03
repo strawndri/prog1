@@ -199,7 +199,7 @@ int lista_procura(struct lista_t *lst, int valor)
   aux = lst->prim;
 
   for (int i = 0; i < lista_tamanho(lst); i++)
-  { 
+  {
     // Verifica se o valor do item atual correponde ao procurado
     if (aux->valor == valor)
       return i;
@@ -212,7 +212,7 @@ int lista_procura(struct lista_t *lst, int valor)
 
 // Informa o tamanho da lista (o número de itens presentes nela)
 int lista_tamanho(struct lista_t *lst)
-{ 
+{
   // Verifica se a lista é válida
   if (!lst)
     return -1;
