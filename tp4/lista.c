@@ -123,7 +123,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
       lst->prim->ant = NULL;
   }
   // Caso 2: remoção do último item
-  else if (pos >= lista_tamanho(lst) || pos == -1)
+  else if (pos == -1)
   {
     aux = lst->ult;
     *item = aux->valor;
