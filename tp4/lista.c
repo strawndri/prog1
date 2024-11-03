@@ -29,15 +29,15 @@ struct lista_t *lista_cria()
 // Remove todos os itens da lista e libera a memória
 struct lista_t *lista_destroi(struct lista_t *lst)
 {
-  int elemento, i;
+  int elemento;
 
+  // Verifica se a lista é válida
   if (!lst)
     return NULL;
 
-  // criar lista_tamanho e lista_retira
-  i = 0;
+  // Remove sempre o primeiro elemento até que a lista esteja vazia
   while (lista_tamanho(lst) > 0)
-    lista_retira(lst, &elemento, i);
+    lista_retira(lst, &elemento, 0);
 
   free(lst);
 
@@ -49,6 +49,7 @@ int lista_insere(struct lista_t *lst, int item, int pos)
 {
   struct item_t *aux, *atual;
 
+  // Verifica se a lista é válida
   if (!lst)
     return -1;
 
@@ -68,7 +69,6 @@ int lista_insere(struct lista_t *lst, int item, int pos)
     lst->prim = aux;
     lst->ult = aux;
   }
-
   // Caso 2: inserção no início
   else if (pos == 0)
   {
@@ -76,7 +76,6 @@ int lista_insere(struct lista_t *lst, int item, int pos)
     lst->prim->ant = aux;
     lst->prim = aux;
   }
-
   // Caso 3: inserção no fim
   else if (pos >= lista_tamanho(lst) || pos == -1)
   {
@@ -84,13 +83,12 @@ int lista_insere(struct lista_t *lst, int item, int pos)
     lst->ult->prox = aux;
     lst->ult = aux;
   }
-
   // Caso 4: inserção no meio
   else
   {
     atual = lst->prim;
 
-    for (int i = 0; i < pos - 1 && atual->prox; i++)
+    for (int i = 0; i < pos - 1; i++)
       atual = atual->prox;
 
     aux->prox = atual->prox;
@@ -109,6 +107,7 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
 {
   struct item_t *aux;
 
+  // Verifica se a lista é válida
   if (!lst || lista_tamanho(lst) <= 0)
     return -1;
 
@@ -123,7 +122,6 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
     if (lst->prim)
       lst->prim->ant = NULL;
   }
-
   // Caso 2: remoção do último item
   else if (pos >= lista_tamanho(lst) || pos == -1)
   {
@@ -132,7 +130,6 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
     lst->ult = aux->ant;
     lst->ult->prox = NULL;
   }
-
   // Caso 3: remoção de item do meio
   else
   {
@@ -149,7 +146,6 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
   }
 
   free(aux);
-
   lst->tamanho--;
 
   return lista_tamanho(lst);
@@ -160,7 +156,8 @@ int lista_consulta(struct lista_t *lst, int *item, int pos)
 {
   struct item_t *aux;
 
-  if (!lst)
+  // Verifica se a lista é válida
+  if (!lst || lista_tamanho(lst) <= 0)
     return -1;
 
   // Caso 1: item está no final da lista
@@ -180,6 +177,7 @@ int lista_consulta(struct lista_t *lst, int *item, int pos)
     }
   }
 
+  // Verifica se o item consultado foi encontrado
   if (aux)
   {
     *item = aux->valor;
@@ -194,13 +192,15 @@ int lista_procura(struct lista_t *lst, int valor)
 {
   struct item_t *aux;
 
-  if (!lst)
+  // Verifica se a lista é válida
+  if (!lst || lista_tamanho(lst) <= 0)
     return -1;
 
   aux = lst->prim;
 
   for (int i = 0; i < lista_tamanho(lst); i++)
-  {
+  { 
+    // Verifica se o valor do item atual correponde ao procurado
     if (aux->valor == valor)
       return i;
 
@@ -212,7 +212,8 @@ int lista_procura(struct lista_t *lst, int valor)
 
 // Informa o tamanho da lista (o número de itens presentes nela)
 int lista_tamanho(struct lista_t *lst)
-{
+{ 
+  // Verifica se a lista é válida
   if (!lst)
     return -1;
 
@@ -224,10 +225,8 @@ void lista_imprime(struct lista_t *lst)
 {
   struct item_t *aux;
 
-  if (!lst)
-    return;
-
-  if (lista_tamanho(lst) <= 0)
+  // Verifica se a lista é válida
+  if (!lst || lista_tamanho(lst) <= 0)
     return;
 
   aux = lst->prim;
