@@ -50,7 +50,7 @@ struct fprio_t *fprio_destroi(struct fprio_t *f)
 int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
 {
 
-  struct fpnodo_t *aux;
+  struct fpnodo_t *aux, *nodo, *anterior;
 
   if (!f)
     return -1;
@@ -59,35 +59,39 @@ int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
   if (!aux)
     return -1;
 
+  // Evita que o mesmo item seja inserido mais de uma vez
   aux = f->prim;
-
   while (aux)
-  {
+  { 
     if (aux->item == item)
       return -1;
+    
+    anterior = aux;
     aux = aux->prox;
   }
 
-  // if (!f->prim)
-  // {
-  //   f->prim->item = item;
-  //   f->prim->prio = prio;
-  //   f->prim->tipo = tipo;
-  //   f->prim->prox = NULL;
-  // }
-  // else
-  // {
+  nodo = malloc(sizeof(struct fpnodo_t));
+  if (!nodo)
+    return -1;
 
-  //   while (aux && aux->prio <= prio)
-  //   {
-  //     if (aux->item == item)
-  //       return -1;
-  //   }
+  nodo->item = item;
+  nodo->prio = prio;
+  nodo->tipo = tipo;
+  nodo->prox = NULL;
 
-  //   aux->item = item;
-  //   aux->prio = prio;
-  //   aux->tipo = tipo;
-  // }
+  // Caso 1: adiciona o nodo no inicio da fila
+  if (!anterior)
+  {
+    nodo->prox = f->prim;
+    f->prim = nodo;
+  }
+  // Caso 2: adiciona o nodo em local específicoelse
+  else
+  {
+    anterior->prox = nodo;
+    nodo->prox = aux;
+  }
 
+  f->num++;
   return f->num;
 }
