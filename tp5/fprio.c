@@ -28,6 +28,7 @@ struct fprio_t *fprio_cria()
 struct fprio_t *fprio_destroi(struct fprio_t *f)
 {
   int elemento, tipo, prio;
+  void *item;
 
   // Verifica se a fila é válida
   if (!f)
@@ -35,7 +36,11 @@ struct fprio_t *fprio_destroi(struct fprio_t *f)
 
   // Remove sempre o primeiro elemento até que a fila esteja vazia
   while (f->num > 0)
-    fprio_retira(f, &tipo, &prio);
+  {
+    item = fprio_retira(f, &tipo, &prio);
+    if (item)
+      free(item);
+  }
 
   free(f);
 
@@ -53,10 +58,6 @@ int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
   struct fpnodo_t *anterior = NULL;
 
   if (!f || !item)
-    return -1;
-
-  aux = malloc(sizeof(struct fpnodo_t));
-  if (!aux)
     return -1;
 
   // Evita que o mesmo item seja inserido mais de uma vez
