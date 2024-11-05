@@ -33,7 +33,7 @@ struct fprio_t *fprio_destroi(struct fprio_t *f)
     return NULL;
 
   // Remove sempre o primeiro elemento até que a fila esteja vazia
-  while (f->num > 0)
+  while (fprio_tamanho(f) > 0)
   {
     item = fprio_retira(f, &tipo, &prio);
     if (item)
@@ -90,7 +90,7 @@ int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
   }
 
   f->num++;
-  return f->num;
+  return fprio_tamanho(f);
 }
 
 // Retira o primeiro item da fila e o devolve
@@ -100,7 +100,7 @@ void *fprio_retira(struct fprio_t *f, int *tipo, int *prio)
   void *item;
 
   // Verifica se a fila, o tipo e a prioridade são válidos
-  if (!f || f->num <= 0 || !tipo || !prio)
+  if (!f || fprio_tamanho(f) <= 0 || !tipo || !prio)
     return NULL;
 
   aux = f->prim;
