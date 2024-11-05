@@ -80,16 +80,14 @@ int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
 
   // Caso 1: adiciona o nodo no início da fila
   if (!anterior)
-  {
     f->prim = nodo;
-  }
+
   // Caso 2: adiciona o nodo em local específico
   else
-  {
     anterior->prox = nodo;
-  }
 
   f->num++;
+  
   return fprio_tamanho(f);
 }
 
