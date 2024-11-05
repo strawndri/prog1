@@ -27,7 +27,7 @@ struct fprio_t *fprio_cria()
 // Retorno: NULL.
 struct fprio_t *fprio_destroi(struct fprio_t *f)
 {
-  int elemento, tipo, prio;
+  int tipo, prio;
   void *item;
 
   // Verifica se a fila é válida
