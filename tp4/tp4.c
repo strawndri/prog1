@@ -11,6 +11,15 @@
 
 //------------------------------------------------------------------------------
 
+// imprime mensagem de erro e encerra execução
+void erro (char *msg)
+{
+  fprintf (stderr, "ERRO: %s\n", msg) ;
+  exit (1) ;
+}
+
+//------------------------------------------------------------------------------
+
 // imprime o conteúdo da lista, com informações adicionais
 void lista_print (char *nome, struct lista_t *l)
 {
@@ -54,11 +63,62 @@ void imprime_posicao (struct lista_t *l, int valor)
 
 //------------------------------------------------------------------------------
 
-// imprime mensagem de erro e encerra execução
-void erro (char *msg)
+// Testa se a implementação da estrutura da lista está correta.
+// ATENÇÃO: esta função viola o princípio do TAD, mas é necessária
+// para verificar se a implementação da lista duplamente encadeada
+// em lista.c está correta.
+void lista_verifica (struct lista_t *l)
 {
-  fprintf (stderr, "ERRO: %s\n", msg) ;
-  exit (1) ;
+  struct item_t *aux ;
+  int cont = 0 ;
+
+  // não testa lista inexistente
+  if (!l)
+    return ;
+
+  // testa ponteiros primeiro e último
+  if (l->prim && ! l->ult)
+    erro ("na lista, prim != NULL mas ult == NULL") ;
+  if (!l->prim && l->ult)
+    erro ("na lista, prim == NULL mas ult != NULL") ;
+
+  aux = l->prim ;
+  while (aux)
+  {
+    // testa próximo nó
+    if (aux->prox)
+    {
+      // o anterior do próximo não sou eu
+      if (aux->prox->ant != aux)
+        erro ("na lista, aux->prox->ant não aponta para aux") ;
+    }
+    else
+    {
+      // não tenho próximo, mas não sou o último
+      if (aux != l->ult)
+        erro ("na lista, aux->prox é NULL mas aux != último") ;
+    }
+
+    // testa nó anterior
+    if (aux->ant)
+    {
+      // o próximo do anterior não sou eu
+      if (aux->ant->prox != aux)
+        erro ("na lista, aux->ant->prox não aponta para aux") ;
+    }
+    else
+    {
+      // não tenho anterior, mas não sou o primeiro
+      if (aux != l->prim)
+        erro ("na lista, aux->ant é NULL mas aux != primeiro") ;
+    }
+    cont++ ;
+    aux = aux->prox ;
+  }
+
+  // testa número de elementos
+  if (cont != l->tamanho)
+    erro ("na lista, o número de nós não é igual a \"tamanho\"") ;
 }
 
 //------------------------------------------------------------------------------
@@ -74,6 +134,7 @@ int main ()
   if (! l1)
     erro ("não criou a lista l1") ;
   lista_print ("L1", l1) ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   printf ("Inserindo itens:\n") ;
@@ -87,6 +148,7 @@ int main ()
       erro ("não inseriu no início da lista l1") ;
     lista_print ("L1", l1) ;
   }
+  lista_verifica (l1) ;
 
   // insere itens [ 6 7 8] no final de l1 e imprime
   for (int i = 6; i <= 8; i++)
@@ -97,6 +159,7 @@ int main ()
       erro ("não inseriu no final da lista l1") ;
     lista_print ("L1", l1) ;
   }
+  lista_verifica (l1) ;
 
   // insere itens [ 1 2 3] no meio de l1 e imprime
   for (int i = 1; i <= 3; i++)
@@ -108,6 +171,7 @@ int main ()
       erro ("não inseriu no meio da lista l1") ;
     lista_print ("L1", l1) ;
   }
+  lista_verifica (l1) ;
 
   printf ("\n") ;
 
@@ -116,6 +180,7 @@ int main ()
   lista_print ("L1", l1) ;
   for (int i = 0;  i <= lista_tamanho (l1) ; i++)
     imprime_valor (l1, i) ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   // procura valores 5 6 7 8 9 na lista
@@ -123,6 +188,7 @@ int main ()
   lista_print ("L1", l1) ;
   for (int i = 4;  i <= 9 ; i++)
     imprime_posicao (l1, i) ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   printf ("Retirando itens:\n") ;
@@ -134,6 +200,7 @@ int main ()
     printf ("Retirou valor %d do início\n", valor) ;
   else
     erro ("não retirou valor do início da lista l1") ;
+  lista_verifica (l1) ;
   lista_print ("L1", l1) ;
 
   // retira item na 3ª posição da lista
@@ -143,6 +210,7 @@ int main ()
     printf ("Retirou valor %d da posição %d\n", valor, pos) ;
   else
     erro ("não retirou valor do meio da lista l1") ;
+  lista_verifica (l1) ;
   lista_print ("L1", l1) ;
 
   // retira item na última posição da lista
@@ -152,6 +220,7 @@ int main ()
   else
     erro ("não retirou valor do fim da lista l1") ;
   lista_print ("L1", l1) ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   // esvazia lista e a destroi
@@ -164,6 +233,7 @@ int main ()
       printf ("Retirou %d\n", valor) ;
     else
       erro ("não retirou valor do inicio da lista l1") ;
+    lista_verifica (l1) ;
     lista_print ("L1", l1) ;
   }
   printf ("Lista vazia!\n") ;
@@ -174,6 +244,7 @@ int main ()
   l1 = lista_destroi (l1) ;
   if (l1)
     erro ("não destruiu a lista") ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   printf ("Testando com lista imensa (%d itens):\n\n", TAMANHO) ;
@@ -183,6 +254,7 @@ int main ()
   l2 = lista_cria () ;
   if (! l2)
     erro ("não criou a lista") ;
+  lista_verifica (l2) ;
   lista_print ("L2", l2) ;
 
   // insere muitos itens em ordem crescente
@@ -194,6 +266,7 @@ int main ()
       erro ("não inseriu no fim da lista") ;
   }
   printf ("Tamanho da lista: %d itens\n", lista_tamanho (l2)) ;
+  lista_verifica (l2) ;
   printf ("\n") ;
 
   // consulta e imprime os valores em algumas posições
@@ -202,6 +275,7 @@ int main ()
   imprime_valor (l2, -1) ;
   imprime_valor (l2, TAMANHO / 2) ;
   imprime_valor (l2, TAMANHO + 1) ;
+  lista_verifica (l2) ;
   printf ("\n") ;
 
   // procura e imprime as posições de alguns valores
@@ -210,6 +284,7 @@ int main ()
   imprime_posicao (l2, -2) ;
   imprime_posicao (l2, TAMANHO / 2) ;
   imprime_posicao (l2, TAMANHO + 1) ;
+  lista_verifica (l2) ;
   printf ("\n") ;
 
   // destroi a lista
@@ -217,6 +292,7 @@ int main ()
   l2 = lista_destroi (l2) ;
   if (l2)
     erro ("não destruiu a lista") ;
+  lista_verifica (l2) ;
   printf ("\n") ;
 
   // testa operações inválidas sobre lista ou valor inexistentes
@@ -259,6 +335,7 @@ int main ()
     erro ("lista_tamanho não retornou erro") ;
 
   l2 = lista_destroi (l2) ;
+  lista_verifica (l1) ;
   printf ("\n") ;
 
   printf ("Agora falta analisar no Valgrind\n") ;
