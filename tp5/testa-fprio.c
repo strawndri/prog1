@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "fprio.h"
 
 // item a guardar na FPRIO
@@ -12,6 +13,15 @@ struct item_t
   int dado1 ;
   int dado2 ;
 } ;
+
+//------------------------------------------------------------------------------
+
+// imprime mensagem de erro e encerra execução
+void erro (char *msg)
+{
+  fprintf (stderr, "ERRO: %s\n", msg) ;
+  exit (1) ;
+}
 
 //------------------------------------------------------------------------------
 
@@ -71,11 +81,45 @@ void fprio_print (struct fprio_t *fp)
 
 //------------------------------------------------------------------------------
 
-// imprime mensagem de erro e encerra execução
-void erro (char *msg)
+// Testa se a implementação da estrutura da fila está correta.
+// ATENÇÃO: esta função viola o princípio do TAD, mas é necessária
+// para verificar se a implementação da lista encadeada está correta.
+void fprio_verifica (struct fprio_t *f)
 {
-  fprintf (stderr, "ERRO: %s\n", msg) ;
-  exit (1) ;
+  struct fpnodo_t *aux ;
+  int cont, prio ;
+
+  // não testa fila inexistente
+  if (!f)
+    return ;
+
+  // testa número de itens e ponteiro primeiro
+  if (f->prim && ! f->num)
+    erro ("na fila, prim != NULL mas num == 0") ;
+  if (! f->prim && f->num)
+    erro ("na fila, prim == NULL mas num != 0") ;
+
+  cont = 0 ;
+  prio = INT_MIN ;
+  aux = f->prim ;
+  while (aux)
+  {
+    // testa ordem das prioridades
+    if (aux->prio < prio)
+      erro ("na fila, ordem das prioridades está errada") ;
+    prio = aux->prio ;
+
+    // testa conteúdo
+    if (!aux->item)
+      erro ("na fila, um nodo tem item NULL") ;
+
+    cont++ ;
+    aux = aux->prox ;
+  }
+
+  // testa número de elementos
+  if (cont != f->num)
+    erro ("na fila, o número de nós não é igual a \"num\"") ;
 }
 
 //------------------------------------------------------------------------------
@@ -92,6 +136,7 @@ int main ()
   fp = fprio_cria () ;
   if (!fp)
     erro ("não criou a fila") ;
+  fprio_verifica (fp) ;
   fprio_print (fp) ;
   printf ("\n") ;
 
@@ -106,12 +151,13 @@ int main ()
               item->dado1, item->dado2, 0, i) ;
     status = fprio_insere (fp, item, 0, i) ;
     if (status < 0)
-      erro ("não inseriu na lista") ;
+      erro ("não inseriu na fila") ;
+    fprio_verifica (fp) ;
     fprio_print (fp) ;
   }
   printf ("\n") ;
 
-  // insere mais eventos na LEF
+  // insere mais eventos na FP
   printf ("Insere itens com prioridades decrescentes:\n") ;
   for (int i = 3; i >= 0; i--)
   {
@@ -122,7 +168,8 @@ int main ()
               item->dado1, item->dado2, 1, i) ;
     status = fprio_insere (fp, item, 1, i) ;
     if (status < 0)
-      erro ("não inseriu na lista") ;
+      erro ("não inseriu na fila") ;
+    fprio_verifica (fp) ;
     fprio_print (fp) ;
   }
   printf ("\n") ;
@@ -141,11 +188,12 @@ int main ()
     else
       erro ("não retirou item") ;
 
+    fprio_verifica (fp) ;
     fprio_print (fp) ;
   }
   printf ("\n") ;
 
-  // insere mais eventos na LEF
+  // insere mais eventos na FP
   printf ("Insere itens com prioridades crescentes:\n") ;
   for (int i = 1; i < 5; i++)
   {
@@ -156,7 +204,8 @@ int main ()
               item->dado1, item->dado2, 2, i) ;
     status = fprio_insere (fp, item, 2, i) ;
     if (status < 0)
-      erro ("não inseriu na lista") ;
+      erro ("não inseriu na fila") ;
+    fprio_verifica (fp) ;
     fprio_print (fp) ;
   }
   printf ("\n") ;
@@ -190,11 +239,12 @@ int main ()
     else
       erro ("não retirou item") ;
 
+    fprio_verifica (fp) ;
     fprio_print (fp) ;
   }
   printf ("\n") ;
 
-  // testa operações inválidas sobre lista ou valor inexistentes
+  // testa operações inválidas sobre fila ou valor inexistentes
   printf ("Testa operações com parâmetros inválidos:\n") ;
 
   item = item_cria (0, 0) ;
@@ -216,6 +266,7 @@ int main ()
   status = fprio_insere (fp, item, 0, 0) ;
   if (status != -1)
     erro ("insere item repetido não retornou erro") ;
+  fprio_verifica (fp) ;
 
   // retira com fila NULL
   item = fprio_retira (NULL, &tipo, &prio) ;
@@ -237,6 +288,7 @@ int main ()
   if (status != -1)
     erro ("tamanho em fila NULL não retornou erro") ;
 
+  fprio_verifica (fp) ;
   printf ("\n") ;
 
   // destroi a FP
