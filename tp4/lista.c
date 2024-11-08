@@ -121,6 +121,8 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
 
     if (lst->prim)
       lst->prim->ant = NULL;
+    else
+      lst->ult = NULL; // Atualiza ult em caso de lista vazia
   }
   // Caso 2: remoção do último item
   else if (pos == -1)
@@ -128,7 +130,11 @@ int lista_retira(struct lista_t *lst, int *item, int pos)
     aux = lst->ult;
     *item = aux->valor;
     lst->ult = aux->ant;
-    lst->ult->prox = NULL;
+    
+    if (lst->ult)
+      lst->ult->prox = NULL;
+    else
+      lst->prim = NULL; // Atualiza prim em caso de lista vazia
   }
   // Caso 3: remoção de item do meio
   else
