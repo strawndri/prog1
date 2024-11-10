@@ -87,7 +87,7 @@ int fprio_insere(struct fprio_t *f, void *item, int tipo, int prio)
     anterior->prox = nodo;
 
   f->num++;
-  
+
   return fprio_tamanho(f);
 }
 
