@@ -14,6 +14,13 @@
 #define N_BASES N_HEROIS / 5
 #define N_MISSOES T_FIM_DO_MUNDO / 10
 
+// Estrutura que implementa um par de valores (x, y), representando
+// a coordenada de uma localização
+struct Coordenada {
+  int x; // Coordenada horizontal (eixo x)
+  int y; // Coordenada vertical (eixo y)
+};
+
 struct Heroi
 {
   int id_heroi;
@@ -30,7 +37,7 @@ struct Base
   int lotacao;
   struct cjto_t *presentes;
   struct fprio_t *espera;
-  struct coordenada_t *local; // criar struct
+  struct Coordenada *local;
 };
 
 struct Missao
@@ -54,7 +61,7 @@ struct Mundo
 
   int n_habilidades;
 
-  struct coordenada_t *tamanho_mundo;
+  struct Coordenada *tamanho_mundo;
   int relogio;
 };
 
