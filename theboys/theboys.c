@@ -105,6 +105,35 @@ void destroi_herois(struct Heroi herois[])
   }
 }
 
+// Funções da Base -----------------------------------------------------------
+
+void inicializa_bases(struct Base bases[])
+{
+  for (int i = 0; i < N_BASES; i++)
+  {
+    bases[i].id_base = i;
+    
+    // Coordenadas
+    bases[i].local->x = aleat(0, N_TAMANHO_MUNDO);
+    bases[i].local->y = aleat(0, N_TAMANHO_MUNDO);
+
+    bases[i].lotacao = aleat(3, 10);
+    bases[i].presentes = cjto_cria(bases[i].lotacao);
+    bases[i].espera = fprio_cria();
+  }
+}
+
+void destroi_bases(struct Base bases[])
+{
+  for (int i = 0; i < N_BASES; i++)
+  {
+    cjto_destroi(bases[i].presentes);
+    cjto_destroi(bases[i].espera);
+  }
+}
+
+// Funções da Missão ---------------------------------------------------------
+
 // programa principal
 int main()
 {
