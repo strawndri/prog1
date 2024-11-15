@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "conjunto.h"
 #include "fprio.h"
 #include "lista.h"
 
@@ -64,6 +66,28 @@ struct Mundo
   struct Coordenada *tamanho_mundo;
   int relogio;
 };
+
+// Retorna um número aleatório entre min e max, inclusive
+// (max - min + 1) gera um número entre 0 e (max - min)
+// Somando min, temos o deslocamento do resultado para o intervalo [min, max] 
+long aleat(long min, long max)
+{
+  return rand() % (max - min + 1) + min;
+}
+
+void inicializa_herois(struct Heroi herois[])
+{
+  for (int i = 0; i < N_HEROIS; i++) {
+    herois[i].id_heroi = i;
+    herois[i].experiencia = 0;
+    herois[i].paciencia = aleat(0, 100);
+    herois[i].velocidade = aleat(50, 5000);
+
+    // Organização das habilidades do herói
+    int qtd_hab_heroi = aleat(1, N_HABILIDADES);
+    herois[i].habilidades = cjto_aleat(qtd_hab_heroi, N_HABILIDADES);
+  }
+}
 
 // programa principal
 int main()
