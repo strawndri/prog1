@@ -50,7 +50,7 @@ struct Missao
   int id_missao;
   struct cjto_t *habilidades;
   int perigo;
-  struct coordenada_t *local;
+  struct Coordenada *local;
 };
 
 struct Mundo
@@ -91,7 +91,7 @@ void inicializa_herois(struct Heroi herois[])
     herois[i].morto = false;
 
     // Organização das habilidades do herói
-    int qtd_hab_heroi = aleat(1, N_HABILIDADES);
+    int qtd_hab_heroi = aleat(1, 3);
     herois[i].habilidades = cjto_aleat(qtd_hab_heroi, N_HABILIDADES);
   }
 }
@@ -133,6 +133,28 @@ void destroi_bases(struct Base bases[])
 }
 
 // Funções da Missão ---------------------------------------------------------
+
+void inicializa_missoes(struct Missao missoes[])
+{
+  for (int i = 0; i < N_MISSOES; i++) {
+    missoes[i].id_missao = i;
+    missoes[i].local->x = aleat(0, N_TAMANHO_MUNDO);
+    missoes[i].local->y = aleat(0, N_TAMANHO_MUNDO);
+
+    // Organização das habilidades necessárias para a missão
+    int qtd_hab_missao = aleat(6, 10);
+    missoes[i].habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
+    missoes[i].perigo = aleat(0, 100); 
+  }
+}
+
+void destroi_missoes(struct Missao missoes[])
+{
+  for (int i = 0; i < N_MISSOES; i++)
+  {
+    cjto_destroi(missoes[i].habilidades);
+  }
+}
 
 // programa principal
 int main()
