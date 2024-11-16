@@ -250,7 +250,7 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
     if (!evento)
       return;
 
-    evento->id_missao = 1;
+    evento->id_missao = i;
 
     fprio_insere(lef, evento, 10, tempo);
   }
@@ -262,7 +262,9 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
 
 // programa principal
 int main()
-{
+{ 
+  srand(0);
+  
   // Iniciando o mundo
   struct mundo *m;
   m = malloc(sizeof(struct mundo));
