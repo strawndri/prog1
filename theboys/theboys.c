@@ -80,86 +80,116 @@ long aleat(long min, long max)
 
 // Funções do Herói -----------------------------------------------------------
 
-void inicializa_herois(struct Heroi herois[])
+void cria_heroi(struct Heroi heroi, int id)
 {
-  for (int i = 0; i < N_HEROIS; i++)
-  {
-    herois[i].id_heroi = i;
-    herois[i].experiencia = 0;
-    herois[i].paciencia = aleat(0, 100);
-    herois[i].velocidade = aleat(50, 5000);
-    herois[i].morto = false;
+  heroi.id_heroi = id;
+  heroi.experiencia = 0;
+  heroi.paciencia = aleat(0, 100);
+  heroi.velocidade = aleat(50, 5000);
+  heroi.morto = false;
 
-    // Organização das habilidades do herói
-    int qtd_hab_heroi = aleat(1, 3);
-    herois[i].habilidades = cjto_aleat(qtd_hab_heroi, N_HABILIDADES);
-  }
+  // Organização das habilidades do herói
+  int qtd_hab_heroi = aleat(1, 3);
+  heroi.habilidades = cjto_aleat(qtd_hab_heroi, N_HABILIDADES);
 }
 
 // não sei se precisa fazer algo a mais
-void destroi_herois(struct Heroi herois[])
+void destroi_heroi(struct Heroi heroi, int id)
 {
-  for (int i = 0; i < N_HEROIS; i++)
-  {
-    cjto_destroi(herois[i].habilidades);
-  }
+  cjto_destroi(heroi.habilidades);
 }
 
 // Funções da Base -----------------------------------------------------------
 
-void inicializa_bases(struct Base bases[])
+void cria_base(struct Base base, int id)
 {
-  for (int i = 0; i < N_BASES; i++)
-  {
-    bases[i].id_base = i;
-    
-    // Coordenadas
-    bases[i].local->x = aleat(0, N_TAMANHO_MUNDO);
-    bases[i].local->y = aleat(0, N_TAMANHO_MUNDO);
+  base.id_base = id;
 
-    bases[i].lotacao = aleat(3, 10);
-    bases[i].presentes = cjto_cria(bases[i].lotacao);
-    bases[i].espera = fprio_cria();
-  }
+  // Coordenadas
+  base.local->x = aleat(0, N_TAMANHO_MUNDO);
+  base.local->y = aleat(0, N_TAMANHO_MUNDO);
+
+  base.lotacao = aleat(3, 10);
+  base.presentes = cjto_cria(base.lotacao);
+  base.espera = fprio_cria();
 }
 
-void destroi_bases(struct Base bases[])
+void destroi_base(struct Base base, int id)
 {
-  for (int i = 0; i < N_BASES; i++)
-  {
-    cjto_destroi(bases[i].presentes);
-    cjto_destroi(bases[i].espera);
-  }
+  cjto_destroi(base.presentes);
+  cjto_destroi(base.espera);
 }
 
 // Funções da Missão ---------------------------------------------------------
 
-void inicializa_missoes(struct Missao missoes[])
+void cria_missao(struct Missao missao, int id)
 {
-  for (int i = 0; i < N_MISSOES; i++) {
-    missoes[i].id_missao = i;
-    missoes[i].local->x = aleat(0, N_TAMANHO_MUNDO);
-    missoes[i].local->y = aleat(0, N_TAMANHO_MUNDO);
+  missao.id_missao = id;
+  missao.local->x = aleat(0, N_TAMANHO_MUNDO);
+  missao.local->y = aleat(0, N_TAMANHO_MUNDO);
 
-    // Organização das habilidades necessárias para a missão
-    int qtd_hab_missao = aleat(6, 10);
-    missoes[i].habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
-    missoes[i].perigo = aleat(0, 100); 
-  }
+  // Organização das habilidades necessárias para a missão
+  int qtd_hab_missao = aleat(6, 10);
+  missao.habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
+  missao.perigo = aleat(0, 100);
 }
 
-void destroi_missoes(struct Missao missoes[])
+void destroi_missoes(struct Missao missao, int id)
 {
-  for (int i = 0; i < N_MISSOES; i++)
+  cjto_destroi(missao.habilidades);
+}
+
+// Função para iniciar o mundo
+
+void inicia_mundo(struct Mundo *mundo)
+{
+  mundo->n_bases = N_BASES;
+  mundo->n_herois = N_HEROIS;
+  mundo->n_habilidades = N_HABILIDADES;
+  mundo->n_missoes = N_MISSOES;
+  mundo->tamanho_mundo->x = N_TAMANHO_MUNDO;
+  mundo->tamanho_mundo->y = N_TAMANHO_MUNDO;
+  mundo->relogio = T_INICIO;
+
+  // Inicialização dos heróis
+  for (int i = 0; i < mundo->n_herois; i++)
   {
-    cjto_destroi(missoes[i].habilidades);
+    cria_heroi(*mundo->herois, i);
+
+    // evento de chegada 
+  }
+
+  // Inicialização das bases
+  for (int i = 0; i < mundo->n_bases; i++)
+  {
+    cria_base(*mundo->bases, i);
+
+  }
+
+  // Inicialização das missões
+  for (int i = 0; i < mundo->n_missoes; i++)
+  {
+    cria_missao(*mundo->missoes, i);
+
+    // evento de missao agendada
   }
 }
 
 // programa principal
 int main()
 {
-  // iniciar o mundo
+  // Iniciando o mundo
+  struct Mundo mundo;
+
+  inicializa_herois(mundo.herois);
+  inicializa_herois(mundo.bases);
+  inicializa_herois(mundo.missoes);
+
+  // Criando a fila de eventos futuros
+  struct fprio_t *lef;
+  lef = fprio_cria();
+
+  // Eventos iniciais
 
   // executar o laço de simulação
 
