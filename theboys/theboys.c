@@ -119,7 +119,7 @@ long aleat(long min, long max)
 // Funções do Herói -----------------------------------------------------------
 
 struct heroi cria_heroi(int id)
-{ 
+{
   struct heroi h;
 
   h.id_heroi = id;
@@ -145,7 +145,7 @@ void destroi_heroi(struct heroi *h)
 // Funções da Base -----------------------------------------------------------
 
 struct base cria_base(int id)
-{ 
+{
   struct base b;
 
   b.id_base = id;
@@ -165,7 +165,7 @@ void destroi_base(struct base *b)
 {
   if (b->presentes)
     cjto_destroi(b->presentes);
-  
+
   if (b->espera)
     fprio_destroi(b->espera);
 }
@@ -173,9 +173,9 @@ void destroi_base(struct base *b)
 // Funções da Missão ---------------------------------------------------------
 
 struct missao cria_missao(int id)
-{ 
+{
   struct missao m;
-  
+
   m.id_missao = id;
   m.local.x = aleat(0, N_TAMANHO_MUNDO);
   m.local.y = aleat(0, N_TAMANHO_MUNDO);
@@ -260,30 +260,89 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
   fprio_insere(lef, "FIM", 11, tempo);
 }
 
-// programa principal
-int main()
-{ 
-  srand(0);
+// Funções dos eventos ---------------------------------------------------------
+
+// Chega
+void chega(int t, struct heroi *h, struct base *b)
+{
+
+}
+
+// Espera
+void espera(int t, struct heroi *h, struct base *b)
+{
   
-  // Iniciando o mundo
+}
+
+// Desiste
+void desiste(int t, struct heroi *h, struct base *b)
+{
+  
+}
+
+// Avisa
+void avisa(int t, struct base *b)
+{
+  
+}
+
+// Entra
+void entra(int t, struct heroi *h, struct base *b)
+{
+  
+}
+
+// Sai
+void sai(int t, struct heroi *h, struct base *b)
+{
+  
+}
+
+// Viaja
+void viaja(int t, struct heroi *h, struct base *b)
+{
+  
+}
+
+// Morre
+void morre(int t, struct heroi *h, struct base *b)
+{
+  
+}
+
+// Missao
+void missao(int t, struct missao *m)
+{
+  
+}
+
+// Fim
+void fim(int t)
+{
+  
+}
+
+int main()
+{
+  srand(0);
+
+  // Inicialização do mundo
   struct mundo *m;
   m = malloc(sizeof(struct mundo));
 
   if (!m)
     return -1;
-  
+
   inicia_mundo(m);
 
-  // Criando a fila de eventos futuros
+  // Criação da fila de eventos futuros
   struct fprio_t *lef;
   lef = fprio_cria();
   executa_eventos_iniciais(m, lef);
 
-  // Eventos iniciais
+  // Laço de simulação
 
-  // executar o laço de simulação
-
-  // destruir o mundo
+  // Destruição do mundo
 
   return 0;
 }
