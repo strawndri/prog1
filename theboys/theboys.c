@@ -17,6 +17,44 @@
 #define N_BASES N_HEROIS / 5
 #define N_MISSOES T_FIM_DO_MUNDO / 10
 
+// Implementação das estruturas que definem os eventos ------------------------
+
+// Categorização dos eventos:
+
+// ev_heroi_base
+//  - 1: CHEGA
+//  - 2: ESPERA
+//  - 3: DESISTE
+//  - 4: ENTRA
+//  - 5: SAI
+//  - 6: VIAJA
+//  - 8: MORRE
+
+// ev_base
+//  - 9: AVISA
+
+// ev_missao
+//  - 10: MISSAO
+
+// fim do mundo (sem estrutura)
+//  - 11: FIM
+
+struct ev_heroi_base
+{
+  int id_heroi;
+  int id_base;
+};
+
+struct ev_base
+{
+  int id_base;
+};
+
+struct ev_missao
+{
+  int id_missao;
+};
+
 // Estrutura que implementa um par de valores (x, y), representando
 // a coordenada de uma localização
 struct coordenadas
@@ -93,7 +131,7 @@ void cria_heroi(struct heroi h, int id)
   h.habilidades = cjto_aleat(qtd_hab_heroi, N_HABILIDADES);
 }
 
-// não sei se precisa fazer algo a mais
+// (!) não sei se precisa fazer algo a mais
 void destroi_heroi(struct heroi h, int id)
 {
   cjto_destroi(h.habilidades);
@@ -140,7 +178,6 @@ void destroi_missoes(struct missao m, int id)
 }
 
 // Função para iniciar o mundo
-
 void inicia_mundo(struct mundo *m)
 {
   m->n_bases = N_BASES;
@@ -151,28 +188,51 @@ void inicia_mundo(struct mundo *m)
   m->tamanho_mundo->y = N_TAMANHO_MUNDO;
   m->relogio = T_INICIO;
 
-  // Inicialização dos heróis
-  for (int i = 0; i < m->n_herois; i++)
-  {
-    cria_heroi(*m->herois, i);
-
-    // evento de chegada 
-  }
-
   // Inicialização das bases
   for (int i = 0; i < m->n_bases; i++)
-  {
     cria_base(*m->bases, i);
 
-  }
+  // Inicialização dos heróis
+  for (int i = 0; i < m->n_herois; i++)
+    cria_heroi(*m->herois, i);
 
   // Inicialização das missões
   for (int i = 0; i < m->n_missoes; i++)
-  {
     cria_missao(*m->missoes, i);
+}
 
-    // evento de missao agendada
+// Função para realizar os eventos iniciais
+void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
+{
+  // Evento inicial (herói)
+  for (int i = 0; i < m->n_herois; i++)
+  {
+    int base = aleat(0, m->n_bases - 1);
+    int tempo = aleat(0, 4320);
+
+    // (!): talvez declarar uma função de criação de evento
+    struct ev_heroi_base *evento = {
+        i,   // id do heroi
+        base // id da base
+    };
+
+    fprio_insere(lef, evento, 1, tempo);
   }
+
+  // Evento inicial (missão)
+  for (int i = 0; i < m->n_missoes; i++)
+  {
+    int tempo = aleat(0, 4320);
+    struct ev_missao *evento = {
+      i, // id da missão
+    };
+
+    fprio_insere(lef, evento, 10, tempo);
+  }
+
+  // Agendando o fim do mundo
+  int tempo = T_FIM_DO_MUNDO;
+  fprio_insere(lef, 'FIM', 11, tempo);
 }
 
 // programa principal
@@ -185,6 +245,7 @@ int main()
   // Criando a fila de eventos futuros
   struct fprio_t *lef;
   lef = fprio_cria();
+  executa_eventos_iniciais(m, lef);
 
   // Eventos iniciais
 
