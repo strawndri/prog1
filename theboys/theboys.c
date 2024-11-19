@@ -265,7 +265,18 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
 // Chega
 void chega(int t, struct heroi *h, struct base *b)
 {
+  h->id_base = b->id_base;
+  int espera;
 
+  if (b->presentes < b->lotacao && fprio_tamanho(b->espera) == 0)
+    espera = 1;
+  else
+    espera = (h->paciencia) > (10 * fprio_tamanho(b->espera));
+
+  // if (espera)
+    // crie evento espera
+  // else
+    // cria evento desiste
 }
 
 // Espera

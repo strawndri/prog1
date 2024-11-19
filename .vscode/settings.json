@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "stdio.h": "c",
-    "racional.h": "c"
+    "racional.h": "c",
+    "type_traits": "c"
   }
 }
