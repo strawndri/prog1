@@ -2,6 +2,7 @@
 #define EVENTOS
 
 #include <stdio.h>
+#include "fprio.h"
 #include "utils.h"
 #include "mundo.h"
 
@@ -9,29 +10,33 @@
 struct evento_t
 {
   int tempo;
-  int d1, d2;
+  int tipo;
+  int d1; 
+  int d2; 
 };
+
+struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2);
 
 void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef);
 
-void chega(int t, struct heroi *h, struct base *b);;
+int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void espera(int t, struct heroi *h, struct base *b);
+void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void desiste(int t, struct heroi *h, struct base *b);
+void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void avisa(int t, struct base *b);
+void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef);
 
-void entra(int t, struct heroi *h, struct base *b);
+void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void sai(int t, struct heroi *h, struct base *b);
+void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void viaja(int t, struct heroi *h, struct base *b);
+void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void morre(int t, struct heroi *h, struct base *b);
+void morre(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void missao(int t, struct missao *m);
+void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef);
 
-void fim(int t);
+void fim(struct mundo *m, int t, struct fprio_t *lef);
 
 #endif

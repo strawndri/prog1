@@ -1,7 +1,27 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "fprio.h"
 #include "utils.h"
 #include "eventos.h"
 #include "mundo.h"
+
+struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2)
+{
+  struct evento_t *evento;
+
+  evento = malloc(sizeof(struct evento_t));
+
+  if (!evento)
+    return NULL;
+
+  evento->tempo = tempo;
+  evento->tipo = tipo;
+  evento->d1 = d1;
+  evento->d2 = d2;
+
+  return evento;
+}
 
 // Função para realizar os eventos iniciais
 void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
@@ -9,104 +29,105 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
   // Evento inicial (herói)
   for (int i = 0; i < m->n_herois; i++)
   {
-    int base = aleat(0, m->n_bases - 1);
+    int base = aleat(0, m->n_bases - 1); // id da base
     int tempo = aleat(0, 4320);
 
-    // (!): talvez declarar uma função de criação de evento
-    struct evento_t *evento;
-    evento = malloc(sizeof(struct evento_t));
-
-    if (!evento)
-      return;
-
-    evento->tempo = tempo;
-    evento->d1 = i;
-    evento->d2 = base;
-
-    fprio_insere(lef, evento, 1, tempo);
+    struct evento_t *evento = cria_evento(tempo, CHEGA, i, base);
+    fprio_insere(lef, evento, CHEGA, tempo);
   }
 
   // Evento inicial (missão)
-  for (int i = 0; i < m->n_missoes; i++)
-  {
-    int tempo = aleat(0, 4320);
-    struct evento_t *evento;
-    evento = malloc(sizeof(struct evento_t));
+  // for (int i = 0; i < m->n_missoes; i++)
+  // {
+  //   int tempo = aleat(0, 4320);
 
-    if (!evento)
-      return;
+  //   struct evento_t *evento = cria_evento(tempo, CHEGA, i, 0);
+  //   fprio_insere(lef, evento, MISSAO, tempo);
+  // }
 
-    evento->tempo = tempo;
-    evento->d1 = i;
-
-    fprio_insere(lef, evento, 10, tempo);
-  }
-
-  // Agendando o fim do mundo
-  int tempo = T_FIM_DO_MUNDO;
-  fprio_insere(lef, "FIM", 11, tempo);
+  // // Agendando o fim do mundo
+  // int tempo = T_FIM_DO_MUNDO;
+  // struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
+  // fprio_insere(lef, evento, FIM, tempo);
 }
 
 // Funções dos eventos ---------------------------------------------------------
 
-// Chega
-void chega(int t, struct heroi *h, struct base *b)
-{
+// Chega: heroi H chegando na ba B no instante T
+int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{ 
   h->id_base = b->id_base;
   int espera;
 
-  if (b->presentes < b->lotacao && fprio_tamanho(b->espera) == 0)
+  if (cjto_card(b->presentes) < b->lotacao && fprio_tamanho(b->espera) == 0)
     espera = 1;
   else
     espera = (h->paciencia) > (10 * fprio_tamanho(b->espera));
 
-  // if (espera)
-  // crie evento espera
-  // else
-  // cria evento desiste
+  if (espera)
+  {
+    struct evento_t *evento = cria_evento(
+        t,
+        ESPERA,
+        h->id_heroi,
+        b->id_base);
+    fprio_insere(lef, evento, ESPERA, t);
+    return 1;
+  }
+  else
+  {
+    struct evento_t *evento = cria_evento(
+        m->relogio,
+        DESISTE,
+        h->id_heroi,
+        b->id_base);
+
+    fprio_insere(lef, evento, DESISTE, m->relogio);
+    return 0;
+  }
 }
 
-// Espera
-void espera(int t, struct heroi *h, struct base *b)
-{
-}
+// // Espera
+// void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Desiste
-void desiste(int t, struct heroi *h, struct base *b)
-{
-}
+// // Desiste
+// void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Avisa
-void avisa(int t, struct base *b)
-{
-}
+// // Avisa
+// void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Entra
-void entra(int t, struct heroi *h, struct base *b)
-{
-}
+// // Entra
+// void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Sai
-void sai(int t, struct heroi *h, struct base *b)
-{
-}
+// // Sai
+// void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Viaja
-void viaja(int t, struct heroi *h, struct base *b)
-{
-}
+// // Viaja
+// void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Morre
-void morre(int t, struct heroi *h, struct base *b)
-{
-}
+// // Morre
+// void morre(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+// }
 
-// Missao
-void missao(int t, struct missao *m)
-{
-}
+// // Missao
+// void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
+// {
+// }
 
-// Fim
-void fim(int t)
-{
-}
+// // Fim
+// void fim(struct mundo *m, int t, struct fprio_t *lef)
+// {
+// }

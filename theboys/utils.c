@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "utils.h"
 
 // Retorna um número aleatório entre min e max, inclusive
