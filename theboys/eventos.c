@@ -72,13 +72,13 @@ int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_
         ESPERA,
         h->id_heroi,
         b->id_base);
-    fprio_insere(lef, evento, ESPERA, t);
+    fprio_insere(lef, evento, ESPERA, m->relogio);
     return 1;
   }
   else
   {
     struct evento_t *evento = cria_evento(
-        m->relogio,
+        t,
         DESISTE,
         h->id_heroi,
         b->id_base);
@@ -102,20 +102,71 @@ void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fpri
   fprio_insere(lef, evento, AVISA, m->relogio);
 }
 
-// // Desiste
-// void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-// }
+// Desiste
+void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  int destino = aleat(0, m->n_bases - 1);
+  (void)b; // (!) não sei se preciso usar o parâmetro
 
-// // Avisa
-// void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
-// {
-// }
+  struct evento_t *evento = cria_evento(
+      t,
+      VIAJA,
+      h->id_heroi,
+      destino);
 
-// // Entra
-// void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-// }
+  fprio_insere(lef, evento, VIAJA, t);
+}
+
+// Avisa
+void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
+{
+  // (!) tentativa de impressão interna; vai qual a melhor
+  (void)m;
+
+  printf("%6d: AVISA  PORTEIRO BASE %d (%2d/%2d) FILA [ ",
+         t,
+         b->id_base,
+         cjto_card(b->presentes),
+         b->lotacao);
+  lista_imprime(b->espera);
+  printf(" ]\n");
+
+  while (cjto_card(b->presentes) < b->lotacao && lista_tamanho(b->espera) > 0)
+  {
+    int heroi;
+    lista_consulta(b->espera, &heroi, 0);
+    lista_retira(b->espera, &heroi, 0);
+    cjto_insere(b->presentes, heroi);
+
+    struct evento_t *evento = cria_evento(
+        t,
+        ENTRA,
+        heroi,
+        b->id_base);
+
+    fprio_insere(lef, evento, VIAJA, t);
+
+    printf("%6d: AVISA  PORTEIRO BASE %d ADMITE %2d",
+           evento->tempo,
+           evento->d2,
+           evento->d1);
+  }
+}
+
+// Entra
+void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  int tpb = 15 + h->paciencia * aleat(1, 20);
+
+  struct evento_t *evento = cria_evento(
+    t + tpb,
+    SAI,
+    h->id_heroi,
+    h->id_base
+  );
+
+  fprio_insere(lef, evento, VIAJA, evento->tempo);
+}
 
 // // Sai
 // void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
