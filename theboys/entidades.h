@@ -23,7 +23,7 @@ struct base
   int id_base;
   int lotacao;
   struct cjto_t *presentes;
-  struct fprio_t *espera;
+  struct lista_t *espera;
   struct coordenada local;
 };
 

@@ -22,6 +22,8 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
     switch (evento->tipo)
     {
     case CHEGA:
+
+      // (!) tenho a sensação de estar violando algo
       int resultado = chega(
           m,
           evento->tempo,
@@ -44,6 +46,12 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
                cjto_card(m->bases[evento->d2].presentes),
                m->bases[evento->d2].lotacao);
       break;
+    case ESPERA:
+      printf("%6d: ESPERA HEROI %2d BASE %d (%2d)",
+             evento->tempo,
+             evento->d1,
+             evento->d2,
+             cjto_card(m->bases[evento->d2].presentes));
     }
 
     printf("\n");

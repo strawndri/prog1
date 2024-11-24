@@ -1,5 +1,6 @@
 #include "conjunto.h"
 #include "fprio.h"
+#include "lista.h"
 #include "utils.h"
 #include "entidades.h"
 
@@ -43,7 +44,7 @@ struct base cria_base(int id)
 
   b.lotacao = aleat(3, 10);
   b.presentes = cjto_cria(b.lotacao);
-  b.espera = fprio_cria();
+  b.espera = lista_cria();
 
   return b;
 }
@@ -54,7 +55,7 @@ void destroi_base(struct base *b)
     cjto_destroi(b->presentes);
 
   if (b->espera)
-    fprio_destroi(b->espera);
+    lista_destroi(b->espera);
 }
 
 // Funções da Missão ---------------------------------------------------------

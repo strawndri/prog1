@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "fprio.h"
+#include "lista.h"
 #include "utils.h"
 #include "eventos.h"
 #include "mundo.h"
@@ -55,14 +56,14 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
 
 // Chega: heroi H chegando na ba B no instante T
 int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-{ 
+{
   h->id_base = b->id_base;
   int espera;
 
-  if (cjto_card(b->presentes) < b->lotacao && fprio_tamanho(b->espera) == 0)
+  if (cjto_card(b->presentes) < b->lotacao && lista_tamanho(b->espera) == 0)
     espera = 1;
   else
-    espera = (h->paciencia) > (10 * fprio_tamanho(b->espera));
+    espera = (h->paciencia) > (10 * lista_tamanho(b->espera));
 
   if (espera)
   {
@@ -87,10 +88,19 @@ int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_
   }
 }
 
-// // Espera
-// void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-// }
+// Espera
+void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  lista_insere(b->espera, h->id_heroi, -1);
+
+  struct evento_t *evento = cria_evento(
+      t,
+      AVISA,
+      h->id_heroi,
+      b->id_base);
+
+  fprio_insere(lef, evento, AVISA, m->relogio);
+}
 
 // // Desiste
 // void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
