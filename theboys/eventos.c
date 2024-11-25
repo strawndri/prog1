@@ -163,37 +163,49 @@ void avisa(int t, struct base *b, struct fprio_t *lef)
         heroi,
         b->id_base);
 
-    fprio_insere(lef, evento, VIAJA, evento->tempo);
+    fprio_insere(lef, evento, ENTRA, evento->tempo);
 
     printf("%6d: AVISA  PORTEIRO BASE %d ADMITE %2d\n",
            evento->tempo,
-           evento->d2,
-           evento->d1);
+           evento->d1,
+           evento->d2);
   }
 }
 
 // Entra
-// void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-//   int tpb = 15 + h->paciencia * aleat(1, 20);
+void entra(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  int tpb = 15 + h->paciencia * aleat(1, 20);
 
-//   struct evento_t *evento = cria_evento(
-//       t + tpb,
-//       SAI,
-//       h->id_heroi,
-//       h->id_base);
+  struct evento_t *evento = cria_evento(
+      t + tpb,
+      SAI,
+      h->id_heroi,
+      h->id_base);
 
-//   fprio_insere(lef, evento, VIAJA, evento->tempo);
-// }
+  fprio_insere(lef, evento, VIAJA, evento->tempo);
+
+  printf("%6d: ENTRA  HEROI %2d BASE %d (%2d/%2d) SAI %d\n",
+         t,
+         evento->d1,
+         evento->d2,
+         cjto_card(b->presentes),
+         b->lotacao,
+         evento->tempo);
+}
 
 // // Sai
 // void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 // {
 // }
 
-// // Viaja
-// void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// Viaja
+// void viaja(int t, struct heroi *h, struct base *b, struct base *d, struct fprio_t *lef)
 // {
+//   struct coordenada atual;
+//   struct coordenada destino = b->local;
+
+//   float dist = calcula_distancia(atual, destino);
 // }
 
 // // Morre

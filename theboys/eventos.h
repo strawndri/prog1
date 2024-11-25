@@ -27,7 +27,7 @@ void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fpr
 
 void avisa(int t, struct base *b, struct fprio_t *lef);
 
-void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void entra(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
 void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 

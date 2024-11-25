@@ -33,6 +33,9 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
     case AVISA:
       avisa(evento->tempo, &m->bases[evento->d2], lef);
       break;
+    case ENTRA:
+      entra(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      break;
     }
   }
 
