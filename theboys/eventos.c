@@ -183,7 +183,7 @@ void entra(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
       h->id_heroi,
       h->id_base);
 
-  fprio_insere(lef, evento, VIAJA, evento->tempo);
+  fprio_insere(lef, evento, SAI, evento->tempo);
 
   printf("%6d: ENTRA  HEROI %2d BASE %d (%2d/%2d) SAI %d\n",
          t,
@@ -194,10 +194,35 @@ void entra(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
          evento->tempo);
 }
 
-// // Sai
-// void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-// }
+// Sai
+void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  cjto_retira(b->presentes, h->id_heroi);
+  int destino = aleat(0, m->n_bases - 1);
+
+  struct evento_t *ev_viaja = cria_evento(
+      t,
+      VIAJA,
+      h->id_heroi,
+      destino);
+
+  fprio_insere(lef, ev_viaja, VIAJA, ev_viaja->tempo);
+
+  struct evento_t *ev_avisa = cria_evento(
+      t,
+      AVISA,
+      h->id_heroi,
+      b->id_base);
+
+  fprio_insere(lef, ev_avisa, AVISA, ev_avisa->tempo);
+
+  printf("%6d: SAI    HEROI %2d BASE %d (%2d/%2d)\n",
+         ev_avisa->tempo,
+         ev_avisa->d1,
+         ev_avisa->d2,
+         cjto_card(b->presentes),
+         b->lotacao);
+}
 
 // Viaja
 // void viaja(int t, struct heroi *h, struct base *b, struct base *d, struct fprio_t *lef)
