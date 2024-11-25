@@ -55,7 +55,7 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
 // Funções dos eventos ---------------------------------------------------------
 
 // Chega: heroi H chegando na ba B no instante T
-int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+void chega(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 {
   h->id_base = b->id_base;
   int espera;
@@ -72,8 +72,15 @@ int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_
         ESPERA,
         h->id_heroi,
         b->id_base);
-    fprio_insere(lef, evento, ESPERA, m->relogio);
-    return 1;
+
+    printf("%6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) ESPERA\n",
+           evento->tempo,
+           evento->d1,
+           evento->d2,
+           cjto_card(b->presentes),
+           b->lotacao);
+
+    fprio_insere(lef, evento, ESPERA, evento->tempo);
   }
   else
   {
@@ -83,30 +90,40 @@ int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_
         h->id_heroi,
         b->id_base);
 
-    fprio_insere(lef, evento, DESISTE, m->relogio);
-    return 0;
+    printf("%6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) DESISTE\n",
+           evento->tempo,
+           evento->d1,
+           evento->d2,
+           cjto_card(b->presentes),
+           b->lotacao);
+
+    fprio_insere(lef, evento, DESISTE, evento->tempo);
   }
 }
 
 // Espera
-void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+void espera(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 {
   lista_insere(b->espera, h->id_heroi, -1);
-
   struct evento_t *evento = cria_evento(
       t,
       AVISA,
       h->id_heroi,
       b->id_base);
 
-  fprio_insere(lef, evento, AVISA, m->relogio);
+  printf("%6d: ESPERA HEROI %2d BASE %d (%2d)\n",
+         evento->tempo,
+         evento->d1,
+         evento->d2,
+         lista_tamanho(b->espera));
+
+  fprio_insere(lef, evento, AVISA, evento->tempo);
 }
 
 // Desiste
 void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 {
   int destino = aleat(0, m->n_bases - 1);
-  (void)b; // (!) não sei se preciso usar o parâmetro
 
   struct evento_t *evento = cria_evento(
       t,
@@ -114,15 +131,17 @@ void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fpr
       h->id_heroi,
       destino);
 
-  fprio_insere(lef, evento, VIAJA, t);
+  printf("%6d: DESIST HEROI %2d BASE %d",
+         t,
+         evento->d1,
+         b->id_base);
+
+  fprio_insere(lef, evento, VIAJA, evento->tempo);
 }
 
 // Avisa
-void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
+void avisa(int t, struct base *b, struct fprio_t *lef)
 {
-  // (!) tentativa de impressão interna; vai qual a melhor
-  (void)m;
-
   printf("%6d: AVISA  PORTEIRO BASE %d (%2d/%2d) FILA [ ",
          t,
          b->id_base,
@@ -144,9 +163,9 @@ void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
         heroi,
         b->id_base);
 
-    fprio_insere(lef, evento, VIAJA, t);
+    fprio_insere(lef, evento, VIAJA, evento->tempo);
 
-    printf("%6d: AVISA  PORTEIRO BASE %d ADMITE %2d",
+    printf("%6d: AVISA  PORTEIRO BASE %d ADMITE %2d\n",
            evento->tempo,
            evento->d2,
            evento->d1);
@@ -154,19 +173,18 @@ void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef)
 }
 
 // Entra
-void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-{
-  int tpb = 15 + h->paciencia * aleat(1, 20);
+// void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+// {
+//   int tpb = 15 + h->paciencia * aleat(1, 20);
 
-  struct evento_t *evento = cria_evento(
-    t + tpb,
-    SAI,
-    h->id_heroi,
-    h->id_base
-  );
+//   struct evento_t *evento = cria_evento(
+//       t + tpb,
+//       SAI,
+//       h->id_heroi,
+//       h->id_base);
 
-  fprio_insere(lef, evento, VIAJA, evento->tempo);
-}
+//   fprio_insere(lef, evento, VIAJA, evento->tempo);
+// }
 
 // // Sai
 // void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)

@@ -22,51 +22,18 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
     switch (evento->tipo)
     {
     case CHEGA:
-
-      // (!) tenho a sensação de estar violando algo
-      int resultado = chega(
-          m,
-          evento->tempo,
-          &m->herois[evento->d1],
-          &m->bases[evento->d2],
-          lef);
-
-      if (resultado)
-        printf("%6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) ESPERA",
-               evento->tempo,
-               evento->d1,
-               evento->d2,
-               cjto_card(m->bases[evento->d2].presentes),
-               m->bases[evento->d2].lotacao);
-      else
-        printf("%6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) DESISTE",
-               evento->tempo,
-               evento->d1,
-               evento->d2,
-               cjto_card(m->bases[evento->d2].presentes),
-               m->bases[evento->d2].lotacao);
+      chega(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
       break;
     case ESPERA:
-      printf("%6d: ESPERA HEROI %2d BASE %d (%2d)",
-             evento->tempo,
-             evento->d1,
-             evento->d2,
-             lista_tamanho(m->bases[evento->d2].espera));
-      espera(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      espera(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
       break;
     case DESISTE:
-      printf("%6d: DESIST HEROI %2d BASE %d",
-             evento->tempo,
-             evento->d1,
-             evento->d2);
       desiste(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
       break;
     case AVISA:
-      avisa(m, evento->tempo, &m->bases[evento->d2], lef);
+      avisa(evento->tempo, &m->bases[evento->d2], lef);
       break;
     }
-
-    printf("\n");
   }
 
   return 0;

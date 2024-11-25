@@ -19,13 +19,13 @@ struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2);
 
 void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef);
 
-int chega(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void chega(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void espera(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void espera(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
 void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void avisa(struct mundo *m, int t, struct base *b, struct fprio_t *lef);
+void avisa(int t, struct base *b, struct fprio_t *lef);
 
 void entra(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
