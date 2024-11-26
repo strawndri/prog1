@@ -278,6 +278,10 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
   int risco;
   struct heroi h;
 
+  printf("%6d: MISSAO %d TENT %d HAB REQ: [ ", t, mi->id_missao, 0);
+  cjto_imprime(mi->habilidades);
+  printf(" ]\n");
+
   for (int i = 0; i < n; i++)
     dists[i] = calcula_distancia(m->bases[i].local, mi->local);
 
@@ -308,6 +312,10 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
           h.experiencia++;
       }
     }
+
+    printf("%6d: MISSAO %d CUMPRIDA BASE %d HABS: [ ", t, mi->id_missao, m->bases[bmp].id_base);
+    cjto_imprime(mi->habilidades);
+    printf(" ]\n"); 
   }
   else
   {
@@ -318,6 +326,8 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
         -1);
 
     fprio_insere(lef, evento, MISSAO, evento->tempo);
+
+    printf("%6d: MISSAO %d IMPOSSIVEL", t, mi->id_missao);
   }
 }
 

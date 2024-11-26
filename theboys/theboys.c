@@ -48,6 +48,9 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
     case MORRE:
       morre(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
       break;
+    case MISSAO:
+      missao(m, evento->tempo, &m->missoes[evento->d1], lef);
+      break;
     }
   }
 
