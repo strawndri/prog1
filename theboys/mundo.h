@@ -23,4 +23,6 @@ struct mundo
 
 void inicia_mundo(struct mundo *m);
 
+int encontra_prox_base(struct mundo *m, struct missao *mi, int dists[]);
+
 #endif

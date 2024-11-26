@@ -38,18 +38,18 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
   }
 
   // Evento inicial (missão)
-  // for (int i = 0; i < m->n_missoes; i++)
-  // {
-  //   int tempo = aleat(0, 4320);
+  for (int i = 0; i < m->n_missoes; i++)
+  {
+    int tempo = aleat(0, 4320);
 
-  //   struct evento_t *evento = cria_evento(tempo, CHEGA, i, 0);
-  //   fprio_insere(lef, evento, MISSAO, tempo);
-  // }
+    struct evento_t *evento = cria_evento(tempo, MISSAO, i, -1);
+    fprio_insere(lef, evento, MISSAO, tempo);
+  }
 
-  // // Agendando o fim do mundo
-  // int tempo = T_FIM_DO_MUNDO;
-  // struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
-  // fprio_insere(lef, evento, FIM, tempo);
+  // Agendando o fim do mundo
+  int tempo = T_FIM_DO_MUNDO;
+  struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
+  fprio_insere(lef, evento, FIM, tempo);
 }
 
 // Funções dos eventos ---------------------------------------------------------
@@ -269,10 +269,57 @@ void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
          evento->tempo);
 }
 
-// // Missao
-// void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
-// {
-// }
+// Missao
+void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
+{
+  int n = m->n_bases;
+  int dists[n];
+  int bmp;
+  int risco;
+  struct heroi h;
+
+  for (int i = 0; i < n; i++)
+    dists[i] = calcula_distancia(m->bases[i].local, mi->local);
+
+  bmp = encontra_prox_base(m, mi, dists);
+
+  if (bmp >= 0)
+  {
+    mi->cumprida = true;
+
+    for (int i = 0; i < m->n_herois; i++)
+    {
+      if (cjto_pertence(m->bases[bmp].presentes, i))
+      {
+        h = m->herois[i];
+        risco = mi->perigo / (h.paciencia + h.experiencia + 1.0);
+
+        if (risco > aleat(0, 30))
+        {
+          struct evento_t *evento = cria_evento(
+              t,
+              MORRE,
+              h.id_heroi,
+              -1);
+
+          fprio_insere(lef, evento, MORRE, evento->tempo);
+        }
+        else
+          h.experiencia++;
+      }
+    }
+  }
+  else
+  {
+    struct evento_t *evento = cria_evento(
+        t + 24 * 60,
+        MISSAO,
+        mi->id_missao,
+        -1);
+
+    fprio_insere(lef, evento, MISSAO, evento->tempo);
+  }
+}
 
 // // Fim
 // void fim(struct mundo *m, int t, struct fprio_t *lef)

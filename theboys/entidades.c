@@ -1,7 +1,10 @@
+#include <stdio.h>
+
 #include "conjunto.h"
 #include "fprio.h"
 #include "lista.h"
 #include "utils.h"
+#include "mundo.h"
 #include "entidades.h"
 
 // Funções do Herói -----------------------------------------------------------
@@ -72,6 +75,7 @@ struct missao cria_missao(int id)
   int qtd_hab_missao = aleat(6, 10);
   m.habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
   m.perigo = aleat(0, 100);
+  m.cumprida = false;
 
   return m;
 }

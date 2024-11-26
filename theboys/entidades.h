@@ -7,6 +7,8 @@
 #include "fprio.h"
 #include "utils.h"
 
+#include "mundo.h"
+
 struct heroi
 {
   int id_heroi;
@@ -33,6 +35,7 @@ struct missao
   struct cjto_t *habilidades;
   int perigo;
   struct coordenada local;
+  bool cumprida; // true se cumprida; false caso contrário
 };
 
 struct heroi cria_heroi(int id);
