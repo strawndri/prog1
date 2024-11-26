@@ -10,15 +10,18 @@
 #include "mundo.h"
 #include "entidades.h"
 #include "eventos.h"
+#include "utils.h"
 
 int executa_eventos(struct mundo *m, struct fprio_t *lef)
 {
   struct evento_t *evento;
   int tipo, prio;
 
-  while (fprio_tamanho(lef) > 0)
-  {
+  while (fprio_tamanho(lef) > 0 && m->relogio <= T_FIM_DO_MUNDO)
+  { 
     evento = fprio_retira(lef, &tipo, &prio);
+    m->relogio = evento->tempo;
+    
     switch (evento->tipo)
     {
     case CHEGA:
@@ -41,6 +44,9 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       break;
     case VIAJA:
       viaja(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      break;
+    case MORRE:
+      morre(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
       break;
     }
   }

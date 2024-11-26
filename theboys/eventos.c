@@ -240,7 +240,7 @@ void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio
   fprio_insere(lef, evento, CHEGA, evento->tempo);
 
   printf("%6d: VIAJA  HEROI %2d BASE %d BASE %d DIST %d VEL %d CHEGA %d\n",
-         evento->tempo,
+         t,
          evento->d1,
          atual.id_base,
          evento->d2,
@@ -249,10 +249,25 @@ void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio
          evento->tempo);
 }
 
-// // Morre
-// void morre(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-// {
-// }
+// Morre
+void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  cjto_retira(b->presentes, h->id_heroi);
+  h->morto = true;
+
+  struct evento_t *evento = cria_evento(
+      t,
+      AVISA,
+      h->id_heroi,
+      b->id_base);
+
+  fprio_insere(lef, evento, AVISA, evento->tempo);
+
+  printf("%6d: MORRE  HEROI %2d MISSAO %d\n",
+         evento->tempo,
+         evento->d1,
+         evento->tempo);
+}
 
 // // Missao
 // void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)

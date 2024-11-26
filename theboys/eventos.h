@@ -11,8 +11,8 @@ struct evento_t
 {
   int tempo;
   int tipo;
-  int d1; 
-  int d2; 
+  int d1;
+  int d2;
 };
 
 struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2);
@@ -33,7 +33,7 @@ void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t
 
 void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
-void morre(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 
 void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef);
 
