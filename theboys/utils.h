@@ -32,6 +32,6 @@ struct coordenada
 
 long aleat(long min, long max);
 
-float calcula_distancia(struct coordenada c1, struct coordenada c2);
+int calcula_distancia(struct coordenada c1, struct coordenada c2);
 
 #endif

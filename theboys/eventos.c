@@ -225,13 +225,29 @@ void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t
 }
 
 // Viaja
-// void viaja(int t, struct heroi *h, struct base *b, struct base *d, struct fprio_t *lef)
-// {
-//   struct coordenada atual;
-//   struct coordenada destino = b->local;
+void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+{
+  struct base atual = m->bases[h->id_base];
+  int dist = calcula_distancia(atual.local, b->local);
+  int duracao = dist / h->velocidade;
 
-//   float dist = calcula_distancia(atual, destino);
-// }
+  struct evento_t *evento = cria_evento(
+      t + duracao,
+      CHEGA,
+      h->id_heroi,
+      b->id_base);
+
+  fprio_insere(lef, evento, CHEGA, evento->tempo);
+
+  printf("%6d: VIAJA  HEROI %2d BASE %d BASE %d DIST %d VEL %d CHEGA %d\n",
+         evento->tempo,
+         evento->d1,
+         atual.id_base,
+         evento->d2,
+         dist,
+         h->velocidade,
+         evento->tempo);
+}
 
 // // Morre
 // void morre(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)

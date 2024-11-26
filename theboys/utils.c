@@ -10,7 +10,7 @@ long aleat(long min, long max)
   return rand() % (max - min + 1) + min;
 }
 
-float calcula_distancia(struct coordenada c1, struct coordenada c2)
+int calcula_distancia(struct coordenada c1, struct coordenada c2)
 {
   return sqrt(((c2.x - c1.x) * (c2.x - c1.x)) + ((c2.y - c1.y) * (c2.y - c1.y)));
 }
