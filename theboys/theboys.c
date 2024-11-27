@@ -20,6 +20,10 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
   while (fprio_tamanho(lef) > 0 && m->relogio <= T_FIM_DO_MUNDO)
   { 
     evento = fprio_retira(lef, &tipo, &prio);
+
+    if (!evento)
+      return -1;
+
     m->relogio = evento->tempo;
     
     switch (evento->tipo)
@@ -52,6 +56,8 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       missao(m, evento->tempo, &m->missoes[evento->d1], lef);
       break;
     }
+
+    free(evento);
   }
 
   return 0;
@@ -59,7 +65,7 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
 
 int main()
 {
-  srand(0);
+  srand(1);
 
   // Inicialização do mundo
   struct mundo *m;

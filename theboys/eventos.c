@@ -40,7 +40,7 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
   // Evento inicial (missão)
   for (int i = 0; i < m->n_missoes; i++)
   {
-    int tempo = aleat(0, 4320);
+    int tempo = aleat(0, T_FIM_DO_MUNDO);
 
     struct evento_t *evento = cria_evento(tempo, MISSAO, i, -1);
     fprio_insere(lef, evento, MISSAO, tempo);
@@ -251,8 +251,15 @@ void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio
 
 // Morre
 void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-{
-  cjto_retira(b->presentes, h->id_heroi);
+{ 
+  if (!b->presentes)
+    return;
+
+  int resultado = cjto_retira(b->presentes, h->id_heroi);
+
+  if (!resultado)
+    return;
+    
   h->morto = true;
 
   struct evento_t *evento = cria_evento(
@@ -273,19 +280,26 @@ void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
 {
   int n = m->n_bases;
-  int dists[n];
+  int dist;
   int bmp;
   int risco;
   struct heroi h;
 
-  printf("%6d: MISSAO %d TENT %d HAB REQ: [ ", t, mi->id_missao, 0);
+  struct fprio_t *dists_bases = fprio_cria(); 
+
+  mi->tentativas++;
+
+  printf("%6d: MISSAO %d TENT %d HAB REQ: [ ", t, mi->id_missao, mi->tentativas);
   cjto_imprime(mi->habilidades);
   printf(" ]\n");
 
   for (int i = 0; i < n; i++)
-    dists[i] = calcula_distancia(m->bases[i].local, mi->local);
+  {
+    dist = calcula_distancia(m->bases[i].local, mi->local);
+    fprio_insere(dists_bases, &m->bases[i], m->bases[i].id_base, dist);
+  }
 
-  bmp = encontra_prox_base(m, mi, dists);
+  bmp = encontra_prox_base(m, mi, dists_bases);
 
   if (bmp >= 0)
   {
@@ -315,7 +329,7 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
 
     printf("%6d: MISSAO %d CUMPRIDA BASE %d HABS: [ ", t, mi->id_missao, m->bases[bmp].id_base);
     cjto_imprime(mi->habilidades);
-    printf(" ]\n"); 
+    printf(" ]\n");
   }
   else
   {
@@ -327,7 +341,7 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
 
     fprio_insere(lef, evento, MISSAO, evento->tempo);
 
-    printf("%6d: MISSAO %d IMPOSSIVEL", t, mi->id_missao);
+    printf("%6d: MISSAO %d IMPOSSIVEL\n", t, mi->id_missao);
   }
 }
 

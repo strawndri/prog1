@@ -75,6 +75,7 @@ struct missao cria_missao(int id)
   int qtd_hab_missao = aleat(6, 10);
   m.habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
   m.perigo = aleat(0, 100);
+  m.tentativas = 0;
   m.cumprida = false;
 
   return m;

@@ -4,6 +4,8 @@
 #include "entidades.h"
 #include "utils.h"
 
+#include "fprio.h"
+
 // Função para iniciar o mundo
 void inicia_mundo(struct mundo *m)
 {
@@ -28,33 +30,47 @@ void inicia_mundo(struct mundo *m)
     m->missoes[i] = cria_missao(i);
 }
 
-// (!) procurar outro algoritmo mais eficiente (heap)
-int encontra_prox_base(struct mundo *m, struct missao *mi, int dists[])
+int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists)
 {
-  // (!) apenas teste, trocar depois
-  int menor = 100000;
   int bmp = -1;
-  int cumpre_missao = 0;
-  struct cjto_t *total_habilidades;
+  struct cjto_t *total_habilidades = cjto_cria(m->n_habilidades);
+  if (!total_habilidades)
+    return -1;
 
-  for (int i = 0; i < m->n_bases; i++)
-  { 
+  while (fprio_tamanho(dists) > 0)
+  {
+    int id_base;
+    int prioridade;
+
+    fprio_retira(dists, &id_base, &prioridade);
+
+    // recria total_habilidades
+    cjto_destroi(total_habilidades);
+    total_habilidades = cjto_cria(m->n_habilidades);
+
+    if (!total_habilidades)
+      return -1; 
 
     for (int h = 0; h < m->n_herois; h++)
     {
-      if (cjto_pertence(m->bases[i].presentes, h))
-        total_habilidades = cjto_uniao(total_habilidades, m->herois[h].habilidades);
-
-      if (cjto_contem(total_habilidades, mi->habilidades))
-        cumpre_missao = 1;
+      if (cjto_pertence(m->bases[id_base].presentes, h))
+      {
+        struct cjto_t *novo_total = cjto_uniao(total_habilidades, m->herois[h].habilidades);
+        if (novo_total)
+        {
+          cjto_destroi(total_habilidades);
+          total_habilidades = novo_total;  // atualiza para o novo conjunto
+        }
+      }
     }
 
-    if (dists[i] < menor && cumpre_missao)
+    if (cjto_contem(total_habilidades, mi->habilidades))
     {
-      menor = dists[i];
-      bmp = i;
+      bmp = id_base;
+      break;
     }
   }
 
+  cjto_destroi(total_habilidades);
   return bmp;
 }

@@ -32,6 +32,7 @@ struct base
 struct missao
 {
   int id_missao;
+  int tentativas;
   struct cjto_t *habilidades;
   int perigo;
   struct coordenada local;
