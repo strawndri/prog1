@@ -25,18 +25,18 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
 void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void avisa(int t, struct base *b, struct fprio_t *lef);
+void avisa(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void entra(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void entra(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void sai(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void sai(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void viaja(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void morre(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef);
+void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void fim(struct mundo *m, int t);
+void fim(struct mundo *m, struct evento_t *ev);
 
 #endif

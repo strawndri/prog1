@@ -57,28 +57,28 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       espera(m, evento, lef);
       break;
     case DESISTE:
-      desiste(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      desiste(m, evento, lef);
       break;
     case AVISA:
-      avisa(evento->tempo, &m->bases[evento->d2], lef);
+      avisa(m, evento, lef);
       break;
     case ENTRA:
-      entra(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      entra(m, evento, lef);
       break;
     case SAI:
-      sai(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      sai(m, evento, lef);
       break;
     case VIAJA:
-      viaja(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      viaja(m, evento, lef);
       break;
     case MORRE:
-      morre(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      morre(m, evento, lef);
       break;
     case MISSAO:
-      missao(m, evento->tempo, &m->missoes[evento->d1], lef);
+      missao(m, evento, lef);
       break;
     case FIM:
-      fim(m, evento->tempo);
+      fim(m, evento);
       break;
     }
 
