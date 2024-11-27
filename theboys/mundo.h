@@ -27,4 +27,6 @@ void inicia_mundo(struct mundo *m);
 
 int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists);
 
+int executa_eventos(struct mundo *m, struct fprio_t *lef);
+
 #endif
