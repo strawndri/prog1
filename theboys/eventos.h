@@ -23,7 +23,7 @@ void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
 void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
 void avisa(int t, struct base *b, struct fprio_t *lef);
 

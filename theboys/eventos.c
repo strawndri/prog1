@@ -123,20 +123,25 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Desiste
-void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef)
+void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 {
+  // dados do evento atual
+  struct heroi h = m->herois[ev->d1];
+  struct base b = m->bases[ev->d2];
+  int t = ev->tempo;
+
   int destino = aleat(0, m->n_bases - 1);
 
   struct evento_t *evento = cria_evento(
       t,
       VIAJA,
-      h->id_heroi,
+      h.id_heroi,
       destino);
 
   printf("%6d: DESIST HEROI %2d BASE %d",
          t,
          evento->d1,
-         b->id_base);
+         b.id_base);
 
   fprio_insere(lef, evento, VIAJA, evento->tempo);
 }
