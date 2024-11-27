@@ -24,6 +24,8 @@ struct base
 {
   int id_base;
   int lotacao;
+  int espera_max;
+  int missoes;
   struct cjto_t *presentes;
   struct lista_t *espera;
   struct coordenada local;

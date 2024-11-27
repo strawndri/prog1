@@ -18,14 +18,15 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
   int tipo, prio;
 
   while (fprio_tamanho(lef) > 0 && m->relogio <= T_FIM_DO_MUNDO)
-  { 
+  {
     evento = fprio_retira(lef, &tipo, &prio);
 
     if (!evento)
       return -1;
 
     m->relogio = evento->tempo;
-    
+    m->total_eventos++;
+
     switch (evento->tipo)
     {
     case CHEGA:
@@ -54,6 +55,9 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       break;
     case MISSAO:
       missao(m, evento->tempo, &m->missoes[evento->d1], lef);
+      break;
+    case FIM:
+      fim(m, evento->tempo, lef);
       break;
     }
 

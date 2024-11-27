@@ -45,6 +45,8 @@ struct base cria_base(int id)
   b.local.x = aleat(0, N_TAMANHO_MUNDO);
   b.local.y = aleat(0, N_TAMANHO_MUNDO);
 
+  b.espera_max = 0;
+  b.missoes = 0;
   b.lotacao = aleat(3, 10);
   b.presentes = cjto_cria(b.lotacao);
   b.espera = lista_cria();

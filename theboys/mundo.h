@@ -19,6 +19,8 @@ struct mundo
 
   struct coordenada tamanho_mundo;
   int relogio;
+
+  int total_eventos;
 };
 
 void inicia_mundo(struct mundo *m);

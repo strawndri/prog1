@@ -105,6 +105,11 @@ void chega(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 void espera(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 {
   lista_insere(b->espera, h->id_heroi, -1);
+
+  // atualiza a quantidade máxima de pessoas na fila de espera
+  if (lista_tamanho(b->espera) > b->espera_max)
+    b->espera_max = lista_tamanho(b->espera);
+
   struct evento_t *evento = cria_evento(
       t,
       AVISA,
@@ -251,7 +256,7 @@ void viaja(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio
 
 // Morre
 void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-{ 
+{
   if (!b->presentes)
     return;
 
@@ -259,7 +264,7 @@ void morre(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
 
   if (!resultado)
     return;
-    
+
   h->morto = true;
 
   struct evento_t *evento = cria_evento(
@@ -285,7 +290,7 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
   int risco;
   struct heroi h;
 
-  struct fprio_t *dists_bases = fprio_cria(); 
+  struct fprio_t *dists_bases = fprio_cria();
 
   mi->tentativas++;
 
@@ -304,6 +309,7 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
   if (bmp >= 0)
   {
     mi->cumprida = true;
+    m->bases[bmp].missoes++;
 
     for (int i = 0; i < m->n_herois; i++)
     {
@@ -345,7 +351,60 @@ void missao(struct mundo *m, int t, struct missao *mi, struct fprio_t *lef)
   }
 }
 
-// // Fim
-// void fim(struct mundo *m, int t, struct fprio_t *lef)
-// {
-// }
+// Fim
+void fim(struct mundo *m, int t, struct fprio_t *lef)
+{
+  struct heroi heroi;
+  struct base base;
+  int missoes_cumpridas = 0; 
+
+  printf("%6d: FIM\n\n", t);
+
+  // Estatísticas dos heróis
+  for (int h = 0; h < m->n_herois; h++)
+  {
+    heroi = m->herois[h];
+
+    if (!heroi.morto)
+      printf("HEROI %2d VIVO  PAC %3d VEL %4d EXP %4d HABS [ ",
+             heroi.id_heroi,
+             heroi.paciencia,
+             heroi.velocidade,
+             heroi.experiencia);
+    else
+      printf("HEROI %2d MORTO  PAC %3d VEL %4d EXP %4d HABS [ ",
+             heroi.id_heroi,
+             heroi.paciencia,
+             heroi.velocidade,
+             heroi.experiencia);
+
+    cjto_imprime(heroi.habilidades);
+    printf(" ]\n");
+  }
+
+  // Estatísticas das bases
+  for (int b = 0; b < m->n_bases; b++)
+  {
+    base = m->bases[b];
+
+    printf("BASE %2d LOT %2d FILA MAX %2d MISSOES %d",
+           base.id_base,
+           base.lotacao,
+           base.espera_max,
+           base.missoes);
+  }
+
+  printf("EVENTOS TRATADOS: %d", m->total_eventos);
+
+  for (int mi = 0; mi < m->n_missoes; m++)
+    if (m->missoes[mi].cumprida)
+      missoes_cumpridas++;
+
+  printf("MISSOES CUMPRIDAS: %d/%d (%.1f%%)",
+    missoes_cumpridas,
+    m->n_missoes,
+    (float)(missoes_cumpridas/m->n_missoes));
+
+  printf("TENTATIVAS/MISSAO: MIN %d, MAX %d, MEDIA %.1f", 0, 0, 0.0);
+  printf("TAXA MORTALIDADE: %.1f%%", 0.0);
+}

@@ -16,6 +16,7 @@ void inicia_mundo(struct mundo *m)
   m->tamanho_mundo.x = N_TAMANHO_MUNDO;
   m->tamanho_mundo.y = N_TAMANHO_MUNDO;
   m->relogio = T_INICIO;
+  m->total_eventos = 0;
 
   // Inicialização das bases
   for (int i = 0; i < m->n_bases; i++)
