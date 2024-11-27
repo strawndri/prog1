@@ -21,7 +21,7 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef);
 
 void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
-void espera(int t, struct heroi *h, struct base *b, struct fprio_t *lef);
+void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef);
 
 void desiste(struct mundo *m, int t, struct heroi *h, struct base *b, struct fprio_t *lef);
 

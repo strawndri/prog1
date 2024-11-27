@@ -54,7 +54,7 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       chega(m, evento, lef);
       break;
     case ESPERA:
-      espera(evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);
+      espera(m, evento, lef);
       break;
     case DESISTE:
       desiste(m, evento->tempo, &m->herois[evento->d1], &m->bases[evento->d2], lef);

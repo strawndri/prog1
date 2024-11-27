@@ -94,25 +94,30 @@ void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Espera
-void espera(int t, struct heroi *h, struct base *b, struct fprio_t *lef)
-{
-  lista_insere(b->espera, h->id_heroi, -1);
+void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+{  
+  // dados do evento atual
+  struct heroi h = m->herois[ev->d1];
+  struct base b = m->bases[ev->d2];
+  int t = ev->tempo;
+
+  lista_insere(b.espera, h.id_heroi, -1);
 
   // atualiza a quantidade máxima de pessoas na fila de espera
-  if (lista_tamanho(b->espera) > b->espera_max)
-    b->espera_max = lista_tamanho(b->espera);
+  if (lista_tamanho(b.espera) > b.espera_max)
+    b.espera_max = lista_tamanho(b.espera);
 
   struct evento_t *evento = cria_evento(
       t,
       AVISA,
-      h->id_heroi,
-      b->id_base);
+      h.id_heroi,
+      b.id_base);
 
   printf("%6d: ESPERA HEROI %2d BASE %d (%2d)\n",
          evento->tempo,
          evento->d1,
          evento->d2,
-         lista_tamanho(b->espera));
+         lista_tamanho(b.espera));
 
   fprio_insere(lef, evento, AVISA, evento->tempo);
 }
