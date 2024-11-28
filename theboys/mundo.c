@@ -97,22 +97,23 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
 
   while (fprio_tamanho(dists) > 0)
   {
-    int id_base;
-    int prioridade;
+    int id_base = -1;
+    int dist = 1;
 
-    fprio_retira(dists, &id_base, &prioridade);
+    fprio_retira(dists, &id_base, &dist);
 
-    // recria total_habilidades
-    cjto_destroi(total_habilidades);
-    total_habilidades = cjto_cria(m->n_habilidades);
-
-    if (!total_habilidades)
-      return -1;
+    printf("%6d: MISSAO %d BASE %d DIST %d HEROIS [ ", m->relogio, mi->id_missao, id_base, dist);
+    cjto_imprime(m->bases[id_base].presentes);
+    printf(" ]\n");
 
     for (int h = 0; h < m->n_herois; h++)
     {
       if (cjto_pertence(m->bases[id_base].presentes, h))
       {
+        printf("%6d: MISSAO %d HAB HEROI %2d: [ ", m->relogio, mi->id_missao, h);
+        cjto_imprime(m->herois[h].habilidades);
+        printf(" ]\n");
+
         struct cjto_t *novo_total = cjto_uniao(total_habilidades, m->herois[h].habilidades);
         if (novo_total)
         {
@@ -121,6 +122,10 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
         }
       }
     }
+
+    printf("%6d: MISSAO %d UNIAO HAB BASE %d: [ ", m->relogio, mi->id_missao, id_base);
+    cjto_imprime(total_habilidades);
+    printf(" ]\n");
 
     if (cjto_contem(total_habilidades, mi->habilidades))
     {
