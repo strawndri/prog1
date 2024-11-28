@@ -101,8 +101,6 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   struct base b = m->bases[ev->d2];
   int t = ev->tempo;
 
-  lista_insere(b.espera, h.id_heroi, -1);
-
   // atualiza a quantidade máxima de pessoas na fila de espera
   if (lista_tamanho(b.espera) > b.espera_max)
     b.espera_max = lista_tamanho(b.espera);
@@ -118,6 +116,8 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
          evento->d1,
          evento->d2,
          lista_tamanho(b.espera));
+
+  lista_insere(b.espera, h.id_heroi, -1);
 
   fprio_insere(lef, evento, AVISA, evento->tempo);
 }
