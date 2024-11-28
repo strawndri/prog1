@@ -48,6 +48,8 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
     m->relogio = evento->tempo;
     m->total_eventos++;
 
+    // printf("----> %d %d %d\n", evento->tipo, evento->d1, evento->d2);
+
     switch (evento->tipo)
     {
     case CHEGA:

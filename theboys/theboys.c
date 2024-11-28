@@ -31,5 +31,8 @@ int main()
   executa_eventos_iniciais(m, lef);
   executa_eventos(m, lef);
 
+  fprio_destroi(lef);
+  free(m);
+
   return 0;
 }

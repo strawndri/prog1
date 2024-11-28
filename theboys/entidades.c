@@ -14,6 +14,7 @@ struct heroi cria_heroi(int id)
   struct heroi h;
 
   h.id_heroi = id;
+  h.id_base = -1;
   h.experiencia = 0;
   h.paciencia = aleat(0, 100);
   h.velocidade = aleat(50, 5000);
