@@ -75,7 +75,7 @@ struct missao cria_missao(int id)
   m.local.y = aleat(0, N_TAMANHO_MUNDO);
 
   // Organização das habilidades necessárias para a missão
-  int qtd_hab_missao = aleat(6, 10);
+  int qtd_hab_missao = aleat(3, 6);
   m.habilidades = cjto_aleat(qtd_hab_missao, N_HABILIDADES);
   m.perigo = aleat(0, 100);
   m.tentativas = 0;

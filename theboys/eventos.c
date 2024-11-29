@@ -364,7 +364,9 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   if (bmp >= 0)
   {
     mi->cumprida = true;
-    m->bases[bmp].missoes++;
+    struct base *b = &m->bases[bmp];
+
+    b->missoes++;
 
     for (int i = 0; i < m->n_herois; i++)
     {
@@ -416,7 +418,13 @@ void fim(struct mundo *m, struct evento_t *ev)
   struct base base;
   int t = ev->tempo;
 
-  // int missoes_cumpridas = 0;
+  int missoes_cumpridas = 0;
+
+  int max_tentativas = m->missoes[0].tentativas;
+  int min_tentativas = m->missoes[0].tentativas;
+  int soma_tentativas = 0;
+
+  int total_mortos = 0;
 
   printf("%6d: FIM\n\n", t);
 
@@ -432,11 +440,15 @@ void fim(struct mundo *m, struct evento_t *ev)
              heroi.velocidade,
              heroi.experiencia);
     else
+    {
+      total_mortos++;
+
       printf("HEROI %2d MORTO  PAC %3d VEL %4d EXP %4d HABS [ ",
              heroi.id_heroi,
              heroi.paciencia,
              heroi.velocidade,
              heroi.experiencia);
+    }
 
     cjto_imprime(heroi.habilidades);
     printf(" ]\n");
@@ -456,20 +468,33 @@ void fim(struct mundo *m, struct evento_t *ev)
 
   printf("EVENTOS TRATADOS: %d\n", m->total_eventos);
 
-  // for (int mi = 0; mi < m->n_missoes; m++)
-  //   if (m->missoes[mi].cumprida)
-  //     missoes_cumpridas++;
+  for (int mi = 0; mi < m->n_missoes; mi++)
+  {
+    if (m->missoes[mi].cumprida)
+      missoes_cumpridas++;
 
-  // if (m->n_missoes > 0)
-  // {
-  //   printf("MISSOES CUMPRIDAS: %d/%d (%.1f%%)\n",
-  //          missoes_cumpridas,
-  //          m->n_missoes,
-  //          (float)(missoes_cumpridas * 100) / m->n_missoes);
-  // }
-  // else
-  //   printf("MISSOES CUMPRIDAS: 0/%d (0.0%%)\n", m->n_missoes);
+    soma_tentativas += m->missoes[mi].tentativas;
 
-  printf("TENTATIVAS/MISSAO: MIN %d, MAX %d, MEDIA %.1f\n", 0, 0, 0.0);
-  printf("TAXA MORTALIDADE: %.1f%%\n", 0.0);
+    if (m->missoes[mi].tentativas > max_tentativas)
+      max_tentativas = m->missoes[mi].tentativas;
+
+    if (m->missoes[mi].tentativas < min_tentativas)
+      min_tentativas = m->missoes[mi].tentativas;
+  }
+
+  if (m->n_missoes > 0)
+  {
+    printf("MISSOES CUMPRIDAS: %d/%d (%.1f%%)\n",
+           missoes_cumpridas,
+           m->n_missoes,
+           (float)(missoes_cumpridas * 100) / m->n_missoes);
+  }
+  else
+    printf("MISSOES CUMPRIDAS: 0/%d (0.0%%)\n", m->n_missoes);
+
+  printf("TENTATIVAS/MISSAO: MIN %d, MAX %d, MEDIA %.1f\n",
+         min_tentativas,
+         max_tentativas, 
+         soma_tentativas / (float)m->n_missoes);
+  printf("TAXA MORTALIDADE: %.1f%%\n", total_mortos / (float)m->n_herois);
 }
