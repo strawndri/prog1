@@ -120,8 +120,16 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
       fim(m, evento);
       break;
     }
-
-    free(evento);
+    
+    if (evento)
+      free(evento);
+  }
+  
+  while (fprio_tamanho(lef) > 0)
+  {
+    evento = fprio_retira(lef, &tipo, &prio);
+    if (evento)
+      free(evento);
   }
 
   return 0;
@@ -133,7 +141,7 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
   int id_base, dist;
   struct cjto_t *total_habilidades, *novo_total;
 
-  while (fprio_tamanho(dists) > 0)
+  while (fprio_tamanho(dists) > 0 && bmp < 0)
   {
     id_base = -1;
     dist = 1;
@@ -171,11 +179,9 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
     printf(" ]\n");
 
     if (cjto_contem(total_habilidades, mi->habilidades))
-    {
       bmp = id_base;
-      cjto_destroi(total_habilidades);
-      break;
-    }
+
+    cjto_destroi(total_habilidades);
   }
 
   return bmp;

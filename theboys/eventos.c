@@ -65,7 +65,7 @@ void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   int status_fprio = fprio_insere(lef, evento, tipo_evento, evento->tempo);
 
   if (status_fprio < 0)
-      return;
+    return;
 }
 
 // Espera
@@ -97,7 +97,7 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   int status_fprio = fprio_insere(lef, evento, AVISA, evento->tempo);
 
   if (status_fprio < 0)
-      return;
+    return;
 }
 
 // Desiste
@@ -124,7 +124,7 @@ void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   int status_fprio = fprio_insere(lef, evento, VIAJA, evento->tempo);
 
   if (status_fprio < 0)
-      return;
+    return;
 }
 
 // Avisa
@@ -195,7 +195,7 @@ void entra(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 
   int status_fprio = fprio_insere(lef, evento, SAI, evento->tempo);
   if (status_fprio < 0)
-      return;
+    return;
 
   printf("%6d: ENTRA  HEROI %2d BASE %d (%2d/%2d) SAI %d\n",
          t,
@@ -272,7 +272,7 @@ void viaja(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 
   int status_fprio = fprio_insere(lef, evento, CHEGA, evento->tempo);
   if (status_fprio < 0)
-      return;
+    return;
 
   printf("%6d: VIAJA  HEROI %2d BASE %d BASE %d DIST %d VEL %d CHEGA %d\n",
          t,
@@ -316,7 +316,7 @@ void morre(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 
   int status_fprio = fprio_insere(lef, evento, AVISA, evento->tempo);
   if (status_fprio < 0)
-      return;
+    return;
 }
 
 // Missao
@@ -332,6 +332,9 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   int risco;
   struct heroi *h;
 
+  int tipo;
+  int prio;
+
   struct fprio_t *dists_bases = fprio_cria();
 
   mi->tentativas++;
@@ -343,6 +346,7 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   for (int i = 0; i < n; i++)
   {
     dist = calcula_distancia(m->bases[i].local, mi->local);
+
     int status_fprio = fprio_insere(dists_bases, &m->bases[i], m->bases[i].id_base, dist);
     if (status_fprio < 0)
       return;
@@ -358,7 +362,7 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
     b->missoes++;
 
     for (int i = 0; i < m->n_herois; i++)
-    { 
+    {
       if (cjto_pertence(m->bases[bmp].presentes, i))
       {
         h = &m->herois[i];
@@ -403,8 +407,12 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
     printf("%6d: MISSAO %d IMPOSSIVEL\n", t, mi->id_missao);
   }
 
+  // Removendo as bases ainda presentes na fila de prioridade
+
+  while (fprio_tamanho(dists_bases) > 0)
+   fprio_retira(dists_bases, &tipo, &prio);
+
   fprio_destroi(dists_bases);
-  
 }
 
 // Fim
@@ -490,7 +498,7 @@ void fim(struct mundo *m, struct evento_t *ev)
 
   printf("TENTATIVAS/MISSAO: MIN %d, MAX %d, MEDIA %.1f\n",
          min_tentativas,
-         max_tentativas, 
+         max_tentativas,
          soma_tentativas / (float)m->n_missoes);
   printf("TAXA MORTALIDADE: %.1f%%\n", 100 * (total_mortos) / (float)m->n_herois);
 }
