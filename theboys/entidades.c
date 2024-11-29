@@ -43,13 +43,13 @@ struct base cria_base(int id)
   b.id_base = id;
 
   // Coordenadas
-  b.local.x = aleat(0, N_TAMANHO_MUNDO);
-  b.local.y = aleat(0, N_TAMANHO_MUNDO);
+  b.local.x = aleat(0, N_TAMANHO_MUNDO - 1);
+  b.local.y = aleat(0, N_TAMANHO_MUNDO - 1);
 
   b.espera_max = 0;
   b.missoes = 0;
   b.lotacao = aleat(3, 10);
-  b.presentes = cjto_cria(b.lotacao);
+  b.presentes = cjto_cria(N_HEROIS);
   b.espera = lista_cria();
 
   return b;
@@ -71,8 +71,8 @@ struct missao cria_missao(int id)
   struct missao m;
 
   m.id_missao = id;
-  m.local.x = aleat(0, N_TAMANHO_MUNDO);
-  m.local.y = aleat(0, N_TAMANHO_MUNDO);
+  m.local.x = aleat(0, N_TAMANHO_MUNDO - 1);
+  m.local.y = aleat(0, N_TAMANHO_MUNDO - 1);
 
   // Organização das habilidades necessárias para a missão
   int qtd_hab_missao = aleat(3, 6);
