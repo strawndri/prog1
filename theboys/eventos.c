@@ -24,43 +24,6 @@ struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2)
   return evento;
 }
 
-// Função para realizar os eventos iniciais
-void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
-{
-  // Evento inicial (herói)
-  for (int i = 0; i < m->n_herois; i++)
-  {
-    int base = aleat(0, m->n_bases - 1); // id da base
-    int tempo = aleat(0, 4320);
-
-    struct evento_t *evento = cria_evento(tempo, CHEGA, i, base);
-    int status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
-
-    if (status_fprio < 0)
-      return;
-  }
-
-  // Evento inicial (missão)
-  for (int i = 0; i < m->n_missoes; i++)
-  {
-    int tempo = aleat(0, T_FIM_DO_MUNDO);
-
-    struct evento_t *evento = cria_evento(tempo, MISSAO, i, -1);
-    int status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
-
-    if (status_fprio < 0)
-      return;
-  }
-
-  // Agendando o fim do mundo
-  int tempo = T_FIM_DO_MUNDO;
-  struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
-  int status_fprio = fprio_insere(lef, evento, FIM, tempo);
-
-  if (status_fprio < 0)
-      return;
-}
-
 // Funções dos eventos ---------------------------------------------------------
 
 // Chega: heroi H chegando na ba B no instante T
@@ -396,8 +359,6 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 
     for (int i = 0; i < m->n_herois; i++)
     { 
-      printf("oi\n");
-
       if (cjto_pertence(m->bases[bmp].presentes, i))
       {
         h = &m->herois[i];
@@ -441,6 +402,9 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 
     printf("%6d: MISSAO %d IMPOSSIVEL\n", t, mi->id_missao);
   }
+
+  fprio_destroi(dists_bases);
+  
 }
 
 // Fim

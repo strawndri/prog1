@@ -33,6 +33,43 @@ void inicia_mundo(struct mundo *m)
     m->missoes[i] = cria_missao(i);
 }
 
+// Função para realizar os eventos iniciais
+void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
+{
+  // Evento inicial (herói)
+  for (int i = 0; i < m->n_herois; i++)
+  {
+    int base = aleat(0, m->n_bases - 1); // id da base
+    int tempo = aleat(0, 4320);
+
+    struct evento_t *evento = cria_evento(tempo, CHEGA, i, base);
+    int status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
+
+    if (status_fprio < 0)
+      return;
+  }
+
+  // Evento inicial (missão)
+  for (int i = 0; i < m->n_missoes; i++)
+  {
+    int tempo = aleat(0, T_FIM_DO_MUNDO);
+
+    struct evento_t *evento = cria_evento(tempo, MISSAO, i, -1);
+    int status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
+
+    if (status_fprio < 0)
+      return;
+  }
+
+  // Agendando o fim do mundo
+  int tempo = T_FIM_DO_MUNDO;
+  struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
+  int status_fprio = fprio_insere(lef, evento, FIM, tempo);
+
+  if (status_fprio < 0)
+    return;
+}
+
 int executa_eventos(struct mundo *m, struct fprio_t *lef)
 {
   struct evento_t *evento;
@@ -93,13 +130,15 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
 int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists)
 {
   int bmp = -1;
-  struct cjto_t *total_habilidades;
+  int id_base, dist;
+  struct cjto_t *total_habilidades, *novo_total;
 
   while (fprio_tamanho(dists) > 0)
   {
-    int id_base = -1;
-    int dist = 1;
+    id_base = -1;
+    dist = 1;
 
+    // Cria e verifica se o conjunto é válido
     total_habilidades = cjto_cria(m->n_habilidades);
     if (!total_habilidades)
       return -1;
@@ -118,7 +157,7 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
         cjto_imprime(m->herois[h].habilidades);
         printf(" ]\n");
 
-        struct cjto_t *novo_total = cjto_uniao(total_habilidades, m->herois[h].habilidades);
+        novo_total = cjto_uniao(total_habilidades, m->herois[h].habilidades);
         if (novo_total)
         {
           cjto_destroi(total_habilidades);
@@ -137,8 +176,19 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
       cjto_destroi(total_habilidades);
       break;
     }
-    cjto_destroi(total_habilidades);
   }
 
   return bmp;
+}
+
+void destroi_mundo(struct mundo *m)
+{
+  for (int i = 0; i < m->n_bases; i++)
+    destroi_base(&m->bases[i]);
+
+  for (int i = 0; i < m->n_herois; i++)
+    destroi_heroi(&m->herois[i]);
+
+  for (int i = 0; i < m->n_missoes; i++)
+    destroi_missao(&m->missoes[i]);
 }

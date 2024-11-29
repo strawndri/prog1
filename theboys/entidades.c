@@ -84,7 +84,7 @@ struct missao cria_missao(int id)
   return m;
 }
 
-void destroi_missoes(struct missao *m)
+void destroi_missao(struct missao *m)
 {
   if (m->habilidades)
     cjto_destroi(m->habilidades);

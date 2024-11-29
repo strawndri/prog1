@@ -51,6 +51,6 @@ void destroi_base(struct base *b);
 
 struct missao cria_missao(int id);
 
-void destroi_missoes(struct missao *m);
+void destroi_missao(struct missao *m);
 
 #endif
