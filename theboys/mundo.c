@@ -38,7 +38,7 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
   struct evento_t *evento;
   int tipo, prio;
 
-  while (fprio_tamanho(lef) > 0 && m->relogio <= T_FIM_DO_MUNDO)
+  while (fprio_tamanho(lef) > 0 && m->relogio < T_FIM_DO_MUNDO)
   {
     evento = fprio_retira(lef, &tipo, &prio);
 
@@ -93,14 +93,16 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
 int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists)
 {
   int bmp = -1;
-  struct cjto_t *total_habilidades = cjto_cria(m->n_habilidades);
-  if (!total_habilidades)
-    return -1;
+  struct cjto_t *total_habilidades;
 
   while (fprio_tamanho(dists) > 0)
   {
     int id_base = -1;
     int dist = 1;
+
+    total_habilidades = cjto_cria(m->n_habilidades);
+    if (!total_habilidades)
+      return -1;
 
     fprio_retira(dists, &id_base, &dist);
 
@@ -120,7 +122,7 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
         if (novo_total)
         {
           cjto_destroi(total_habilidades);
-          total_habilidades = novo_total; // atualiza para o novo conjunto
+          total_habilidades = novo_total; // Atualiza para o novo conjunto
         }
       }
     }
@@ -132,10 +134,11 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
     if (cjto_contem(total_habilidades, mi->habilidades))
     {
       bmp = id_base;
+      cjto_destroi(total_habilidades);
       break;
     }
+    cjto_destroi(total_habilidades);
   }
 
-  cjto_destroi(total_habilidades);
   return bmp;
 }
