@@ -34,37 +34,40 @@ void inicia_mundo(struct mundo_t *m)
 }
 
 // Função para realizar os eventos iniciais
-void executa_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
+void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
 {
-  // Evento inicial (herói)
+  int base, tempo, status_fprio;
+  struct evento_t *evento; 
+
+  // Evento inicial do heróis (chegar às bases)
   for (int i = 0; i < m->n_herois; i++)
   {
-    int base = aleat(0, m->n_bases - 1); // id da base
-    int tempo = aleat(0, 4320);
+    base = aleat(0, m->n_bases - 1); // id da base
+    tempo = aleat(0, 4320);
 
-    struct evento_t *evento = cria_evento(tempo, CHEGA, i, base);
-    int status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
+    evento = cria_evento(tempo, CHEGA, i, base);
+    status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
 
     if (status_fprio < 0)
       return;
   }
 
-  // Evento inicial (missão)
+  // Evento inicial das missões
   for (int i = 0; i < m->n_missoes; i++)
   {
-    int tempo = aleat(0, T_FIM_DO_MUNDO);
+    tempo = aleat(0, T_FIM_DO_MUNDO);
 
-    struct evento_t *evento = cria_evento(tempo, MISSAO, i, -1);
-    int status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
+    evento = cria_evento(tempo, MISSAO, i, -1);
+    status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
 
     if (status_fprio < 0)
       return;
   }
 
-  // Agendando o fim do mundo
-  int tempo = T_FIM_DO_MUNDO;
-  struct evento_t *evento = cria_evento(tempo, FIM, 0, 0);
-  int status_fprio = fprio_insere(lef, evento, FIM, tempo);
+  // Agenda o fim do mundo
+  tempo = T_FIM_DO_MUNDO;
+  evento = cria_evento(tempo, FIM, -1, -1);
+  status_fprio = fprio_insere(lef, evento, FIM, tempo);
 
   if (status_fprio < 0)
     return;
@@ -75,7 +78,7 @@ int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
   struct evento_t *evento;
   int tipo, prio;
 
-  while (fprio_tamanho(lef) > 0 && m->relogio < T_FIM_DO_MUNDO)
+  while (m->relogio < T_FIM_DO_MUNDO)
   {
     evento = fprio_retira(lef, &tipo, &prio);
 
@@ -84,8 +87,6 @@ int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
 
     m->relogio = evento->tempo;
     m->total_eventos++;
-
-    // printf("----> %d %d %d\n", evento->tipo, evento->d1, evento->d2);
 
     switch (evento->tipo)
     {

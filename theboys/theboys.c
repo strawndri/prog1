@@ -25,7 +25,7 @@ int main()
   lef = fprio_cria();
 
   // Eventos iniciais e simulação do mundo
-  executa_eventos_iniciais(m, lef);
+  agenda_eventos_iniciais(m, lef);
   executa_eventos(m, lef);
 
   // Destruição de tudo que o mundo contempla
