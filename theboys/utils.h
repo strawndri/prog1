@@ -1,9 +1,9 @@
 #ifndef UTILS
 #define UTILS
 
-// Configurações gerais
+// Configurações gerais do mundo
 #define T_INICIO 0
-#define T_FIM_DO_MUNDO 10000
+#define T_FIM_DO_MUNDO 525600
 #define N_TAMANHO_MUNDO 20000
 #define N_HABILIDADES 10
 #define N_HEROIS N_HABILIDADES * 5
@@ -24,14 +24,18 @@
 
 // Estrutura que implementa um par de valores (x, y), representando
 // a coordenada de uma localização
-struct coordenada
+struct coordenadas_t
 {
   int x; // Coordenada horizontal (eixo x)
   int y; // Coordenada vertical (eixo y)
 };
 
+// Gera um número aleatório entre min e max, inclusive
+// Retorno: número inteiro aleatório
 long aleat(long min, long max);
 
-int calcula_distancia(struct coordenada c1, struct coordenada c2);
+// Calcula a Distância Euclidiana entre dois locais
+// Retorno: númerio inteiro
+int calcula_distancia(struct coordenadas_t c1, struct coordenadas_t c2);
 
 #endif
