@@ -9,7 +9,7 @@
 
 #include "mundo.h"
 
-struct heroi
+struct heroi_t
 {
   int id_heroi;
   struct cjto_t *habilidades;
@@ -20,7 +20,7 @@ struct heroi
   bool morto; // false se estiver vivo; true se morreu em missão
 };
 
-struct base
+struct base_t
 {
   int id_base;
   int lotacao;
@@ -28,29 +28,29 @@ struct base
   int missoes;
   struct cjto_t *presentes;
   struct lista_t *espera;
-  struct coordenada local;
+  struct coordenadas_t local;
 };
 
-struct missao
+struct missao_t
 {
   int id_missao;
   int tentativas;
   struct cjto_t *habilidades;
   int perigo;
-  struct coordenada local;
+  struct coordenadas_t local;
   bool cumprida; // true se cumprida; false caso contrário
 };
 
-struct heroi cria_heroi(int id);
+struct heroi_t cria_heroi(int id);
 
-void destroi_heroi(struct heroi *h);
+void destroi_heroi(struct heroi_t *h);
 
-struct base cria_base(int id);
+struct base_t cria_base(int id);
 
-void destroi_base(struct base *b);
+void destroi_base(struct base_t *b);
 
-struct missao cria_missao(int id);
+struct missao_t cria_missao(int id);
 
-void destroi_missao(struct missao *m);
+void destroi_missao(struct missao_t *m);
 
 #endif

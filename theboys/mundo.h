@@ -4,33 +4,34 @@
 #include "entidades.h"
 #include "utils.h"
 
-struct mundo
+// Estrutura que implementa um mundo
+struct mundo_t
 {
-  int n_herois;
-  struct heroi herois[N_HEROIS];
+  int n_herois;                       // Quantidade de heróis
+  struct heroi_t herois[N_HEROIS];      // Vetor contendo os heróis
 
-  int n_bases;
-  struct base bases[N_BASES];
+  int n_bases;                        // Quantidade de bases
+  struct base_t bases[N_BASES];         // Vetor contendo as bases
 
-  int n_missoes;
-  struct missao missoes[N_MISSOES];
+  int n_missoes;                      // Quantidade de missões
+  struct missao_t missoes[N_MISSOES];   // Vetor contendo as missões
 
-  int n_habilidades;
+  int n_habilidades;                  // Quantidade de habilidades
 
-  struct coordenada tamanho_mundo;
-  int relogio;
+  struct coordenadas_t tamanho_mundo; // Dimensões do mundo
+  int relogio;                        // Tempo atual
 
-  int total_eventos;
+  int total_eventos;                  // Quantidade de eventos processados
 };
 
-void inicia_mundo(struct mundo *m);
+void inicia_mundo(struct mundo_t *m);
 
-int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists);
+int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *dists);
 
-void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef);
+void executa_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef);
 
-int executa_eventos(struct mundo *m, struct fprio_t *lef);
+int executa_eventos(struct mundo_t *m, struct fprio_t *lef);
 
-void destroi_mundo(struct mundo *m);
+void destroi_mundo(struct mundo_t *m);
 
 #endif

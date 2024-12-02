@@ -9,7 +9,7 @@
 #include "fprio.h"
 
 // Função para iniciar o mundo
-void inicia_mundo(struct mundo *m)
+void inicia_mundo(struct mundo_t *m)
 {
   m->n_bases = N_BASES;
   m->n_herois = N_HEROIS;
@@ -34,7 +34,7 @@ void inicia_mundo(struct mundo *m)
 }
 
 // Função para realizar os eventos iniciais
-void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
+void executa_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
 {
   // Evento inicial (herói)
   for (int i = 0; i < m->n_herois; i++)
@@ -70,7 +70,7 @@ void executa_eventos_iniciais(struct mundo *m, struct fprio_t *lef)
     return;
 }
 
-int executa_eventos(struct mundo *m, struct fprio_t *lef)
+int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
 {
   struct evento_t *evento;
   int tipo, prio;
@@ -135,7 +135,7 @@ int executa_eventos(struct mundo *m, struct fprio_t *lef)
   return 0;
 }
 
-int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists)
+int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *dists)
 {
   int bmp = -1;
   int id_base, dist;
@@ -187,7 +187,7 @@ int encontra_prox_base(struct mundo *m, struct missao *mi, struct fprio_t *dists
   return bmp;
 }
 
-void destroi_mundo(struct mundo *m)
+void destroi_mundo(struct mundo_t *m)
 {
   for (int i = 0; i < m->n_bases; i++)
     destroi_base(&m->bases[i]);

@@ -9,9 +9,9 @@
 
 // Funções do Herói -----------------------------------------------------------
 
-struct heroi cria_heroi(int id)
+struct heroi_t cria_heroi(int id)
 {
-  struct heroi h;
+  struct heroi_t h;
 
   h.id_heroi = id;
   h.id_base = -1;
@@ -28,7 +28,7 @@ struct heroi cria_heroi(int id)
 }
 
 // (!) não sei se precisa fazer algo a mais
-void destroi_heroi(struct heroi *h)
+void destroi_heroi(struct heroi_t *h)
 {
   if (h->habilidades)
     cjto_destroi(h->habilidades);
@@ -36,9 +36,9 @@ void destroi_heroi(struct heroi *h)
 
 // Funções da Base -----------------------------------------------------------
 
-struct base cria_base(int id)
+struct base_t cria_base(int id)
 {
-  struct base b;
+  struct base_t b;
 
   b.id_base = id;
 
@@ -55,7 +55,7 @@ struct base cria_base(int id)
   return b;
 }
 
-void destroi_base(struct base *b)
+void destroi_base(struct base_t *b)
 {
   if (b->presentes)
     cjto_destroi(b->presentes);
@@ -66,9 +66,9 @@ void destroi_base(struct base *b)
 
 // Funções da Missão ---------------------------------------------------------
 
-struct missao cria_missao(int id)
+struct missao_t cria_missao(int id)
 {
-  struct missao m;
+  struct missao_t m;
 
   m.id_missao = id;
   m.local.x = aleat(0, N_TAMANHO_MUNDO - 1);
@@ -84,7 +84,7 @@ struct missao cria_missao(int id)
   return m;
 }
 
-void destroi_missao(struct missao *m)
+void destroi_missao(struct missao_t *m)
 {
   if (m->habilidades)
     cjto_destroi(m->habilidades);

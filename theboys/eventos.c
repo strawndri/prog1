@@ -27,11 +27,11 @@ struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2)
 // Funções dos eventos ---------------------------------------------------------
 
 // Chega: heroi H chegando na ba B no instante T
-void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void chega(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   int espera;
@@ -69,11 +69,11 @@ void chega(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Espera
-void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void espera(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   struct evento_t *evento = cria_evento(
@@ -101,11 +101,11 @@ void espera(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Desiste
-void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void desiste(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   int destino = aleat(0, m->n_bases - 1);
@@ -128,10 +128,10 @@ void desiste(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Avisa
-void avisa(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void avisa(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct base *b = &m->bases[ev->d2];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   int status_consulta;
@@ -178,11 +178,11 @@ void avisa(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Entra
-void entra(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void entra(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   int tpb = 15 + (h->paciencia * aleat(1, 20));
@@ -207,11 +207,11 @@ void entra(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Sai
-void sai(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[ev->d2];
   int t = ev->tempo;
 
   int status_cjto;
@@ -253,14 +253,14 @@ void sai(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Viaja
-void viaja(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *d = &m->bases[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *d = &m->bases[ev->d2];
   int t = ev->tempo;
 
-  struct base b = m->bases[h->id_base];
+  struct base_t b = m->bases[h->id_base];
   int dist = calcula_distancia(b.local, d->local);
   int duracao = dist / h->velocidade;
 
@@ -285,12 +285,12 @@ void viaja(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Morre
-void morre(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct heroi *h = &m->herois[ev->d1];
-  struct base *b = &m->bases[m->herois[ev->d1].id_base];
-  struct missao *mi = &m->missoes[ev->d2];
+  struct heroi_t *h = &m->herois[ev->d1];
+  struct base_t *b = &m->bases[m->herois[ev->d1].id_base];
+  struct missao_t *mi = &m->missoes[ev->d2];
   int t = ev->tempo;
 
   if (!b->presentes)
@@ -320,17 +320,17 @@ void morre(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Missao
-void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
+void missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // dados do evento atual
-  struct missao *mi = &m->missoes[ev->d1];
+  struct missao_t *mi = &m->missoes[ev->d1];
   int t = ev->tempo;
 
   int n = m->n_bases;
   int dist;
   int bmp;
   int risco;
-  struct heroi *h;
+  struct heroi_t *h;
 
   int tipo;
   int prio;
@@ -357,7 +357,7 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
   if (bmp >= 0)
   {
     mi->cumprida = true;
-    struct base *b = &m->bases[bmp];
+    struct base_t *b = &m->bases[bmp];
 
     b->missoes++;
 
@@ -416,10 +416,10 @@ void missao(struct mundo *m, struct evento_t *ev, struct fprio_t *lef)
 }
 
 // Fim
-void fim(struct mundo *m, struct evento_t *ev)
+void fim(struct mundo_t *m, struct evento_t *ev)
 {
-  struct heroi heroi;
-  struct base base;
+  struct heroi_t heroi;
+  struct base_t base;
   int t = ev->tempo;
 
   int missoes_cumpridas = 0;

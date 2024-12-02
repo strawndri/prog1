@@ -12,8 +12,8 @@ int main()
   srand(0);
 
   // Inicialização do mundo
-  struct mundo *m;
-  m = malloc(sizeof(struct mundo));
+  struct mundo_t *m;
+  m = malloc(sizeof(struct mundo_t));
 
   if (!m)
     return -1;
