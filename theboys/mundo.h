@@ -37,8 +37,13 @@ void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef);
 // Retorno: 0 ou -1 em caso de erro
 int executa_eventos(struct mundo_t *m, struct fprio_t *lef);
 
+// Busca a base mais próxima (BMP) que com todas as habilidades 
+// necessárias para completar a missão
+// Retorno: id da BMP ou -1 em caso de erro
 int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *dists);
 
+// Chama as funções que destroem heróis, bases e missões
+// Retorno: nulo
 void destroi_mundo(struct mundo_t *m);
 
 #endif

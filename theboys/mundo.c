@@ -20,15 +20,15 @@ void inicia_mundo(struct mundo_t *m)
   m->relogio = T_INICIO;
   m->total_eventos = 0;
 
-  // Inicialização das bases
+  // Cria um vetor de structs para as bases
   for (int i = 0; i < m->n_bases; i++)
     m->bases[i] = cria_base(i);
 
-  // Inicialização dos heróis
+  // Cria um vetor de structs para os heróis
   for (int i = 0; i < m->n_herois; i++)
     m->herois[i] = cria_heroi(i);
 
-  // Inicialização das missões
+  // Cria um vetor de structs para as missoes
   for (int i = 0; i < m->n_missoes; i++)
     m->missoes[i] = cria_missao(i);
 }
@@ -37,7 +37,7 @@ void inicia_mundo(struct mundo_t *m)
 void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
 {
   int base, tempo, status_fprio;
-  struct evento_t *evento; 
+  struct evento_t *evento;
 
   // Evento inicial do heróis (chegar às bases)
   for (int i = 0; i < m->n_herois; i++)
@@ -121,11 +121,11 @@ int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
       fim(m, evento);
       break;
     }
-    
+
     if (evento)
       free(evento);
   }
-  
+
   while (fprio_tamanho(lef) > 0)
   {
     evento = fprio_retira(lef, &tipo, &prio);
