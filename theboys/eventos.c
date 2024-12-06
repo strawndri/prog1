@@ -389,7 +389,7 @@ void missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
               t,
               MORRE,
               h->id_heroi,
-              -1);
+              mi->id_missao);
 
           int status_fprio = fprio_insere(lef, evento, MORRE, evento->tempo);
           if (status_fprio < 0)
