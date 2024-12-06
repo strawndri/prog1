@@ -73,7 +73,8 @@ void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
     return;
 }
 
-int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
+// Função para executar os eventos da simulação
+void executa_eventos(struct mundo_t *m, struct fprio_t *lef)
 {
   struct evento_t *evento;
   int tipo, prio;
@@ -82,9 +83,11 @@ int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
   {
     evento = fprio_retira(lef, &tipo, &prio);
 
+    // Verifica se o evento é válido
     if (!evento)
-      return -1;
+      return;
 
+    // Atualiza o tempo e os eventos processados
     m->relogio = evento->tempo;
     m->total_eventos++;
 
@@ -122,20 +125,21 @@ int executa_eventos(struct mundo_t *m, struct fprio_t *lef)
       break;
     }
 
+    // Se o evento existir, liberá-lo
     if (evento)
       free(evento);
   }
 
+  // Evita que a LEF permaneça com eventos agendados após o fim do mundo
   while (fprio_tamanho(lef) > 0)
   {
     evento = fprio_retira(lef, &tipo, &prio);
     if (evento)
       free(evento);
   }
-
-  return 0;
 }
 
+// Função para encontrar a base mais próxima (BMP)
 int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *dists)
 {
   int bmp = -1;
@@ -179,6 +183,7 @@ int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *d
     cjto_imprime(total_habilidades);
     printf(" ]\n");
 
+    // Verifica se o conjunto de habilidades da função contempla os da missão
     if (cjto_contem(total_habilidades, mi->habilidades))
       bmp = id_base;
 
@@ -188,6 +193,7 @@ int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *d
   return bmp;
 }
 
+// Função para destruir bases, heróis e missões
 void destroi_mundo(struct mundo_t *m)
 {
   for (int i = 0; i < m->n_bases; i++)
