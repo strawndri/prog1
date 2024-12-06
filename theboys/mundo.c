@@ -94,34 +94,34 @@ void executa_eventos(struct mundo_t *m, struct fprio_t *lef)
     switch (evento->tipo)
     {
     case CHEGA:
-      chega(m, evento, lef);
+      trata_ev_chega(m, evento, lef);
       break;
     case ESPERA:
-      espera(m, evento, lef);
+      trata_ev_espera(m, evento, lef);
       break;
     case DESISTE:
-      desiste(m, evento, lef);
+      trata_ev_desiste(m, evento, lef);
       break;
     case AVISA:
-      avisa(m, evento, lef);
+      trata_ev_avisa(m, evento, lef);
       break;
     case ENTRA:
-      entra(m, evento, lef);
+      trata_ev_entra(m, evento, lef);
       break;
     case SAI:
-      sai(m, evento, lef);
+      trata_ev_sai(m, evento, lef);
       break;
     case VIAJA:
-      viaja(m, evento, lef);
+      trata_ev_viaja(m, evento, lef);
       break;
     case MORRE:
-      morre(m, evento, lef);
+      trata_ev_morre(m, evento, lef);
       break;
     case MISSAO:
-      missao(m, evento, lef);
+      trata_ev_missao(m, evento, lef);
       break;
     case FIM:
-      fim(m, evento);
+      trata_ev_fim(m, evento);
       break;
     }
 
