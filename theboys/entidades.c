@@ -27,7 +27,6 @@ struct heroi_t cria_heroi(int id)
   return h;
 }
 
-// (!) não sei se precisa fazer algo a mais
 void destroi_heroi(struct heroi_t *h)
 {
   if (h->habilidades)
