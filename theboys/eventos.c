@@ -336,7 +336,7 @@ void trata_ev_morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
          mi->id_missao);
 
   // Retira herói do conjunto e verifica se deu certo
-  int status = cjto_retira(b->presentes, h->id_heroi);
+  status = cjto_retira(b->presentes, h->id_heroi);
   if (!status)
     return;
 
@@ -385,7 +385,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
     dist = calcula_distancia(m->bases[i].local, mi->local);
 
     // Insere evento na fila e verifica se deu certo
-    int status = fprio_insere(dists_bases, &m->bases[i], m->bases[i].id_base, dist);
+    status = fprio_insere(dists_bases, &m->bases[i], m->bases[i].id_base, dist);
     if (status < 0)
       return;
   }
@@ -416,7 +416,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
               mi->id_missao);
 
           // Insere evento na fila e verifica se deu certo
-          int status = fprio_insere(lef, evento, MORRE, evento->tempo);
+          status = fprio_insere(lef, evento, MORRE, evento->tempo);
           if (status < 0)
             return;
         }
@@ -441,9 +441,10 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
         MISSAO,
         mi->id_missao,
         -1);
-
-    int status_fprio = fprio_insere(lef, evento, MISSAO, evento->tempo);
-    if (status_fprio < 0)
+    
+    // Insere evento na LEF e verifica se deu certo
+    status = fprio_insere(lef, evento, MISSAO, evento->tempo);
+    if (status < 0)
       return;
 
     printf("%6d: MISSAO %d IMPOSSIVEL\n", t, mi->id_missao);
