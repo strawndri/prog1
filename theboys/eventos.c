@@ -38,6 +38,9 @@ void chega(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   int tipo_evento;
   char *msg;
 
+  if (h->morto)
+    return;
+
   h->id_base = b->id_base;
 
   if (cjto_card(b->presentes) < b->lotacao && lista_tamanho(b->espera) == 0)
@@ -109,6 +112,9 @@ void desiste(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   int t = ev->tempo;
 
   int destino = aleat(0, m->n_bases - 1);
+
+  if (h->morto)
+    return;
 
   struct evento_t *evento = cria_evento(
       t,
@@ -187,6 +193,9 @@ void entra(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 
   int tpb = 15 + (h->paciencia * aleat(1, 20));
 
+  if (h->morto)
+    return;
+
   struct evento_t *evento = cria_evento(
       t + tpb,
       SAI,
@@ -216,6 +225,9 @@ void sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 
   int status_cjto;
   int status_fprio;
+
+  if (h->morto)
+    return;
 
   printf("%6d: SAI    HEROI %2d BASE %d (%2d/%2d)\n",
          t,
@@ -259,6 +271,9 @@ void viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   struct heroi_t *h = &m->herois[ev->d1];
   struct base_t *d = &m->bases[ev->d2];
   int t = ev->tempo;
+
+  if (h->morto)
+    return;
 
   struct base_t b = m->bases[h->id_base];
   int dist = calcula_distancia(b.local, d->local);
