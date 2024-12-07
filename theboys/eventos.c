@@ -240,13 +240,6 @@ void trata_ev_sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   if (h->morto)
     return;
 
-  printf("%6d: SAI    HEROI %2d BASE %d (%2d/%2d)\n",
-         t,
-         h->id_heroi,
-         b->id_base,
-         cjto_card(b->presentes),
-         b->lotacao);
-
   // Retira evento do conjunto e verifica se deu certo
   status = cjto_retira(b->presentes, h->id_heroi);
   if (status < 0)
@@ -275,6 +268,13 @@ void trata_ev_sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   status = fprio_insere(lef, ev_avisa, AVISA, ev_avisa->tempo);
   if (status < 0)
     return;
+  
+  printf("%6d: SAI    HEROI %2d BASE %d (%2d/%2d)\n",
+         t,
+         h->id_heroi,
+         b->id_base,
+         cjto_card(b->presentes),
+         b->lotacao);
 }
 
 // Viaja: herói B se desloca para uma base D
@@ -299,7 +299,7 @@ void trata_ev_viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
       t + duracao,
       CHEGA,
       h->id_heroi,
-      b.id_base);
+      d->id_base);
 
   // Insere evento na LEF e verifica se deu certo
   status = fprio_insere(lef, evento, CHEGA, evento->tempo);
@@ -479,7 +479,7 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
     heroi = m->herois[h];
     msg = heroi.morto ? "MORTO" : "VIVO";
 
-    printf("HEROI %2d %s  PAC %3d VEL %4d EXP %4d HABS [ ",
+    printf("HEROI %2d %5s PAC %3d VEL %4d EXP %4d HABS [ ",
            heroi.id_heroi,
            msg,
            heroi.paciencia,
