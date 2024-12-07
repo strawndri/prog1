@@ -13,7 +13,7 @@ struct heroi_t
 {
   int id_heroi;               // Identificador do herói
   int id_base;                // Identificador da base onde o herói está
-  int paciencia;              // Nível de paciência 
+  int paciencia;              // Nível de paciência
   int velocidade;             // Quão rápido ele se locomove
   int experiencia;            // Nível de experiência do herói
   bool morto;                 // false se estiver vivo,
@@ -24,9 +24,9 @@ struct heroi_t
 // Estrutura que implementa uma base
 struct base_t
 {
-  int id_base;                // Identificador da base 
+  int id_base;                // Identificador da base
   int lotacao;                // Capacidade máxima possível
-  int espera_max;             // Maior lotação atingida  
+  int espera_max;             // Maior lotação atingida
   int missoes;                // Quantas missões foram concluídas na base
   struct cjto_t *presentes;   // Conjunto de heróis na base
   struct lista_t *espera;     // Fila de heróis esperando para entrar
@@ -46,26 +46,26 @@ struct missao_t
 
 // Inicializa os atributos do herói
 // Retorno: struct heroi_t
-struct heroi_t cria_heroi(int id);
+struct heroi_t *cria_heroi(int id);
 
 // Destroi os atributos alocados dinamicamente do herói
-// Retorno: void
-void destroi_heroi(struct heroi_t *h);
+// Retorno: NULL
+struct heroi_t *destroi_heroi(struct heroi_t *h);
 
 // Inicializa os atributos da base
 // Retorno: struct base_t
-struct base_t cria_base(int id);
+struct base_t *cria_base(int id);
 
 // Destroi os atributos alocados dinamicamente da base
-// Retorno: void
-void destroi_base(struct base_t *b);
+// Retorno: NULL
+struct base_t *destroi_base(struct base_t *b);
 
 // Inicializa os atributos da missão
 // Retorno: struct missao_t
-struct missao_t cria_missao(int id);
+struct missao_t *cria_missao(int id);
 
 // Destroi os atributos alocados dinamicamente da missão
-// Retorno: void
-void destroi_missao(struct missao_t *m);
+// Retorno: NULL
+struct missao_t *destroi_missao(struct missao_t *mi);
 
 #endif

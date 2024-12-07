@@ -8,13 +8,13 @@
 struct mundo_t
 {
   int n_herois;                       // Quantidade de heróis
-  struct heroi_t herois[N_HEROIS];    // Vetor contendo os heróis
+  struct heroi_t *herois[N_HEROIS];    // Vetor contendo os heróis
 
   int n_bases;                        // Quantidade de bases
-  struct base_t bases[N_BASES];       // Vetor contendo as bases
+  struct base_t *bases[N_BASES];       // Vetor contendo as bases
 
   int n_missoes;                      // Quantidade de missões
-  struct missao_t missoes[N_MISSOES]; // Vetor contendo as missões
+  struct missao_t *missoes[N_MISSOES]; // Vetor contendo as missões
 
   int n_habilidades;                  // Quantidade de habilidades
 

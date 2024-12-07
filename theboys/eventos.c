@@ -29,8 +29,8 @@ struct evento_t *cria_evento(int tempo, int tipo, int d1, int d2)
 void trata_ev_chega(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int espera;
@@ -77,8 +77,8 @@ void trata_ev_chega(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_espera(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int status;
@@ -111,8 +111,8 @@ void trata_ev_espera(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
 void trata_ev_desiste(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int destino = aleat(0, m->n_bases - 1);
@@ -140,7 +140,7 @@ void trata_ev_desiste(struct mundo_t *m, struct evento_t *ev, struct fprio_t *le
 void trata_ev_avisa(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct base_t *b = &m->bases[ev->d2];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int status;
@@ -196,8 +196,8 @@ void trata_ev_avisa(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_entra(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int status;
@@ -229,8 +229,8 @@ void trata_ev_entra(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[ev->d2];
   int t = ev->tempo;
 
   int destino;
@@ -281,8 +281,8 @@ void trata_ev_sai(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *d = &m->bases[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *d = m->bases[ev->d2];
   int t = ev->tempo;
 
   int status;
@@ -291,8 +291,8 @@ void trata_ev_viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   if (h->morto)
     return;
 
-  struct base_t b = m->bases[h->id_base];
-  int dist = calcula_distancia(b.local, d->local);
+  struct base_t *b = m->bases[h->id_base];
+  int dist = calcula_distancia(b->local, d->local);
   int duracao = dist / h->velocidade;
 
   struct evento_t *evento = cria_evento(
@@ -309,7 +309,7 @@ void trata_ev_viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
   printf("%6d: VIAJA  HEROI %2d BASE %d BASE %d DIST %d VEL %d CHEGA %d\n",
          t,
          evento->d1,
-         b.id_base,
+         b->id_base,
          evento->d2,
          dist,
          h->velocidade,
@@ -320,9 +320,9 @@ void trata_ev_viaja(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct heroi_t *h = &m->herois[ev->d1];
-  struct base_t *b = &m->bases[m->herois[ev->d1].id_base];
-  struct missao_t *mi = &m->missoes[ev->d2];
+  struct heroi_t *h = m->herois[ev->d1];
+  struct base_t *b = m->bases[m->herois[ev->d1]->id_base];
+  struct missao_t *mi = m->missoes[ev->d2];
   int t = ev->tempo;
 
   int status;
@@ -358,7 +358,7 @@ void trata_ev_morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 {
   // Dados do evento atual
-  struct missao_t *mi = &m->missoes[ev->d1];
+  struct missao_t *mi = m->missoes[ev->d1];
   int t = ev->tempo;
 
   int n = m->n_bases;
@@ -382,10 +382,10 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
 
   for (int i = 0; i < n; i++)
   {
-    dist = calcula_distancia(m->bases[i].local, mi->local);
+    dist = calcula_distancia(m->bases[i]->local, mi->local);
 
     // Insere evento na fila e verifica se deu certo
-    status = fprio_insere(dists_bases, &m->bases[i], m->bases[i].id_base, dist);
+    status = fprio_insere(dists_bases, &m->bases[i], m->bases[i]->id_base, dist);
     if (status < 0)
       return;
   }
@@ -395,16 +395,16 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
   if (bmp >= 0)
   {
     mi->cumprida = true;
-    struct base_t *b = &m->bases[bmp];
+    struct base_t *b = m->bases[bmp];
 
     b->missoes++;
 
     for (int i = 0; i < m->n_herois; i++)
     {
       // Se o herói h está na bmp, analisa o risco de realizar a função
-      if (cjto_pertence(m->bases[bmp].presentes, i))
+      if (cjto_pertence(m->bases[bmp]->presentes, i))
       {
-        h = &m->herois[i];
+        h = m->herois[i];
         risco = mi->perigo / (h->paciencia + h->experiencia + 1.0);
 
         if (risco > aleat(0, 30))
@@ -430,7 +430,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
     printf("%6d: MISSAO %d CUMPRIDA BASE %d HABS: [ ",
            t,
            mi->id_missao,
-           m->bases[bmp].id_base);
+           m->bases[bmp]->id_base);
     cjto_imprime(mi->habilidades);
     printf(" ]\n");
   }
@@ -460,15 +460,15 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
 // Fim: encerramento da simulação
 void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
 {
-  struct heroi_t heroi;
-  struct base_t base;
+  struct heroi_t *heroi;
+  struct base_t *base;
   int t = ev->tempo;
 
   int missoes_cumpridas = 0;
   int total_mortos = 0;
   int soma_tentativas = 0;
-  int max_tentativas = m->missoes[0].tentativas;
-  int min_tentativas = m->missoes[0].tentativas;
+  int max_tentativas = m->missoes[0]->tentativas;
+  int min_tentativas = m->missoes[0]->tentativas;
   char *msg;
 
   printf("%6d: FIM\n\n", t);
@@ -477,19 +477,19 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
   for (int h = 0; h < m->n_herois; h++)
   {
     heroi = m->herois[h];
-    msg = heroi.morto ? "MORTO" : "VIVO";
+    msg = heroi->morto ? "MORTO" : "VIVO";
 
     printf("HEROI %2d %5s PAC %3d VEL %4d EXP %4d HABS [ ",
-           heroi.id_heroi,
+           heroi->id_heroi,
            msg,
-           heroi.paciencia,
-           heroi.velocidade,
-           heroi.experiencia);
+           heroi->paciencia,
+           heroi->velocidade,
+           heroi->experiencia);
 
-    if (heroi.morto)
+    if (heroi->morto)
       total_mortos++;
 
-    cjto_imprime(heroi.habilidades);
+    cjto_imprime(heroi->habilidades);
     printf(" ]\n");
   }
 
@@ -498,26 +498,26 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
   {
     base = m->bases[b];
     printf("BASE %2d LOT %2d FILA MAX %2d MISSOES %d\n",
-           base.id_base,
-           base.lotacao,
-           base.espera_max,
-           base.missoes);
+           base->id_base,
+           base->lotacao,
+           base->espera_max,
+           base->missoes);
   }
 
   printf("EVENTOS TRATADOS: %d\n", m->total_eventos);
 
   for (int mi = 0; mi < m->n_missoes; mi++)
   {
-    if (m->missoes[mi].cumprida)
+    if (m->missoes[mi]->cumprida)
       missoes_cumpridas++;
 
-    soma_tentativas += m->missoes[mi].tentativas;
+    soma_tentativas += m->missoes[mi]->tentativas;
 
-    if (m->missoes[mi].tentativas > max_tentativas)
-      max_tentativas = m->missoes[mi].tentativas;
+    if (m->missoes[mi]->tentativas > max_tentativas)
+      max_tentativas = m->missoes[mi]->tentativas;
 
-    if (m->missoes[mi].tentativas < min_tentativas)
-      min_tentativas = m->missoes[mi].tentativas;
+    if (m->missoes[mi]->tentativas < min_tentativas)
+      min_tentativas = m->missoes[mi]->tentativas;
   }
 
   if (m->n_missoes > 0)

@@ -159,18 +159,18 @@ int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *d
     fprio_retira(dists, &id_base, &dist);
 
     printf("%6d: MISSAO %d BASE %d DIST %d HEROIS [ ", m->relogio, mi->id_missao, id_base, dist);
-    cjto_imprime(m->bases[id_base].presentes);
+    cjto_imprime(m->bases[id_base]->presentes);
     printf(" ]\n");
 
     for (int h = 0; h < m->n_herois; h++)
     {
-      if (cjto_pertence(m->bases[id_base].presentes, h))
+      if (cjto_pertence(m->bases[id_base]->presentes, h))
       {
         printf("%6d: MISSAO %d HAB HEROI %2d: [ ", m->relogio, mi->id_missao, h);
-        cjto_imprime(m->herois[h].habilidades);
+        cjto_imprime(m->herois[h]->habilidades);
         printf(" ]\n");
 
-        novo_total = cjto_uniao(total_habilidades, m->herois[h].habilidades);
+        novo_total = cjto_uniao(total_habilidades, m->herois[h]->habilidades);
         if (novo_total)
         {
           cjto_destroi(total_habilidades);
@@ -197,11 +197,11 @@ int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *d
 void destroi_mundo(struct mundo_t *m)
 {
   for (int i = 0; i < m->n_bases; i++)
-    destroi_base(&m->bases[i]);
+    destroi_base(m->bases[i]);
 
   for (int i = 0; i < m->n_herois; i++)
-    destroi_heroi(&m->herois[i]);
+    destroi_heroi(m->herois[i]);
 
   for (int i = 0; i < m->n_missoes; i++)
-    destroi_missao(&m->missoes[i]);
+    destroi_missao(m->missoes[i]);
 }
