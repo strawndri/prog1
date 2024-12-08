@@ -27,7 +27,7 @@ struct fprio_t
 // Retorno: ponteiro para a fila criada ou NULL se erro.
 struct fprio_t *fprio_cria ();
 
-// Libera todas as estruturas de dados da fila, inclusive os itens.
+// Libera todas as estruturas de dados da fila
 // Retorno: NULL.
 struct fprio_t *fprio_destroi (struct fprio_t *f);
 

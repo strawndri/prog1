@@ -18,23 +18,12 @@ struct fprio_t *fprio_cria()
   return f;
 }
 
-// Libera todas as estruturas de dados da fila (inclusive os itens)
+// Libera todas as estruturas de dados da fila
 struct fprio_t *fprio_destroi(struct fprio_t *f)
 {
-  // int tipo, prio;
-  // void *item;
-
   // Verifica se a fila é válida
   if (!f)
     return NULL;
-
-  // Remove sempre o primeiro elemento até que a fila esteja vazia
-  //while (fprio_tamanho(f) > 0)
-  //{
-  //  item = fprio_retira(f, &tipo, &prio);
-    // if (item)
-    //  free(item);
-  //}
 
   free(f);
 
