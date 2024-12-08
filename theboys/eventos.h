@@ -1,3 +1,7 @@
+// Declarações e configurações dos eventos
+// Autora: Andrieli Luci Gonçalves, GRR 202449003
+// Dez 2024
+
 #ifndef EVENTOS
 #define EVENTOS
 

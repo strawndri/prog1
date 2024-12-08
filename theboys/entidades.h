@@ -1,3 +1,7 @@
+// Declarações e configurações das entidades
+// Autora: Andrieli Luci Gonçalves, GRR 202449003
+// Dez 2024
+
 #ifndef ENTIDADES
 #define ENTIDADES
 
