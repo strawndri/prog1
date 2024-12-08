@@ -2,11 +2,10 @@
 #define ENTIDADES
 
 #include <stdbool.h>
-
 #include "conjunto.h"
 #include "fprio.h"
-#include "mundo.h"
 #include "utils.h"
+#include "mundo.h"
 
 // Estrutura que implementa um herói
 struct heroi_t

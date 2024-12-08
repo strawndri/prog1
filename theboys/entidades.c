@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "conjunto.h"
 #include "fprio.h"
 #include "lista.h"
@@ -68,8 +67,6 @@ struct base_t *cria_base(int id)
   b->espera = lista_cria();
 
   return b;
-
-  return NULL;
 }
 
 struct base_t *destroi_base(struct base_t *b)

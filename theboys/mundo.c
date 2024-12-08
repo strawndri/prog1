@@ -115,7 +115,7 @@ void executa_eventos(struct mundo_t *m, struct fprio_t *lef)
   struct evento_t *evento;
   int tipo, prio;
 
-  while (m->relogio <= T_FIM_DO_MUNDO)
+  while (m->relogio < T_FIM_DO_MUNDO)
   {
     evento = fprio_retira(lef, &tipo, &prio);
 
