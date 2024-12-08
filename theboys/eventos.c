@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "fprio.h"
 #include "lista.h"
 #include "utils.h"
@@ -361,11 +360,10 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
   struct missao_t *mi = m->missoes[ev->d1];
   int t = ev->tempo;
 
-  int n = m->n_bases;
   int dist;
   int bmp;
   int risco;
-  struct heroi_t *h;
+  struct heroi_t *heroi;
 
   int tipo;
   int prio;
@@ -380,12 +378,12 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
   cjto_imprime(mi->habilidades);
   printf(" ]\n");
 
-  for (int i = 0; i < n; i++)
+  for (int b = 0; b < m->n_bases; b++)
   {
-    dist = calcula_distancia(m->bases[i]->local, mi->local);
+    dist = calcula_distancia(m->bases[b]->local, mi->local);
 
     // Insere evento na fila e verifica se deu certo
-    status = fprio_insere(dists_bases, &m->bases[i], m->bases[i]->id_base, dist);
+    status = fprio_insere(dists_bases, &m->bases[b], m->bases[b]->id_base, dist);
     if (status < 0)
       return;
   }
@@ -399,20 +397,20 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
 
     b->missoes++;
 
-    for (int i = 0; i < m->n_herois; i++)
+    for (int h = 0; h < m->n_herois; h++)
     {
       // Se o herói h está na bmp, analisa o risco de realizar a missão
-      if (cjto_pertence(m->bases[bmp]->presentes, i))
+      if (cjto_pertence(m->bases[bmp]->presentes, h))
       {
-        h = m->herois[i];
-        risco = mi->perigo / (h->paciencia + h->experiencia + 1.0);
+        heroi = m->herois[h];
+        risco = mi->perigo / (heroi->paciencia + heroi->experiencia + 1.0);
 
         if (risco > aleat(0, 30))
         {
           struct evento_t *evento = cria_evento(
               t,
               MORRE,
-              h->id_heroi,
+              heroi->id_heroi,
               mi->id_missao);
 
           // Insere evento na fila e verifica se deu certo
@@ -422,7 +420,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
         }
         else
         {
-          h->experiencia++;
+          heroi->experiencia++;
         }
       }
     }
