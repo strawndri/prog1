@@ -1,5 +1,8 @@
-#ifndef UTILS
-#define UTILS
+// Declarações e configurações auxiliares para a simulação
+// Andrieli Luci Gonçalves, Dez 2024
+
+#ifndef UTILS_H
+#define UTILS_H
 
 // Configurações gerais do mundo
 #define T_INICIO 0
@@ -35,7 +38,7 @@ struct coordenadas_t
 long aleat(long min, long max);
 
 // Calcula a Distância Euclidiana entre dois locais
-// Retorno: númerio inteiro
+// Retorno: número inteiro
 int calcula_distancia(struct coordenadas_t c1, struct coordenadas_t c2);
 
 #endif
