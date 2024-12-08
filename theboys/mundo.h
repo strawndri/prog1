@@ -26,7 +26,7 @@ struct mundo_t
 
 // Inicializa as propriedades do mundo e cria bases, heróis e missões
 // Retorno: void
-void inicia_mundo(struct mundo_t *m);
+void cria_mundo(struct mundo_t *m);
 
 // Agenda os eventos essenciais (CHEGA, MISSAO e FIM) para iniciar
 // a simulação, criando-os e adicionandos à LEF

@@ -8,8 +8,8 @@
 
 #include "fprio.h"
 
-// Função para iniciar o mundo
-void inicia_mundo(struct mundo_t *m)
+// Função para criar o mundo
+void cria_mundo(struct mundo_t *m)
 {
   m->n_bases = N_BASES;
   m->n_herois = N_HEROIS;
@@ -204,4 +204,7 @@ void destroi_mundo(struct mundo_t *m)
 
   for (int i = 0; i < m->n_missoes; i++)
     destroi_missao(m->missoes[i]);
+
+  free(m);
+  m = NULL;
 }

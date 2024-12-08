@@ -1,5 +1,6 @@
 // Declarações e configurações auxiliares para a simulação
-// Andrieli Luci Gonçalves, Dez 2024
+// Autora: Andrieli Luci Gonçalves, GRR 202449003
+// Dez 2024
 
 #ifndef UTILS_H
 #define UTILS_H

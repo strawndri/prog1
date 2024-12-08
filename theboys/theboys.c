@@ -1,10 +1,9 @@
-// programa principal do projeto "The Boys - 2024/2"
-// Autor: Andrieli Luci Gonçalves, GRR 202449003
+// Programa principal do projeto "The Boys - 2024/2"
+// Autora: Andrieli Luci Gonçalves, GRR 202449003
+// Dez 2024
 
 #include <stdlib.h>
-
 #include "fprio.h"
-#include "lista.h"
 #include "mundo.h"
 
 int main()
@@ -18,11 +17,17 @@ int main()
   if (!m)
     return -1;
 
-  inicia_mundo(m);
+  cria_mundo(m);
 
   // Criação da fila de eventos futuros
   struct fprio_t *lef;
   lef = fprio_cria();
+
+  if (!lef)
+  {
+    destroi_mundo(m);
+    return -1;
+  }
 
   // Eventos iniciais e simulação do mundo
   agenda_eventos_iniciais(m, lef);
@@ -31,7 +36,6 @@ int main()
   // Destruição de tudo que o mundo contempla
   fprio_destroi(lef);
   destroi_mundo(m);
-  free(m);
 
   return 0;
 }
