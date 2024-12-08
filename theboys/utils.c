@@ -1,6 +1,6 @@
 #include <stdlib.h>
+#include <math.h>
 #include "utils.h"
-#include "math.h"
 
 // (max - min + 1) gera um número entre 0 e (max - min)
 // Somando min, temos o deslocamento do resultado para o intervalo [min, max]
