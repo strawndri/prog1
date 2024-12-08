@@ -35,9 +35,8 @@ void trata_ev_chega(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 
   int espera;
   int tipo_evento;
-  char *msg;
-
   int status;
+  char *msg;
 
   // Se herói está morto, sai da função
   if (h->morto)
@@ -95,6 +94,7 @@ void trata_ev_espera(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
          evento->d2,
          lista_tamanho(b->espera));
 
+  // Adiciona o herói da posição final da fila de espera
   lista_insere(b->espera, h->id_heroi, -1);
 
   // Atualiza a quantidade máxima de pessoas na fila de espera
@@ -116,7 +116,6 @@ void trata_ev_desiste(struct mundo_t *m, struct evento_t *ev, struct fprio_t *le
   int t = ev->tempo;
 
   int destino = aleat(0, m->n_bases - 1);
-
   int status;
 
   struct evento_t *evento = cria_evento(
@@ -327,6 +326,7 @@ void trata_ev_morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 
   int status;
 
+  // Se a base não tem heróis, não faz nada
   if (!b->presentes)
     return;
 
@@ -337,7 +337,7 @@ void trata_ev_morre(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef)
 
   // Retira herói do conjunto e verifica se deu certo
   status = cjto_retira(b->presentes, h->id_heroi);
-  if (!status)
+  if (status < 0)
     return;
 
   h->morto = true;
@@ -401,7 +401,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
 
     for (int i = 0; i < m->n_herois; i++)
     {
-      // Se o herói h está na bmp, analisa o risco de realizar a função
+      // Se o herói h está na bmp, analisa o risco de realizar a missão
       if (cjto_pertence(m->bases[bmp]->presentes, i))
       {
         h = m->herois[i];
@@ -450,7 +450,7 @@ void trata_ev_missao(struct mundo_t *m, struct evento_t *ev, struct fprio_t *lef
     printf("%6d: MISSAO %d IMPOSSIVEL\n", t, mi->id_missao);
   }
 
-  // Removendo as bases ainda presentes na fila de prioridade
+  // Removendo as bases restantes da fila de prioridade de distâncias
   while (fprio_tamanho(dists_bases) > 0)
     fprio_retira(dists_bases, &tipo, &prio);
 
@@ -464,6 +464,7 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
   struct base_t *base;
   int t = ev->tempo;
 
+  // Variáveis para as estatísticas
   int missoes_cumpridas = 0;
   int total_mortos = 0;
   int soma_tentativas = 0;
@@ -520,6 +521,7 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
       min_tentativas = m->missoes[mi]->tentativas;
   }
 
+  // Estatísticas das missões
   if (m->n_missoes > 0)
     printf("MISSOES CUMPRIDAS: %d/%d (%.1f%%)\n",
            missoes_cumpridas,
@@ -532,5 +534,6 @@ void trata_ev_fim(struct mundo_t *m, struct evento_t *ev)
          min_tentativas,
          max_tentativas,
          soma_tentativas / (float)m->n_missoes);
+         
   printf("TAXA MORTALIDADE: %.1f%%\n", 100 * (total_mortos) / (float)m->n_herois);
 }
