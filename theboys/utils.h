@@ -2,8 +2,8 @@
 // Autora: Andrieli Luci Gonçalves, GRR 202449003
 // Dez 2024
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILS
+#define UTILS
 
 // Configurações gerais do mundo
 #define T_INICIO 0

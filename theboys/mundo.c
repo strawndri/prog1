@@ -1,16 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "fprio.h"
+#include "utils.h"
 #include "mundo.h"
 #include "eventos.h"
 #include "entidades.h"
-#include "utils.h"
-
-#include "fprio.h"
 
 // Função para criar o mundo
-void cria_mundo(struct mundo_t *m)
+struct mundo_t *cria_mundo()
 {
+  struct mundo_t *m;
+
+  // Aloca struct referente ao mundo
+  m = malloc(sizeof(struct mundo_t));
+  if (!m)
+    return NULL;
+
   m->n_bases = N_BASES;
   m->n_herois = N_HEROIS;
   m->n_habilidades = N_HABILIDADES;
@@ -22,15 +27,44 @@ void cria_mundo(struct mundo_t *m)
 
   // Cria um vetor de structs para as bases
   for (int i = 0; i < m->n_bases; i++)
+  {
     m->bases[i] = cria_base(i);
+
+    // Se a base for inválida, libera o mundo
+    if (!m->bases[i])
+    {
+      destroi_mundo(m);
+      return NULL;
+    }
+  }
 
   // Cria um vetor de structs para os heróis
   for (int i = 0; i < m->n_herois; i++)
+  {
     m->herois[i] = cria_heroi(i);
+
+    // Se o herói for inválido, libera o mundo
+    if (!m->herois[i])
+    {
+      destroi_mundo(m);
+      return NULL;
+    }
+  }
 
   // Cria um vetor de structs para as missoes
   for (int i = 0; i < m->n_missoes; i++)
+  {
     m->missoes[i] = cria_missao(i);
+
+    // Se a missão for inválida, libera o mundo
+    if (!m->missoes[i])
+    {
+      destroi_mundo(m);
+      return NULL;
+    }
+  }
+
+  return m;
 }
 
 // Função para realizar os eventos iniciais
@@ -46,8 +80,9 @@ void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
     tempo = aleat(0, 4320);
 
     evento = cria_evento(tempo, CHEGA, i, base);
-    status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
 
+    // Insere evento na LEF e verifica se deu certo
+    status_fprio = fprio_insere(lef, evento, CHEGA, tempo);
     if (status_fprio < 0)
       return;
   }
@@ -58,8 +93,9 @@ void agenda_eventos_iniciais(struct mundo_t *m, struct fprio_t *lef)
     tempo = aleat(0, T_FIM_DO_MUNDO);
 
     evento = cria_evento(tempo, MISSAO, i, -1);
-    status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
 
+    // Insere evento na LEF e verifica se deu certo
+    status_fprio = fprio_insere(lef, evento, MISSAO, tempo);
     if (status_fprio < 0)
       return;
   }
@@ -79,7 +115,7 @@ void executa_eventos(struct mundo_t *m, struct fprio_t *lef)
   struct evento_t *evento;
   int tipo, prio;
 
-  while (m->relogio < T_FIM_DO_MUNDO)
+  while (m->relogio <= T_FIM_DO_MUNDO)
   {
     evento = fprio_retira(lef, &tipo, &prio);
 
@@ -125,9 +161,8 @@ void executa_eventos(struct mundo_t *m, struct fprio_t *lef)
       break;
     }
 
-    // Se o evento existir, liberá-lo
-    if (evento)
-      free(evento);
+    // Libera o evento atual
+    free(evento);
   }
 
   // Evita que a LEF permaneça com eventos agendados após o fim do mundo
@@ -194,8 +229,11 @@ int encontra_prox_base(struct mundo_t *m, struct missao_t *mi, struct fprio_t *d
 }
 
 // Função para destruir bases, heróis e missões
-void destroi_mundo(struct mundo_t *m)
-{
+struct mundo_t *destroi_mundo(struct mundo_t *m)
+{ 
+  if (!m)
+    return NULL ;
+
   for (int i = 0; i < m->n_bases; i++)
     destroi_base(m->bases[i]);
 
@@ -206,5 +244,6 @@ void destroi_mundo(struct mundo_t *m)
     destroi_missao(m->missoes[i]);
 
   free(m);
-  m = NULL;
+  
+  return NULL;
 }

@@ -12,13 +12,11 @@ int main()
 
   // Inicialização do mundo
   struct mundo_t *m;
-  m = malloc(sizeof(struct mundo_t));
+  m = cria_mundo();
 
   if (!m)
     return -1;
-
-  cria_mundo(m);
-
+    
   // Criação da fila de eventos futuros
   struct fprio_t *lef;
   lef = fprio_cria();
